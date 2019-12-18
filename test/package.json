@@ -1,0 +1,29 @@
+{
+  "name": "global_tests_module",
+  "version": "1.0.0",
+  "description": "Tests on the entire application.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sraime/sample-express-angular-login.git"
+  },
+  "main": "app.js",
+  "scripts": {
+    "test:e2e": "npm run cc:run",
+    "test:e2e:tag": "codeceptjs run --grep ",
+    "cc:init": "codeceptjs init",
+    "cc:run": "codeceptjs run",
+    "cc:gt": "codeceptjs gt",
+    "cc:gherkin:init": "codeceptjs gherkin:init",
+    "cc:gherkin:snippets": "codeceptjs gherkin:snippets"
+  },
+  "author": "Robin COLLAS",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "mongoose": "^5.7.13"
+  },
+  "devDependencies": {
+    "codeceptjs": "^2.3.6",
+    "puppeteer": "^1.20.0"
+  }
+}

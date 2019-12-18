@@ -1,0 +1,17 @@
+.form-field {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.card-register {
+    width: 30%;
+    margin: 10% auto auto auto;
+}
+
+.card-register-title {
+    margin: auto;
+}
+
+.card-register button {
+    width: 100%;
+}

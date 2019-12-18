@@ -1,0 +1,11 @@
+.nav-spacer {
+  flex: 1 1 auto;
+}
+
+.right-nav > *:nth-last-child(n+2) {
+  margin-right: 20px;
+}
+
+#main-content {
+  padding: 20px 50px;
+}

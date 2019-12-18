@@ -1,0 +1,39 @@
+<mat-card class="card-register">
+    <mat-card-header>
+        <mat-card-title class="card-login-title" >Inscription</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" id="register-form" >
+            <mat-form-field class="form-field" id="register-pseudo-field">
+                <input matInput placeholder="Pseudo" type="text" name="pseudo" id="register-pseudo" formControlName="pseudo" required/>
+                <mat-error class="field-error" *ngIf="form.get('pseudo').errors && !form.get('pseudo').errors.unique">
+                    Le Pseudo ne peut être composé que de lettres et des chiffres (3 à 15 caractères)
+                </mat-error>
+                <mat-error class="field-error" *ngIf="form.get('pseudo').errors && form.get('pseudo').errors.unique">
+                    Ce pseudo n'est pas disponible
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" id="register-email-field">
+                <input matInput placeholder="Email" type="email" name="email" id="register-email" formControlName="email" [errorStateMatcher]="matcher" required/>
+                <mat-error class="field-error" *ngIf="form.get('email').errors && !form.get('email').errors.unique">
+                    Cet email n'est pas valide
+                </mat-error>
+                <mat-error class="field-error" *ngIf="form.get('email').errors && form.get('email').errors.unique">
+                    Cet email n'est pas disponible
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="form-field" id="register-password-field">
+                <input matInput placeholder="Mot de passe" type="password" name="password" id="register-password" formControlName="password" required/>
+                <mat-error class="field-error">
+                    Le mot de passe doit être composé de 8 à 30 caractères
+                </mat-error>
+            </mat-form-field>
+            
+            <div class="form-field">
+                <button mat-stroked-button type="submit" id="register-validation">Valider</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

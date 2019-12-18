@@ -1,0 +1,11 @@
+#sections-steps {
+    display: flex;
+}
+
+.section-steps {
+    flex: 1 0px;
+}
+
+.section-steps:nth-last-child(n+1) {
+    margin-right: 20px;
+}

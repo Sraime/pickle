@@ -1,0 +1,25 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="section-steps-title">{{sectionName}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <ul class="section-steps-constraints">
+            <li *ngIf="steps.length === 0" class="min-steps-constraint step-constraint">At least one step is required</li>
+        </ul>
+        <mat-list cdkDropList  (cdkDropListDropped)="dropStep($event)" class='section-steps-list'>
+            <mat-list-item cdkDrag class="section-step" *ngFor="let step of steps">
+                <section-step-item (delete)="delStep($event)" name="{{step}}"></section-step-item>
+            </mat-list-item>
+        </mat-list>
+        <mat-form-field class="field-new-step">
+            <input type="text" 
+                id="new-{{sectionName.toLowerCase()}}-step" 
+                matInput 
+                placeholder="your step"
+                class="input-new-step"
+                maxlength="100"
+                (keydown.enter)="addStep($event)"/>
+            <mat-icon matSuffix>mode_edit</mat-icon>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>

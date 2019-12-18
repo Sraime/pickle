@@ -1,0 +1,45 @@
+{
+  "output": "./e2e/output",
+  "helpers": {
+    "REST": {
+      "endpoint": "http://localhost/api/v1/",
+      "defaultHeaders": {
+
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      }
+    },
+    "Puppeteer": {
+      "url": "http://localhost",
+      "show": false, 
+      "windowSize" : "1024x768"
+    }
+  },
+  "include": {
+    "I": "./e2e/steps/steps.js"
+  },
+  "mocha": {},
+  "bootstrap": false,
+  "teardown": null,
+  "hooks": [],
+  "gherkin": {
+    "features": "./e2e/features/*.feature",
+    "steps": [
+      "./e2e/steps/steps.js",
+      "./e2e/steps/board.js",
+      "./e2e/steps/browse.js",
+      "./e2e/steps/auth.js"
+    ]
+  },
+  "plugins": {
+    "screenshotOnFail": {
+      "enabled": true
+    },
+    "allure": {
+      "enabled": true
+    }
+  },
+  "tests": "./e2e/features/*.js",
+  "timeout": 10000,
+  "name": "POC_Codecept"
+}

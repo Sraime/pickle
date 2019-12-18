@@ -1,0 +1,24 @@
+
+<mat-card class="card-login">
+  <mat-card-header>
+    <mat-card-title class="card-register-title" >Connexion</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" id="login-form">
+
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Email" formControlName="email" type="email" name="email" id="login-email">
+      </mat-form-field>
+      
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Mot de passe" formControlName="password" type="password" name="password" id="login-password">
+      </mat-form-field>
+
+      <div class="form-field">
+        <button mat-stroked-button type="submit">connexion</button>
+      </div>
+        
+    </form>
+    <p *ngIf="idInvalidAuth" id="login-error">email ou mot de passe invalide</p>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,52 @@
+{
+  "name": "back_module",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sraime/sample-express-angular-login.git"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "npm run start:dev",
+    "start:dev": "nodemon app.js",
+    "start:test": "NODE_ENV=test nodemon app.js",
+    "test": "npm run test:unit",
+    "test:unit": "jest ./app/*/*/*.spec.js --coverage --config ./jest.config.js",
+    "test:integration": "jest --runInBand ./test/integration/*.spec.js --config ./test/integration/jest.config.js",
+    "linter": "eslint app test statics",
+    "linter:fix": "eslint app test statics --fix"
+  },
+  "author": "Robin COLLAS",
+  "license": "ISC",
+  "dependencies": {
+    "acorn": "^6.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.7.13",
+    "mongoose-unique-validator": "^2.0.3",
+    "nodemon": "^1.19.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
+    "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "jsonschema": "^1.2.5"
+  },
+  "jestSonar": {
+    "reportPath": "reports",
+    "reportFile": "ut_report.xml",
+    "indent": 4,
+    "sonar56x": true
+  }
+}
