@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './modules/auth/services/auth.service';
 import { Router } from '@angular/router';
+import { FeatureToggleService } from './services/feature-toggle/feature-toggle.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,15 @@ export class AppComponent {
 
   pseudo: string;
 
+  private isAuthFeatureEnabled: boolean;
+
   constructor(private authService: AuthService, 
-    private router: Router){}
+    private router: Router,
+    private featureToggleService: FeatureToggleService){}
   
   ngOnInit() {
+    this.isAuthFeatureEnabled = this.featureToggleService.isFeatureEnabled('auth');
+    if(!this.isAuthFeatureEnabled) return;
     this.isLoggedIn = this.authService.isLoggedIn();
     this.pseudo = this.isLoggedIn ? localStorage.getItem('pseudo') : "";
     this.authService.getLoginEvent().subscribe((newLoginState) => {
