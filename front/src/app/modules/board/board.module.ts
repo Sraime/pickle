@@ -8,6 +8,7 @@ import { MatCardModule, MatIconModule, MatInputModule, MatFormFieldModule, MatLi
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SectionStepItemComponent } from './components/section-steps/section-step-item/section-step-item.component';
+import { GherkinGeneratorComponent } from './components/gherkin-generator/gherkin-generator.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { SectionStepItemComponent } from './components/section-steps/section-ste
     SectionStepsComponent,
     BoardPageComponent,
     SectionStepItemComponent,
+    GherkinGeneratorComponent,
   ],
   imports: [
     CommonModule,

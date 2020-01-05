@@ -52,7 +52,7 @@ describe('SectionSetpsComponent', () => {
     let updatedSection: Section = {name:'Given', isValid: true, steps: [{name: 'step'}]};
     sectionService.getSectionObservable.mockReturnValue(of(updatedSection));
     component.ngOnInit();
-    expect(component.steps).toEqual(['step']);
+    expect(component.steps).toEqual([{name:'step'}]);
   });
   
   it('should have a title', async(() => {
@@ -75,8 +75,8 @@ describe('SectionSetpsComponent', () => {
   
   it('should display registered steps', async(() => {
     component.steps = [
-      'step1',
-      'step2'
+      {name: 'step1'},
+      {name: 'step2'}
     ]
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -99,73 +99,81 @@ describe('SectionSetpsComponent', () => {
     });
   }));
   
-  describe('adding steps', () => {
-    let input;
+  describe('actions', () => {
     let stubUpdateSection;
-    
-    beforeEach(() => {
-      input = fixture.debugElement.query(By.css('input.input-new-step'));
+
+    beforeEach(() => { 
       stubUpdateSection = jest.spyOn(sectionService, 'updateSection');
     });
-  
-    it('should add a new step and clean the input after filling the it and pressing Enter', () => {
-      component.sectionName = 'Given';
-      input.nativeElement.value = 'step1';
-      input.nativeElement.dispatchEvent(new KeyboardEvent("keydown", 
-        {key: 'Enter', code: 'Enter'}
-      ));
-      expect(component.steps.length).toEqual(0);
-      expect(stubUpdateSection).toHaveBeenCalledWith('Given', [{name: 'step1'}]);
-      expect(input.nativeElement.value).toEqual('');
+
+    afterEach(() => {
+      stubUpdateSection.mockClear();
+    });
+
+    describe('adding steps', () => {
+      let input;
+      
+      beforeEach(() => {
+        input = fixture.debugElement.query(By.css('input.input-new-step'));
+      });
+    
+      it('should add a new step and clean the input after filling the it and pressing Enter', () => {
+        component.sectionName = 'Given';
+        input.nativeElement.value = 'step1';
+        input.nativeElement.dispatchEvent(new KeyboardEvent("keydown", 
+          {key: 'Enter', code: 'Enter'}
+        ));
+        expect(component.steps.length).toEqual(1);
+        expect(stubUpdateSection).toHaveBeenCalledWith('Given', [{name: 'step1'}]);
+        expect(input.nativeElement.value).toEqual('');
+      });
+    
+      it('should not add new step when the input is empty', () => {
+        input.nativeElement.dispatchEvent(new KeyboardEvent("keydown", 
+          {key: 'Enter', code: 'Enter'}
+        ));
+        expect(component.steps.length).toEqual(0);
+      });
     });
   
-    it('should not add new step when the input is empty', () => {
-      input.nativeElement.dispatchEvent(new KeyboardEvent("keydown", 
-        {key: 'Enter', code: 'Enter'}
-      ));
-      expect(component.steps.length).toEqual(0);
-    });
-  });
-
-
-  describe('remove step', () => {
-    it('should remove the step from the list when it emit a delEvent', () =>{
-      component.steps = ['step1'];
-      component.delStep({name: 'step1'});
-      expect(component.steps.length).toEqual(0);
-    });
-
-    it('should remove the first step from the list when it emit a delEvent', () =>{
-      component.steps = ['step1', 'step2'];
-      component.delStep({name: 'step1'});
-      expect(component.steps[0]).toEqual('step2');
-    });
-  });
   
-  describe('move step', () => {
-
-    let mockDragDropEvent: CdkDragDrop<string[]>;
-
-    beforeEach(() => {
-      mockDragDropEvent = {
-        previousIndex: null,     
-        currentIndex: null,
-        item: null,
-        container: null,
-        previousContainer: null,
-        isPointerOverContainer: true,
-        distance: null
-      }
+    describe('remove step', () => {
+      it('should send the list the deleted element to the service when it emit a delEvent', () =>{
+        component.steps = [{name: 'step1'}];
+        component.delStep({name: 'step1'});
+        expect(stubUpdateSection).toHaveBeenCalledWith('',[]);
+      });
     });
-
-    it('should move the step to its new index after a drop event', () => {
-      component.steps = ['step1', 'step2'];
-      mockDragDropEvent.previousIndex = 1;
-      mockDragDropEvent.currentIndex = 0
-      component.dropStep(mockDragDropEvent);
-      expect(component.steps).toEqual(['step2', 'step1'])
+    
+    describe('move step', () => {
+  
+      let mockDragDropEvent: CdkDragDrop<string[]>;
+  
+      beforeEach(() => {
+        mockDragDropEvent = {
+          previousIndex: null,     
+          currentIndex: null,
+          item: null,
+          container: null,
+          previousContainer: null,
+          isPointerOverContainer: true,
+          distance: null
+        }
+      });
+  
+      it('should move the step to its new index after a drop event', () => {
+        component.steps = [{name: 'step1'}, {name: 'step2'}];
+        mockDragDropEvent.previousIndex = 1;
+        mockDragDropEvent.currentIndex = 0
+        component.dropStep(mockDragDropEvent);
+        expect(stubUpdateSection).toHaveBeenCalledWith('',[
+          {name: 'step2'},
+          {name: 'step1'}
+        ]);
+      });
     });
-  });
+  })
+  
 
   describe('constraints helper', () => {
     it('should display the minimum steps constraints when there is O step', () => {
@@ -178,7 +186,7 @@ describe('SectionSetpsComponent', () => {
     });
 
     it('should not display the minimum steps required if there is 1 step', async(() => {
-      component.steps = ['step1'];
+      component.steps = [{name: 'step1'}];
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         const minSectionCotraints = fixture.debugElement.query(

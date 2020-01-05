@@ -2,7 +2,7 @@
 const I = actor();
 const BoardSectionLocators = require('./locators/board-section-locators');
 
-function addStepsFromDataTable(step) {
+function addStepsFromDataTable(steps) {
     var stepName;
     var sectionName;
     steps.rows.forEach(step => {
@@ -67,7 +67,6 @@ Then('le scénario Gherkin n\'est pas affiché', () => {
     I.dontSeeElement('#gherkin-generator .gherkin-scenario');
 });
 
-
 Then('le scénario Gherkin suivant est affiché:', (gherkin) => {
-    I.see(gherkin, '#gherkin-generator .gherkin-scenario');
+    I.see(gherkin.content, 'gherkin-generator');
 });

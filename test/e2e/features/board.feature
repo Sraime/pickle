@@ -68,10 +68,11 @@ Feature: board de création d'un scénario
         Then le scénario Gherkin n'est pas affiché
         And le message suivant est affiché:
             """
-            Toute les contraintes doivent être respectées pour générer le Scénario Gherkin
+            Toute les contraintes doivent être respectées pour générer le code Gherkin
             """
 
             Examples:
+                | sectionName |
                 | Given |
                 | When |
                 | Then |

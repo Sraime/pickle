@@ -10,27 +10,36 @@ import { SectionValidatorFactory } from '../../libs/section-validators/section-v
 })
 export class SectionServiceService {
 
-  private validators;
+  private sectionRepositories;
 
-  private dispatcher: Subject<Section> = new Subject<Section>();
   constructor(validatorFactory: SectionValidatorFactory) { 
-    this.validators = {
-      Given: validatorFactory.getSectionValidator('Given'),
-      When: validatorFactory.getSectionValidator('When'),
-      Then: validatorFactory.getSectionValidator('Then')
+    this.sectionRepositories = {
+      Given: {
+        validator: validatorFactory.getSectionValidator('Given'),
+        dispatcher: new Subject<Section>()
+      },
+      When: {
+        validator: validatorFactory.getSectionValidator('When'),
+        dispatcher: new Subject<Section>()
+      },
+      Then: {
+        validator: validatorFactory.getSectionValidator('Then'),
+        dispatcher: new Subject<Section>()
+      }
     }
   }
 
   getSectionObservable(sectionName: string) :Observable<Section> {
-    if(Object.keys(this.validators).indexOf(sectionName) < 0)
+    if(Object.keys(this.sectionRepositories).indexOf(sectionName) < 0)
       throw new UnknownSectionError();
-    return this.dispatcher;
+    return this.sectionRepositories[sectionName].dispatcher;
   }
 
   updateSection(sectionName: string, steps: Step[]) {
-    if(Object.keys(this.validators).indexOf(sectionName) < 0)
+    if(Object.keys(this.sectionRepositories).indexOf(sectionName) < 0)
       throw new UnknownSectionError();
-    let valid = this.validators[sectionName].validate(steps);
-    this.dispatcher.next({name: sectionName, isValid: valid, steps: steps});
+    let valid = this.sectionRepositories[sectionName].validator.validate(steps);
+    this.sectionRepositories[sectionName].dispatcher
+      .next({name: sectionName, isValid: valid, steps: steps});
   }
 }

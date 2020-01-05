@@ -15,31 +15,32 @@ export class SectionStepsComponent implements OnInit {
   ngOnInit() {
     this.sectionService.getSectionObservable(this.sectionName)
       .subscribe((sectionUpdate) => {
-        this.steps = sectionUpdate.steps.map(s => s.name);
+        this.steps = sectionUpdate.steps;
       });
   }
 
   @Input()
   sectionName: string = "";
   
-  steps: string[] = [];
+  steps: Step[] = [];
 
   addStep(e) {
     if(e.srcElement.value){
-      let nStepList: Step[] = this.steps.map<Step>((s) => {return {name: s}});
-      nStepList.push({name: e.srcElement.value})
-      this.sectionService.updateSection(this.sectionName,nStepList);
+      this.steps.push({name: e.srcElement.value})
+      this.sectionService.updateSection(this.sectionName, this.steps);
       e.srcElement.value = '';
     }
   }
 
   delStep(step: Step) {
-    let index = this.steps.findIndex(s => s === step.name);
+    let index = this.steps.findIndex(s => s.name === step.name);
     this.steps.splice(index, 1);
+    this.sectionService.updateSection(this.sectionName,this.steps);
   }
 
   dropStep(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.steps, event.previousIndex, event.currentIndex);
+    this.sectionService.updateSection(this.sectionName,this.steps);
   }
   
 }

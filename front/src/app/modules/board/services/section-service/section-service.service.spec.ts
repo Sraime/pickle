@@ -9,7 +9,6 @@ import { SectionValidatorFactory } from '../../libs/section-validators/section-v
 describe('SectionServiceService', () => {
   
   let service: SectionServiceService;
-  let factory: SectionValidatorFactory;
   let stubGetValidator;
   let stubsValidate;
 
@@ -70,12 +69,6 @@ describe('SectionServiceService', () => {
         service.updateSection(section, updatedSteps);
       });
 
-      /*
-      it('should not dispatch the updated section for other sections', (done) => {
-        // je ne vois pas comment faire ...
-      });
-      */
-
       it('should mark the result of the validator in the dispatched object', (done) => {
         let updatedSteps: Step[] = [{name: 'step1'}, {name: 'step2'}]
         let expectedUpdate: Section = {name: section, isValid: false, steps: updatedSteps};
@@ -89,6 +82,17 @@ describe('SectionServiceService', () => {
       });
     });
 
+    it('should dispatch the updated only for the updated section', () => {
+      let nbCall = 0;
+      service.getSectionObservable('Given')
+        .subscribe((s) => {nbCall++});
+      service.getSectionObservable('When')
+        .subscribe((s) => {nbCall++});
+      service.getSectionObservable('Then')
+        .subscribe((s) => {nbCall++});
+      service.updateSection(section, []);
+      expect(nbCall).toEqual(1);
+    });
 
     it('should throw an expection when requesting an innexiting section', () => {
       try{

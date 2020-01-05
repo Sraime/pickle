@@ -45,5 +45,5 @@ Then('le message {string} est affiché', (msg) => {
 });
 
 Then('le message suivant est affiché:', (msg) => {
-  I.see(msg);
+  I.see(msg.content);
 });

@@ -6,6 +6,11 @@
     flex: 1 0px;
 }
 
-.section-steps:nth-last-child(n+1) {
+.section-steps:not(:last-child) {
     margin-right: 20px;
+}
+
+gherkin-generator {
+    display: block;
+    margin-top: 20px;
 }
