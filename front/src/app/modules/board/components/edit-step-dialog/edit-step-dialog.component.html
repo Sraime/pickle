@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Step Edition</h2>
+<div mat-dialog-content>
+    <mat-form-field class="field-edit-step">
+        <input matInput type="text" class="edit-step" [(ngModel)]="editedStepName"/>
+    </mat-form-field>
+    <div class="dial-options">
+        <button mat-button (click)="cancelAction()" class="dial-option cancel-edit-step">Cancel</button>
+        <button mat-button (click)="saveAction()" class="dial-option save-edit-step">Save</button>
+    </div>
+</div>

@@ -3,16 +3,27 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionStepItemComponent } from './section-step-item.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule, MatDialog } from '@angular/material';
+import { EditStepDialogComponent } from '../../edit-step-dialog/edit-step-dialog.component';
+import { of } from 'rxjs';
 
 describe('SectionStepItemComponent', () => {
   let component: SectionStepItemComponent;
   let fixture: ComponentFixture<SectionStepItemComponent>;
+  let stubEditDialog = {
+    open: jest.fn()
+  }
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ SectionStepItemComponent ],
-      imports: [MatIconModule]
+      imports: [MatIconModule],
+      providers: [
+        {
+          provide: MatDialog,
+          useValue: stubEditDialog
+        }
+      ]
     });
   });
 
@@ -20,6 +31,10 @@ describe('SectionStepItemComponent', () => {
     fixture = TestBed.createComponent(SectionStepItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    stubEditDialog.open.mockReturnValue({
+      afterClosed: () => of()
+    });
+    stubEditDialog.open.mockClear();
   });
 
   it('should create', () => {
@@ -56,5 +71,28 @@ describe('SectionStepItemComponent', () => {
     });
     del.nativeElement.dispatchEvent(new Event('click'));
   });
+
+  describe('edit', () => {
+
+    it('should open the edit dialog on click', () => {
+      component.name = 'step1'
+      let step = fixture.debugElement.query(By.css('.step-content-item'));
+      step.nativeElement.click();
+      expect(stubEditDialog.open).toHaveBeenCalledWith(EditStepDialogComponent, {
+        width: '400px',
+        data: {name: 'step1'}
+      });
+    });
+
+    it('should update the name with the step returned by the edit dialog', () => {
+      component.name = 'step1';
+      stubEditDialog.open.mockReturnValue({
+        afterClosed: () => of({name: 'edited'})
+      });
+      let step = fixture.debugElement.query(By.css('.step-content-item'));
+      step.nativeElement.click();
+      expect(component.name).toEqual('edited');
+    })
+  })
 });
 

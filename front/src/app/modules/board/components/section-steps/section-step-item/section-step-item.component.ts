@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Step } from '../../../interfaces/step';
+import { MatDialog } from '@angular/material';
+import { EditStepDialogComponent } from '../../edit-step-dialog/edit-step-dialog.component';
 
 @Component({
   selector: 'section-step-item',
@@ -8,7 +10,7 @@ import { Step } from '../../../interfaces/step';
 })
 export class SectionStepItemComponent implements OnInit {
 
-  constructor() { }
+  constructor(private editDialog: MatDialog) { }
 
   @Input()
   name: string = '';
@@ -21,6 +23,18 @@ export class SectionStepItemComponent implements OnInit {
 
   delAction() {
     this.delEvent.emit({name: this.name});
+  }
+
+  editAction() {
+    let dialog = this.editDialog.open(EditStepDialogComponent,
+      {
+        width: '400px',
+        data: {name: this.name}
+      }
+    );
+    dialog.afterClosed().subscribe((updatedValue) => {
+      this.name = updatedValue.name;
+    })
   }
 
 }

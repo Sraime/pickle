@@ -96,3 +96,36 @@ Feature: board de création d'un scénario
             Then step3
             And step31
             """
+    @EditStep
+    Scenario: affichage de l'écran d'édition à la sélection du step
+        Given je suis sur l'interface de création d'un scénario
+        And les steps suivants ont été ajoutés
+            | Given | step1 |
+        When j'active le mode d'édition pour le step "step1" de la section "Given"
+        Then le mode d'édition d'un step s'affiche
+        And le champs de modification du step contient "step1"
+
+    @EditStep
+    Scenario: modification d'un step avec validation
+        Given je suis sur l'interface de création d'un scénario
+        And les steps suivants ont été ajoutés
+            | Given | step1 |
+        And le step "step1" de la section "Given" est en mode édition
+        When je modifie le texte du step en "modif step"
+        And je valide la modification du step
+        Then la section "Given" contient le step
+            """
+            modif step
+            """
+            
+    @EditStep
+    Scenario: modification d'un step avec annulation
+        Given je suis sur l'interface de création d'un scénario
+        And les steps suivants ont été ajoutés
+            | Given | step1 |
+        And le step "step1" de la section "Given" est en mode édition
+        When j'annule la modification du step
+        Then la section "Given" contient le step
+            """
+            step1
+            """

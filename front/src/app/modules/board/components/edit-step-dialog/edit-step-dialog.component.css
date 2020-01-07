@@ -1,0 +1,15 @@
+.field-edit-step {
+    width: 100%;
+}
+
+.dial-options {
+    display: flex;
+}
+
+.dial-option {
+    flex-grow: 1;
+}
+
+.save-edit-step {
+    background-color: #eee;
+}
