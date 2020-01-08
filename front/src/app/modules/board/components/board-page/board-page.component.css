@@ -1,15 +1,3 @@
-#sections-steps {
-    display: flex;
-}
-
-.section-steps {
-    flex: 1 0px;
-}
-
-.section-steps:not(:last-child) {
-    margin-right: 20px;
-}
-
 gherkin-generator {
     display: block;
     margin-top: 20px;

@@ -26,23 +26,4 @@ describe('BoardPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  const sections = [
-    {sectionName: 'Given'},
-    {sectionName: 'When'},
-    {sectionName: 'Then'}
-  ]
-
-  sections.forEach((section) => {
-
-    describe('section '+ section.sectionName,() => {
-
-      it('should have a component with name'+section.sectionName, async(() => {
-        const htmlSection = fixture.debugElement
-              .query(By.css('section-steps[sectionName="'+section.sectionName+'"]'))
-              .nativeElement;
-        expect(htmlSection).toBeTruthy();
-      }));
-    });
-  });
-
 });

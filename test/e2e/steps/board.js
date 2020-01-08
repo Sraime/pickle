@@ -66,6 +66,12 @@ When('je modifie le texte du step en {string}', (newTexteStep) => {
     I.fillField('.mat-dialog-content input.edit-step', newTexteStep);
 });
 
+When('je renomme le scénario en {string}', (newName) => {
+    I.click('.scenario-name');
+    I.fillField('.input-edit-scenario-name', newName);
+    I.click('.btn-save-scenario-name');
+});
+
 Then('la section d\'édition {string} est affichée', (sectionName) => {
     I.see(sectionName,{css: BoardSectionLocators.sectionStepsTitleLocator(sectionName)});
 });
@@ -101,4 +107,8 @@ Then('le champs de modification du step contient {string}', (textContent) => {
 Then('le mode d\'édition d\'un step s\'affiche', () => {
     I.seeElement('.mat-dialog-title');
     I.seeElement('.mat-dialog-content');
+});
+
+Then('le nom du scénario est {string}', (scenarioName) => {
+    I.see(scenarioName, '.scenario-name')
 });

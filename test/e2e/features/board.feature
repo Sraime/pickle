@@ -129,3 +129,9 @@ Feature: board de création d'un scénario
             """
             step1
             """
+
+    @EditScenarioName
+    Scenario: nommage du scénario
+        Given je suis sur l'interface de création d'un scénario
+        When je renomme le scénario en "scénario nominal"
+        Then le nom du scénario est "scénario nominal"

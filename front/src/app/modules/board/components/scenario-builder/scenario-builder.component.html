@@ -1,0 +1,22 @@
+<div class="scenario-header">
+    <div class="scenario-header-msg">
+        <label>Scenario: </label>
+        <span class="scenario-name scenario-name-placeholder" *ngIf="!isNameInEditMode && !name" (click)="switchEditNameMode()">your scenario's name here</span>
+        <span class="scenario-name" *ngIf="!isNameInEditMode && name" (click)="switchEditNameMode()">{{name}}</span>
+        <span *ngIf="isNameInEditMode">
+            <mat-form-field class="field-edit-scenario-name">
+                <input autofocus matInput [(ngModel)]="name" value="{{name}}" type="text" class="input-edit-scenario-name"/>
+            </mat-form-field>
+        </span>
+    </div>
+    <div class="scenario-header-opts" *ngIf="isNameInEditMode">
+        <button mat-icon-button class="btn-save-scenario-name" (click)="switchEditNameMode()">
+            <mat-icon>save</mat-icon>
+        </button>
+    </div>
+</div>
+<div id="sections-steps">
+    <section-steps id="section-steps-given" class="section-steps" sectionName="Given"></section-steps>
+    <section-steps id="section-steps-when" class="section-steps" sectionName="When"></section-steps>
+    <section-steps id="section-steps-then" class="section-steps" sectionName="Then"></section-steps>
+</div>

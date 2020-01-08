@@ -12,6 +12,7 @@ import { GherkinGeneratorComponent } from './components/gherkin-generator/gherki
 import { EditStepDialogComponent } from './components/edit-step-dialog/edit-step-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { ScenarioBuilderComponent } from './components/scenario-builder/scenario-builder.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { BrowserModule } from '@angular/platform-browser';
     SectionStepItemComponent,
     GherkinGeneratorComponent,
     EditStepDialogComponent,
+    ScenarioBuilderComponent,
   ],
   entryComponents: [
     EditStepDialogComponent

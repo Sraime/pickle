@@ -1,0 +1,39 @@
+#sections-steps {
+    display: flex;
+}
+
+.section-steps {
+    flex: 1 0px;
+}
+
+.scenario-header {
+    height: 70px;
+}
+
+.section-steps:not(:last-child) {
+    margin-right: 20px;
+}
+
+.scenario-header-msg label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.scenario-header-msg, .scenario-header-opts {
+    font-size: 1.5em;
+    display: inline-block;
+}
+
+:host /deep/ .mat-form-field-infix {
+    padding-top: 0;
+    border: 0;
+}
+
+.field-edit-scenario-name {
+    width: 500px;
+}
+
+.scenario-name-placeholder {
+    color: #aaa;
+    font-style: italic;
+}
