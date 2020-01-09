@@ -1,5 +1,5 @@
 export interface RegisterResponse {
-    id: String;
-    pseudo: String;
-    email: String;
+    id: string;
+    pseudo: string;
+    email: string;
 }

@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('EditStepDialogComponent', () => {
   let component: EditStepDialogComponent;
   let fixture: ComponentFixture<EditStepDialogComponent>;
-  let stubDialogRef = {
+  const stubDialogRef = {
     close: jest.fn()
   };
 
@@ -36,7 +36,7 @@ describe('EditStepDialogComponent', () => {
           useValue: {name: ''}
         }
       ]
-    })
+    });
   });
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('EditStepDialogComponent', () => {
   });
 
   it('should display the title : Step Edition', () => {
-    let title = fixture.debugElement.query(By.css('h2.mat-dialog-title'));
+    const title = fixture.debugElement.query(By.css('h2.mat-dialog-title'));
     expect(title.nativeElement.textContent).toEqual('Step Edition');
   });
 
@@ -60,21 +60,21 @@ describe('EditStepDialogComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      let input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
+      const input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
       expect(input.nativeElement.value).toEqual('mystep');
     });
   }));
 
   it('should have a validate button', () => {
-    let btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.save-edit-step'));
-      expect(btnSave.nativeElement.textContent).toEqual('Save');
+    const btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.save-edit-step'));
+    expect(btnSave.nativeElement.textContent).toEqual('Save');
   });
 
   it('should close with the new modified value after validating', () => {
-    let input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
+    const input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
     input.nativeElement.value = 'edited';
     input.nativeElement.dispatchEvent(new Event('input'));
-    let btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.save-edit-step'));
+    const btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.save-edit-step'));
     btnSave.nativeElement.click();
     expect(stubDialogRef.close).toHaveBeenLastCalledWith({name: 'edited'});
   });
@@ -82,10 +82,10 @@ describe('EditStepDialogComponent', () => {
   it('should close the with initial value after canceling', () => {
     component.step = {name: 'hello'};
     component.ngOnInit();
-    let input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
+    const input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
     input.nativeElement.value = 'edited';
     input.nativeElement.dispatchEvent(new Event('input'));
-    let btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.cancel-edit-step'));
+    const btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.cancel-edit-step'));
     btnSave.nativeElement.click();
     expect(stubDialogRef.close).toHaveBeenLastCalledWith({name: 'hello'});
   });

@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
-export type featureTypes = {
+export interface FeatureTypes {
   'auth': boolean;
-};
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeatureToggleService {
-  public features: Object;
+  public features: object;
 
   constructor() {}
 
-  public isFeatureEnabled(feautureName: keyof featureTypes): boolean {
+  public isFeatureEnabled(feautureName: keyof FeatureTypes): boolean {
     const featureValue = this.features[feautureName];
     return featureValue as boolean;
   }

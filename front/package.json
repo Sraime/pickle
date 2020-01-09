@@ -9,6 +9,7 @@
     "build": "ng build",
     "test:unit": "ng test --coverage",
     "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
     "e2e": "ng e2e"
   },
   "private": true,

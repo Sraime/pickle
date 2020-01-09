@@ -7,7 +7,8 @@ import { LoginRoutingModule } from './auth-routing.module';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AuthInterceptor } from './auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material';
+import { MatCardModule, MatButtonModule, MatFormFieldModule,
+  MatInputModule, ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 
 @NgModule({
@@ -34,7 +35,7 @@ import { RegisterFormComponent } from './components/register-form/register-form.
       multi: true
     },
     {
-      provide: ErrorStateMatcher, 
+      provide: ErrorStateMatcher,
       useClass: ShowOnDirtyErrorStateMatcher
     }
   ]

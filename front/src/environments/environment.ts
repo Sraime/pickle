@@ -7,10 +7,10 @@ export const environment = {
 
   api: {
     auth: {
-      url: "http://localhost:3000/auth"
+      url: 'http://localhost:3000/auth'
     },
     bank: {
-      url: "http://localhost:3000/bank"
+      url: 'http://localhost:3000/bank'
     }
   }
 };

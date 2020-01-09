@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScenarioBuilderComponent implements OnInit {
 
-  name: String;
+  name: string;
 
-  isNameInEditMode: boolean = false;
+  isNameInEditMode = false;
 
   constructor() { }
 

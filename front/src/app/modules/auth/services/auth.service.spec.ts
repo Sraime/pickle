@@ -7,8 +7,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { of, Subject } from 'rxjs';
 
 describe('AuthService', () => {
-  let http : HttpClient;
-  let builder: HttpOptionsBuilder = new HttpOptionsBuilder();
+  let http: HttpClient;
+  const builder: HttpOptionsBuilder = new HttpOptionsBuilder();
   let service: AuthService;
 
 
@@ -16,7 +16,7 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       providers: [ HttpClient, HttpOptionsBuilder],
       imports: [ HttpClientModule ]
-    })
+    });
     http = TestBed.get(HttpClient);
     service = TestBed.get(AuthService);
     jest.mock('../libs/HttpOptionsBuilder/HttpOptionsBuilder');
@@ -35,7 +35,7 @@ describe('AuthService', () => {
       spyNextSubject = jest.fn();
       service.loginSubject = new Subject<boolean>();
       spyNextSubject =  jest.spyOn(service.loginSubject, 'next');
-      //FIXME: le mock du localStorage ne fonctionne pas, il faudrait corriger ça pour que le test soit unitaire
+      // FIXME: le mock du localStorage ne fonctionne pas, il faudrait corriger ça pour que le test soit unitaire
       /*
       spySetItem = jest.fn();
       var localStorageMock = {
@@ -55,28 +55,28 @@ describe('AuthService', () => {
     */
 
     it('should store the token in local storage', async(() => {
-      const response = {pseudo: new String("toto"), token: new String("azerty"), tokenExpiration: new Number(10)}
+      const response = {pseudo: 'toto', token: 'azerty', tokenExpiration: 10};
       spyPost.mockReturnValue(of(response));
-      let obs = service.login('aa@bb.cc', 'azerty');
+      const obs = service.login('aa@bb.cc', 'azerty');
       obs.subscribe((v) => {
         // FIXME: il faudrait expect le call sur le spy du setItem du localStorage
         expect(localStorage.getItem('token')).toEqual(response.token.toString());
         expect(localStorage.getItem('pseudo')).toEqual(response.pseudo.toString());
-        expect(localStorage.getItem('tokenExpiration')).toEqual("10");
+        expect(localStorage.getItem('tokenExpiration')).toEqual('10');
       });
-      
+
     }));
 
     it('should dispatch the event login Subject', async(() => {
-      const response = {pseudo: new String("toto"), token: new String("azerty"), tokenExpiration: new Number(10)}
+      const response = {pseudo: 'toto', token: 'azerty', tokenExpiration: 10};
       spyPost.mockReturnValue(of(response));
-      let obs = service.login('aa@bb.cc', 'azerty');
+      const obs = service.login('aa@bb.cc', 'azerty');
       obs.subscribe((v) => {
         expect(spyNextSubject).toHaveBeenCalledWith(true);
       });
     }));
 
-    
+
     // FIXME: trouver un moyen de faire un mock du setTimeout
     /*
     it('should logout 10 secondes before the expiration date',() => {
@@ -86,29 +86,29 @@ describe('AuthService', () => {
   });
 
   describe('isLoggedIn()', () => {
-    
+
     it('should return false when the token is not set in the localStorage', () => {
       expect(service.isLoggedIn()).toEqual(false);
     });
 
     it('should return false when the token expired', () => {
-      const expires = Date.now()-1;
-      localStorage.setItem('tokenExpiration', expires+"");
+      const expires = Date.now() - 1;
+      localStorage.setItem('tokenExpiration', expires + '');
       expect(service.isLoggedIn()).toEqual(false);
     });
 
     it('should return true when the token is set and not expired', () => {
-      localStorage.setItem('token', "azerty");
-      const expires = Date.now()+1000;
-      localStorage.setItem('tokenExpiration', expires+"");
+      localStorage.setItem('token', 'azerty');
+      const expires = Date.now() + 1000;
+      localStorage.setItem('tokenExpiration', expires + '');
       expect(service.isLoggedIn()).toEqual(true);
-    })
+    });
   });
 
   describe('getLoginEvent()', () => {
       let sub: Subject<boolean>;
 
-      beforeEach(() => { 
+      beforeEach(() => {
         sub = new Subject<boolean>();
         service.loginSubject = sub;
       });
@@ -117,19 +117,19 @@ describe('AuthService', () => {
         service.getLoginEvent().subscribe((val) => {
           expect(val).toBeTruthy();
         });
-        sub.next(true)
+        sub.next(true);
       }));
 
       it('should trigger logout action to Observers', async(() => {
         service.getLoginEvent().subscribe((val) => {
           expect(val).toBeFalsy();
         });
-        sub.next(false)
+        sub.next(false);
       }));
   });
 
   describe('logout()', () => {
-    
+
     let spyNextSubject;
 
     beforeEach(() => {
@@ -143,7 +143,7 @@ describe('AuthService', () => {
       expect(localStorage.getItem('token')).toBeFalsy();
       expect(localStorage.getItem('pseudo')).toBeFalsy();
       expect(localStorage.getItem('tokenExpiration')).toBeFalsy();
-      
+
     });
 
     it('should dispatch the event login Subject', () => {
@@ -162,12 +162,12 @@ describe('AuthService', () => {
       httpOtions  = {};
       HttpOptionsBuilder.prototype.getHeader = jest.fn().mockReturnValue(httpOtions);
     });
- 
+
     it('should send a request to the server', () => {
-      const nuser = {email: "tt.tt@tt.com", pseudo: "Tym", password: "xxxxx"};
-      service.register(nuser.pseudo,nuser.email,nuser.password)
-      expect(spyPost).toHaveBeenCalledWith('http://localhost:3000/auth/signup', nuser, {headers:httpOtions});
+      const nuser = {email: 'tt.tt@tt.com', pseudo: 'Tym', password: 'xxxxx'};
+      service.register(nuser.pseudo, nuser.email, nuser.password);
+      expect(spyPost).toHaveBeenCalledWith('http://localhost:3000/auth/signup', nuser, {headers: httpOtions});
     });
-    
+
   });
 });

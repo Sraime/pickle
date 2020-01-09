@@ -13,7 +13,7 @@ export class SectionStepItemComponent implements OnInit {
   constructor(private editDialog: MatDialog) { }
 
   @Input()
-  name: string = '';
+  name = '';
 
   @Output('delete')
   delEvent: EventEmitter<Step> = new EventEmitter<Step>();
@@ -26,7 +26,7 @@ export class SectionStepItemComponent implements OnInit {
   }
 
   editAction() {
-    let dialog = this.editDialog.open(EditStepDialogComponent,
+    const dialog = this.editDialog.open(EditStepDialogComponent,
       {
         width: '400px',
         data: {name: this.name}
@@ -34,7 +34,7 @@ export class SectionStepItemComponent implements OnInit {
     );
     dialog.afterClosed().subscribe((updatedValue) => {
       this.name = updatedValue.name;
-    })
+    });
   }
 
 }

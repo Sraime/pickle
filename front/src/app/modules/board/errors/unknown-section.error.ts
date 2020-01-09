@@ -1,5 +1,5 @@
 export class UnknownSectionError implements Error {
-    name: string = 'UnknownSectionException';
+    name = 'UnknownSectionException';
     stack?: string;
     message = 'this section does not exist';
 }

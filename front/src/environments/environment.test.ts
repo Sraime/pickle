@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  
+
   api: {
     auth: {
-      url: "http://localhost:3001/auth"
+      url: 'http://localhost:3001/auth'
     },
     bank: {
-      url: "http://localhost:3001/bank"
+      url: 'http://localhost:3001/bank'
     }
   }
 };

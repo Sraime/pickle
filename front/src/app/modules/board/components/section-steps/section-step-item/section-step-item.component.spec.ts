@@ -10,9 +10,9 @@ import { of } from 'rxjs';
 describe('SectionStepItemComponent', () => {
   let component: SectionStepItemComponent;
   let fixture: ComponentFixture<SectionStepItemComponent>;
-  let stubEditDialog = {
+  const stubEditDialog = {
     open: jest.fn()
-  }
+  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -45,26 +45,26 @@ describe('SectionStepItemComponent', () => {
     component.name = 'step1';
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      let name = fixture.debugElement.query(By.css('.step-name'));
+      const name = fixture.debugElement.query(By.css('.step-name'));
       expect(name.nativeElement.textContent).toEqual('step1');
     });
   }));
 
-  describe('delete',() => {
+  describe('delete', () => {
 
     beforeAll(() => {
-      
+
     });
 
-  })
+  });
   it('should have a delete button', () => {
-    let del = fixture.debugElement.query(By.css('.btn-step-del'));
+    const del = fixture.debugElement.query(By.css('.btn-step-del'));
     expect(del).toBeTruthy();
   });
 
   it('should emit an event when the del button is prressed', (done) => {
-    component.name = 'step1'
-    let del = fixture.debugElement.query(By.css('.btn-step-del'));
+    component.name = 'step1';
+    const del = fixture.debugElement.query(By.css('.btn-step-del'));
     component.delEvent.subscribe((step) => {
       expect(step.name).toEqual('step1');
       done();
@@ -75,8 +75,8 @@ describe('SectionStepItemComponent', () => {
   describe('edit', () => {
 
     it('should open the edit dialog on click', () => {
-      component.name = 'step1'
-      let step = fixture.debugElement.query(By.css('.step-content-item'));
+      component.name = 'step1';
+      const step = fixture.debugElement.query(By.css('.step-content-item'));
       step.nativeElement.click();
       expect(stubEditDialog.open).toHaveBeenCalledWith(EditStepDialogComponent, {
         width: '400px',
@@ -89,10 +89,10 @@ describe('SectionStepItemComponent', () => {
       stubEditDialog.open.mockReturnValue({
         afterClosed: () => of({name: 'edited'})
       });
-      let step = fixture.debugElement.query(By.css('.step-content-item'));
+      const step = fixture.debugElement.query(By.css('.step-content-item'));
       step.nativeElement.click();
       expect(component.name).toEqual('edited');
-    })
-  })
+    });
+  });
 });
 

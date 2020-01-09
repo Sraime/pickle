@@ -13,8 +13,8 @@ describe('BoardFeaturePageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ BoardFeaturePageComponent ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-  })
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BoardFeaturePageComponent);
@@ -33,7 +33,7 @@ describe('BoardFeaturePageComponent', () => {
 
   describe('add scenario', () => {
     let btnAdd;
-    
+
     beforeEach(() => {
       btnAdd = fixture.debugElement.query(By.css('button.btn-add-scenario'));
     });
@@ -50,5 +50,5 @@ describe('BoardFeaturePageComponent', () => {
         expect(builders.length).toEqual(2);
       });
     }));
-  })
+  });
 });

@@ -4,7 +4,7 @@ import { LoginFormComponent } from './login-form.component';
 import { By } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule, }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,7 @@ describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
   let fixture: ComponentFixture<LoginFormComponent>;
   let authService: AuthService;
-  let router = {
+  const router = {
       navigate: jest.fn()
   };
 
@@ -26,14 +26,14 @@ describe('LoginFormComponent', () => {
         MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule,
         BrowserAnimationsModule
       ],
-      providers: [ 
-        AuthService, 
-        { 
-          provide: Router, 
+      providers: [
+        AuthService,
+        {
+          provide: Router,
           useValue: router
         }
       ]
-    })
+    });
   });
 
   beforeEach(() => {
@@ -50,7 +50,7 @@ describe('LoginFormComponent', () => {
   it('should have a form', async(() => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      const form = fixture.debugElement.query(By.css('#login-form'))
+      const form = fixture.debugElement.query(By.css('#login-form'));
       expect(form).toBeTruthy();
     });
   }));
@@ -60,7 +60,7 @@ describe('LoginFormComponent', () => {
       fixture.detectChanges();
       const inputEmail = fixture.debugElement.query(By.css('#login-form input[name=email]'));
       expect(inputEmail).toBeTruthy();
-    })
+    });
   }));
 
   it('should have an password field inside the form', async(() => {
@@ -68,15 +68,15 @@ describe('LoginFormComponent', () => {
       fixture.detectChanges();
       const inputPwd = fixture.debugElement.query(By.css('#login-form input[name=password]'));
       expect(inputPwd).toBeTruthy();
-    })
+    });
   }));
 
   it('should have a login button inside the form', async(() => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       const btnLogin = fixture.debugElement.query(By.css('#login-form button'));
-      expect(btnLogin.nativeElement.textContent).toEqual("connexion");
-    })
+      expect(btnLogin.nativeElement.textContent).toEqual('connexion');
+    });
   }));
 
   it('should not have the error message displayed by default', async(() => {
@@ -88,7 +88,7 @@ describe('LoginFormComponent', () => {
   }));
 
   it('should display an error message when an error is handled', async(() => {
-    const message = "email ou mot de passe invalide";
+    const message = 'email ou mot de passe invalide';
     component.idInvalidAuth = true;
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -104,18 +104,18 @@ describe('LoginFormComponent', () => {
     beforeEach(() => {
       spyLogin = jest.spyOn(authService, 'login');
     });
-    
+
     it('should request the server with given data', async(() => {
-      const email = "aaaa@bb.cc";
-      const pwd = "azery";
+      const email = 'aaaa@bb.cc';
+      const pwd = 'azery';
       spyLogin.mockReturnValue(of({}));
 
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        let iemail = fixture.debugElement.query(By.css('#login-form input[name=email]')).nativeElement;
+        const iemail = fixture.debugElement.query(By.css('#login-form input[name=email]')).nativeElement;
         iemail.value = email;
         iemail.dispatchEvent(new Event('input'));
-        let ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement
+        const ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
         ipwd.value = pwd;
         ipwd.dispatchEvent(new Event('input'));
         const btnLogin = fixture.debugElement.query(By.css('#login-form button'));
@@ -124,28 +124,28 @@ describe('LoginFormComponent', () => {
         expect(spyLogin).toHaveBeenCalledWith(email, pwd);
       });
     }));
-    
+
 
     it('should turn to error when login fail', async(() => {
-      spyLogin.mockReturnValue(throwError("error"));
-      component.form.controls['email'].setValue("test@test.com");
-      component.form.controls['password'].setValue("123456789");
+      spyLogin.mockReturnValue(throwError('error'));
+      component.form.controls.email.setValue('test@test.com');
+      component.form.controls.password.setValue('123456789');
       component.onSubmit();
       expect(component.idInvalidAuth).toEqual(true);
     }));
 
     it('should reset the password field when login fail', async(() => {
-      const pwd = "azery";
-      spyLogin.mockReturnValue(throwError("error"));
+      const pwd = 'azery';
+      spyLogin.mockReturnValue(throwError('error'));
 
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        let ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement
+        let ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
         ipwd.value = pwd;
         ipwd.dispatchEvent(new Event('input'));
         component.onSubmit();
-        ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement
-        expect(ipwd.value).toEqual("");
+        ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
+        expect(ipwd.value).toEqual('');
       });
     }));
 

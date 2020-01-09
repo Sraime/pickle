@@ -20,41 +20,41 @@ describe('SectionSetpsComponent', () => {
     sectionService = {
       getSectionObservable: jest.fn(),
       updateSection: jest.fn()
-    }
+    };
     TestBed.configureTestingModule({
       declarations: [ SectionStepsComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ 
+      providers: [
         {
           provide: SectionServiceService,
           useValue: sectionService
         }
       ],
-      imports: [ MatCardModule, MatFormFieldModule, 
+      imports: [ MatCardModule, MatFormFieldModule,
         MatIconModule, MatInputModule, BrowserAnimationsModule, MatListModule, DragDropModule ]
-    })
+    });
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SectionStepsComponent);
     component = fixture.componentInstance;
     sectionService.getSectionObservable.mockReturnValue(
-      of({isValid: true, name: 'Given', steps:[]})
+      of({isValid: true, name: 'Given', steps: []})
     );
     fixture.detectChanges();
   });
-  
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should get the step list from the service', () => {
-    let updatedSection: Section = {name:'Given', isValid: true, steps: [{name: 'step'}]};
+    const updatedSection: Section = {name: 'Given', isValid: true, steps: [{name: 'step'}]};
     sectionService.getSectionObservable.mockReturnValue(of(updatedSection));
     component.ngOnInit();
-    expect(component.steps).toEqual([{name:'step'}]);
+    expect(component.steps).toEqual([{name: 'step'}]);
   });
-  
+
   it('should have a title', async(() => {
     component.sectionName = 'Given';
     fixture.whenStable().then(() => {
@@ -65,19 +65,19 @@ describe('SectionSetpsComponent', () => {
       expect(title.textContent).toEqual('Given');
     });
   }));
-  
+
   it('should have a step list', async(() => {
     const list = fixture.debugElement
     .query(By.css('.section-steps-list'))
     .nativeElement;
     expect(list).toBeTruthy();
   }));
-  
+
   it('should display registered steps', async(() => {
     component.steps = [
       {name: 'step1'},
       {name: 'step2'}
-    ]
+    ];
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       const steps = fixture.debugElement
@@ -85,11 +85,11 @@ describe('SectionSetpsComponent', () => {
       expect(steps.length).toEqual(2);
     });
   }));
-  
+
   it('should have a list of step empty by default', () => {
     expect(component.steps).toEqual([]);
   });
-  
+
   it('should have an input for adding new steps', async(() => {
     component.sectionName = 'Given';
     fixture.whenStable().then(() => {
@@ -98,11 +98,11 @@ describe('SectionSetpsComponent', () => {
       expect(input).toBeTruthy();
     });
   }));
-  
+
   describe('actions', () => {
     let stubUpdateSection;
 
-    beforeEach(() => { 
+    beforeEach(() => {
       stubUpdateSection = jest.spyOn(sectionService, 'updateSection');
     });
 
@@ -112,68 +112,68 @@ describe('SectionSetpsComponent', () => {
 
     describe('adding steps', () => {
       let input;
-      
+
       beforeEach(() => {
         input = fixture.debugElement.query(By.css('input.input-new-step'));
       });
-    
+
       it('should add a new step and clean the input after filling the it and pressing Enter', () => {
         component.sectionName = 'Given';
         input.nativeElement.value = 'step1';
-        input.nativeElement.dispatchEvent(new KeyboardEvent("keydown", 
+        input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',
           {key: 'Enter', code: 'Enter'}
         ));
         expect(component.steps.length).toEqual(1);
         expect(stubUpdateSection).toHaveBeenCalledWith('Given', [{name: 'step1'}]);
         expect(input.nativeElement.value).toEqual('');
       });
-    
+
       it('should not add new step when the input is empty', () => {
-        input.nativeElement.dispatchEvent(new KeyboardEvent("keydown", 
+        input.nativeElement.dispatchEvent(new KeyboardEvent('keydown',
           {key: 'Enter', code: 'Enter'}
         ));
         expect(component.steps.length).toEqual(0);
       });
     });
-  
-  
+
+
     describe('remove step', () => {
-      it('should send the list the deleted element to the service when it emit a delEvent', () =>{
+      it('should send the list the deleted element to the service when it emit a delEvent', () => {
         component.steps = [{name: 'step1'}];
         component.delStep({name: 'step1'});
-        expect(stubUpdateSection).toHaveBeenCalledWith('',[]);
+        expect(stubUpdateSection).toHaveBeenCalledWith('', []);
       });
     });
-    
+
     describe('move step', () => {
-  
+
       let mockDragDropEvent: CdkDragDrop<string[]>;
-  
+
       beforeEach(() => {
         mockDragDropEvent = {
-          previousIndex: null,     
+          previousIndex: null,
           currentIndex: null,
           item: null,
           container: null,
           previousContainer: null,
           isPointerOverContainer: true,
           distance: null
-        }
+        };
       });
-  
+
       it('should move the step to its new index after a drop event', () => {
         component.steps = [{name: 'step1'}, {name: 'step2'}];
         mockDragDropEvent.previousIndex = 1;
-        mockDragDropEvent.currentIndex = 0
+        mockDragDropEvent.currentIndex = 0;
         component.dropStep(mockDragDropEvent);
-        expect(stubUpdateSection).toHaveBeenCalledWith('',[
+        expect(stubUpdateSection).toHaveBeenCalledWith('', [
           {name: 'step2'},
           {name: 'step1'}
         ]);
       });
     });
-  })
-  
+  });
+
 
   describe('constraints helper', () => {
     it('should display the minimum steps constraints when there is O step', () => {

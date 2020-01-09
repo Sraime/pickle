@@ -9,14 +9,14 @@ describe('validate', () => {
     });
 
     it('should return true when the list is not empty', () => {
-        let steps: Step[] = [{name: 'step1'}]
-        let valid = validator.validate(steps);
+        const steps: Step[] = [{name: 'step1'}];
+        const valid = validator.validate(steps);
         expect(valid).toEqual(true);
     });
 
     it('should return false when the list is empty', () => {
-        let steps: Step[] = []
-        let valid = validator.validate(steps);
+        const steps: Step[] = [];
+        const valid = validator.validate(steps);
         expect(valid).toEqual(false);
-    })
+    });
 });

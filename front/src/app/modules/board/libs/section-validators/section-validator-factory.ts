@@ -11,8 +11,9 @@ export class SectionValidatorFactory {
     private registeredSections: string[] = ['Given', 'When', 'Then'];
 
     getSectionValidator(sectionName: string): SectionValidator {
-        if(this.registeredSections.indexOf(sectionName) < 0 )
+        if (this.registeredSections.indexOf(sectionName) < 0 ) {
             throw new UnknownSectionError();
+        }
         return new NotEmptySectionValidator();
     }
 }

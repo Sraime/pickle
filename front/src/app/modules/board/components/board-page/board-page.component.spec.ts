@@ -13,8 +13,8 @@ describe('BoardPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ BoardPageComponent ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-  })
+    });
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BoardPageComponent);

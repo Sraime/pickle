@@ -1,5 +1,5 @@
 export interface AuthResponse {
-    pseudo: String,
-    token: String
-    tokenExpiration: Number
+    pseudo: string;
+    token: string;
+    tokenExpiration: number;
 }

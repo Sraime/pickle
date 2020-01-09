@@ -10,6 +10,7 @@ import { Section } from '../../interfaces/section';
 export class GherkinGeneratorComponent implements OnInit {
   private sections: Section[] = [];
   private sectionOrder: string[] = ['Given', 'When', 'Then'];
+  // tslint:disable-next-line: ban-types
   private isValid: Boolean = null;
 
   constructor(private service: SectionServiceService) {}
@@ -19,7 +20,7 @@ export class GherkinGeneratorComponent implements OnInit {
     this.sectionOrder.forEach((sectionName, index) => {
       this.service.getSectionObservable(sectionName)
         .subscribe((s) => {
-          this.sections[index] = s; 
+          this.sections[index] = s;
           this.updateGenerationState();
         });
     });
@@ -27,10 +28,10 @@ export class GherkinGeneratorComponent implements OnInit {
 
   updateGenerationState() {
     let nState = this.sections.length === this.sectionOrder.length;
-    if(nState) {
-      for(var i = 0; i< this.sections.length; i++) {
-        nState = nState && this.sections[i] !== undefined && this.sections[i].isValid;
-      };
+    if (nState) {
+      for (const section of this.sections) {
+        nState = nState && section !== undefined && section.isValid;
+      }
     }
     this.isValid = nState;
   }

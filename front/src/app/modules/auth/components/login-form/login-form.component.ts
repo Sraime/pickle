@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service'
+import { AuthService } from '../../services/auth.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -10,12 +10,12 @@ import { Router } from '@angular/router';
 })
 export class LoginFormComponent implements OnInit {
 
-  idInvalidAuth: boolean = false;
+  idInvalidAuth = false;
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService : AuthService, 
-    private router: Router) { }
+  constructor(private fb: FormBuilder, private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -30,9 +30,9 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(this.form.value.email, this.form.value.password)
       .subscribe((result) => {
         this.router.navigate(['/bank']);
-      },() =>{
+      }, () => {
         this.idInvalidAuth = true;
-        this.form.controls['password'].setValue("");
+        this.form.controls.password.setValue('');
       });
   }
 

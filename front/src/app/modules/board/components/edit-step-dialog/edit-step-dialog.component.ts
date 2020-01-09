@@ -9,8 +9,8 @@ import { Step } from '../../interfaces/step';
 })
 export class EditStepDialogComponent implements OnInit {
 
-  private editedStepName: string = "hello";
-  
+  private editedStepName = 'hello';
+
   constructor(
     private dialogRef: MatDialogRef<EditStepDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public step: Step) {}
@@ -18,7 +18,7 @@ export class EditStepDialogComponent implements OnInit {
   ngOnInit() {
     this.editedStepName = this.step.name;
   }
-  
+
   saveAction() {
     this.dialogRef.close({name: this.editedStepName});
   }

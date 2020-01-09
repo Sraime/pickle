@@ -6,7 +6,7 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 const authRoutes: Routes = [
   {path: 'auth/login', component: LoginFormComponent},
   {path: 'auth/register', component: RegisterFormComponent},
-]
+];
 @NgModule({
   imports: [RouterModule.forChild(authRoutes)],
   exports: [RouterModule]

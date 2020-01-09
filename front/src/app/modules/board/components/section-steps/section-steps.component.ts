@@ -12,6 +12,11 @@ export class SectionStepsComponent implements OnInit {
 
   constructor(private sectionService: SectionServiceService) { }
 
+  @Input()
+  sectionName = '';
+
+  steps: Step[] = [];
+
   ngOnInit() {
     this.sectionService.getSectionObservable(this.sectionName)
       .subscribe((sectionUpdate) => {
@@ -19,28 +24,23 @@ export class SectionStepsComponent implements OnInit {
       });
   }
 
-  @Input()
-  sectionName: string = "";
-  
-  steps: Step[] = [];
-
   addStep(e) {
-    if(e.srcElement.value){
-      this.steps.push({name: e.srcElement.value})
+    if (e.srcElement.value) {
+      this.steps.push({name: e.srcElement.value});
       this.sectionService.updateSection(this.sectionName, this.steps);
       e.srcElement.value = '';
     }
   }
 
   delStep(step: Step) {
-    let index = this.steps.findIndex(s => s.name === step.name);
+    const index = this.steps.findIndex(s => s.name === step.name);
     this.steps.splice(index, 1);
-    this.sectionService.updateSection(this.sectionName,this.steps);
+    this.sectionService.updateSection(this.sectionName, this.steps);
   }
 
   dropStep(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.steps, event.previousIndex, event.currentIndex);
-    this.sectionService.updateSection(this.sectionName,this.steps);
+    this.sectionService.updateSection(this.sectionName, this.steps);
   }
-  
+
 }
