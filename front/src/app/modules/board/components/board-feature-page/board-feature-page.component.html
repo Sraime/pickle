@@ -1,6 +1,10 @@
 
-<mat-card class="code-builder-card">
+<mat-card class="code-builder-card" *ngFor="let i of scenarios">
     <mat-card-content>
         <scenario-builder></scenario-builder>
     </mat-card-content>
 </mat-card>
+<button mat-stroked-button color="primary" class="btn-add-scenario"
+    (click)="addScenario()">
+    <mat-icon>add</mat-icon>New Scenario
+</button>

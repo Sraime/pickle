@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { v1 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-board-feature-page',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardFeaturePageComponent implements OnInit {
 
+  private scenarios: Array<string> = [];
+
   constructor() { }
 
   ngOnInit() {
+    this.addScenario();
+  }
+
+  addScenario() {
+    this.scenarios.push(uuid());
   }
 
 }

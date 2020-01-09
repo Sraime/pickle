@@ -9,3 +9,9 @@ Feature: board de création des scenario d'une Feature
         Given le navigateur web est ouvert
         When je me rend sur l'interface de création d'une feature
         Then la feature contient 1 scénarios
+
+    @US19
+    Scenario: ajout d'un nouveau scénario
+        Given je suis sur l'interface de création d'une feature
+        When je clique sur l'option d'ajout d'un scénario
+        Then la feature contient 2 scénarios

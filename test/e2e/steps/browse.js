@@ -13,6 +13,10 @@ Given('je suis sur l\'interface de création d\'un scénario', () => {
     I.amOnPage(AppContext.front_url+'/board');
 });
 
+Given('je suis sur l\'interface de création d\'une feature', () => {
+    I.amOnPage(AppContext.front_url+'/board/feature')
+});
+
 When('je me rend sur la page de création d\'un scénario', () => {
     I.amOnPage(AppContext.front_url+'/board');
 });
