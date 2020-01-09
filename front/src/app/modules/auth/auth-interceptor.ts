@@ -4,21 +4,17 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		const idToken = localStorage.getItem('token');
 
-    intercept(req: HttpRequest<any>,
-              next: HttpHandler): Observable<HttpEvent<any>> {
+		if (idToken) {
+			const cloned = req.clone({
+				headers: req.headers.set('Authorization', 'Bearer ' + idToken)
+			});
 
-        const idToken = localStorage.getItem('token');
-
-        if (idToken) {
-            const cloned = req.clone({
-                headers: req.headers.set('Authorization',
-                    'Bearer ' + idToken)
-            });
-
-            return next.handle(cloned);
-        } else {
-            return next.handle(req);
-        }
-    }
+			return next.handle(cloned);
+		} else {
+			return next.handle(req);
+		}
+	}
 }

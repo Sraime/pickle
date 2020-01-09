@@ -1,23 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'scenario-builder',
-  templateUrl: './scenario-builder.component.html',
-  styleUrls: ['./scenario-builder.component.scss']
+	selector: 'scenario-builder',
+	templateUrl: './scenario-builder.component.html',
+	styleUrls: ['./scenario-builder.component.scss']
 })
 export class ScenarioBuilderComponent implements OnInit {
+	name: string;
 
-  name: string;
+	isNameInEditMode = false;
 
-  isNameInEditMode = false;
+	constructor() {}
 
-  constructor() { }
+	ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  switchEditNameMode() {
-    this.isNameInEditMode = !this.isNameInEditMode;
-  }
-
+	switchEditNameMode() {
+		this.isNameInEditMode = !this.isNameInEditMode;
+	}
 }

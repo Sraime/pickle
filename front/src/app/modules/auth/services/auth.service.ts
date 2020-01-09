@@ -7,59 +7,54 @@ import { AuthResponse } from '../interfaces/auth-response';
 import { RegisterResponse } from '../interfaces/resgister-responsel';
 import { environment } from '../../../../environments/environment';
 
-
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthService {
+	httpBuilder: HttpOptionsBuilder;
 
-  httpBuilder: HttpOptionsBuilder;
+	baseAuthUrl = environment.api.auth.url;
 
-  baseAuthUrl = environment.api.auth.url;
+	loginSubject: Subject<boolean>;
 
-  loginSubject: Subject<boolean>;
+	constructor(private http: HttpClient) {
+		this.httpBuilder = new HttpOptionsBuilder();
+		this.loginSubject = new Subject<boolean>();
+	}
 
-  constructor(private http: HttpClient) {
-    this.httpBuilder = new HttpOptionsBuilder();
-    this.loginSubject = new Subject<boolean>();
-  }
+	login(email: string, password: string): Observable<AuthResponse> {
+		const h: HttpHeaders = this.httpBuilder.getHeader();
+		return this.http.post<AuthResponse>(this.baseAuthUrl + '/signin', { email, password }, { headers: h }).pipe(
+			tap(response => {
+				localStorage.setItem('token', response.token.toString());
+				localStorage.setItem('pseudo', response.pseudo.toString());
+				localStorage.setItem('tokenExpiration', response.tokenExpiration.toString());
+				this.loginSubject.next(true);
+				setTimeout(() => {
+					this.logout();
+				}, response.tokenExpiration.valueOf() - Date.now() - 10000);
+			})
+		);
+	}
 
-  login(email: string, password: string): Observable<AuthResponse> {
-    const h: HttpHeaders = this.httpBuilder.getHeader();
-    return  this.http.post<AuthResponse>(this.baseAuthUrl + '/signin', {email, password}, {headers: h})
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.token.toString());
-          localStorage.setItem('pseudo', response.pseudo.toString());
-          localStorage.setItem('tokenExpiration', response.tokenExpiration.toString());
-          this.loginSubject.next(true);
-          setTimeout(() => {
-            this.logout();
-          }, response.tokenExpiration.valueOf() - Date.now() - 10000);
-        })
-      );
-  }
+	isLoggedIn(): boolean {
+		const delay = parseInt(localStorage.getItem('tokenExpiration')) - Date.now();
+		return delay > 0 ? true : false;
+	}
 
-  isLoggedIn(): boolean {
-    const delay = parseInt(localStorage.getItem('tokenExpiration')) - Date.now();
-    return delay > 0 ? true : false;
-  }
+	getLoginEvent(): Observable<boolean> {
+		return this.loginSubject.asObservable();
+	}
 
-  getLoginEvent(): Observable<boolean> {
-    return this.loginSubject.asObservable();
-  }
+	logout(): void {
+		localStorage.removeItem('token');
+		localStorage.removeItem('tokenExpiration');
+		localStorage.removeItem('pseudo');
+		this.loginSubject.next(false);
+	}
 
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('tokenExpiration');
-    localStorage.removeItem('pseudo');
-    this.loginSubject.next(false);
-  }
-
-  register(pseudo, email, password): Observable<RegisterResponse> {
-    const h: HttpHeaders = this.httpBuilder.getHeader();
-    return  this.http.post<RegisterResponse>(this.baseAuthUrl + '/signup',
-      {pseudo, email, password},
-      {headers: h});
-  }
+	register(pseudo, email, password): Observable<RegisterResponse> {
+		const h: HttpHeaders = this.httpBuilder.getHeader();
+		return this.http.post<RegisterResponse>(this.baseAuthUrl + '/signup', { pseudo, email, password }, { headers: h });
+	}
 }

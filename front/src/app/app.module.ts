@@ -11,32 +11,29 @@ import { BoardModule } from './modules/board/board.module';
 import { AppInitService } from './services/app-init/app-init.service';
 
 export function init_app(appLoadService: AppInitService) {
-  return () => appLoadService.init();
+	return () => appLoadService.init();
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    PageNotFoundComponent,
-  ],
-  imports: [
-    BrowserModule,
-    LoginModule,
-    BoardModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule
-  ],
-  providers: [
-    AppInitService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: init_app,
-      deps: [AppInitService],
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
+	declarations: [AppComponent, PageNotFoundComponent],
+	imports: [
+		BrowserModule,
+		LoginModule,
+		BoardModule,
+		AppRoutingModule,
+		BrowserAnimationsModule,
+		MatToolbarModule,
+		MatButtonModule
+	],
+	providers: [
+		AppInitService,
+		{
+			provide: APP_INITIALIZER,
+			useFactory: init_app,
+			deps: [AppInitService],
+			multi: true
+		}
+	],
+	bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

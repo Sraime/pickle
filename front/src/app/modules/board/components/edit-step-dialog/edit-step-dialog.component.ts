@@ -3,27 +3,24 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Step } from '../../interfaces/step';
 
 @Component({
-  selector: 'app-edit-step-dialog',
-  templateUrl: './edit-step-dialog.component.html',
-  styleUrls: ['./edit-step-dialog.component.scss']
+	selector: 'app-edit-step-dialog',
+	templateUrl: './edit-step-dialog.component.html',
+	styleUrls: ['./edit-step-dialog.component.scss']
 })
 export class EditStepDialogComponent implements OnInit {
+	private editedStepName = 'hello';
 
-  private editedStepName = 'hello';
+	constructor(private dialogRef: MatDialogRef<EditStepDialogComponent>, @Inject(MAT_DIALOG_DATA) public step: Step) {}
 
-  constructor(
-    private dialogRef: MatDialogRef<EditStepDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public step: Step) {}
+	ngOnInit() {
+		this.editedStepName = this.step.name;
+	}
 
-  ngOnInit() {
-    this.editedStepName = this.step.name;
-  }
+	saveAction() {
+		this.dialogRef.close({ name: this.editedStepName });
+	}
 
-  saveAction() {
-    this.dialogRef.close({name: this.editedStepName});
-  }
-
-  cancelAction() {
-    this.dialogRef.close(this.step);
-  }
+	cancelAction() {
+		this.dialogRef.close(this.step);
+	}
 }

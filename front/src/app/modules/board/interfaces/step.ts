@@ -1,3 +1,3 @@
 export interface Step {
-    name: string;
+	name: string;
 }
