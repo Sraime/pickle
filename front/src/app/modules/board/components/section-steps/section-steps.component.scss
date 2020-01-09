@@ -10,7 +10,7 @@
     cursor: grab;
 }
 
-:host /deep/ .mat-list-item-content {
+:host ::ng-deep .mat-list-item-content {
     padding: 0 0 0 16px !important;
 }
 

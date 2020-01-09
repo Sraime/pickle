@@ -5,7 +5,7 @@ import { Section } from '../../interfaces/section';
 @Component({
   selector: 'gherkin-generator',
   templateUrl: './gherkin-generator.component.html',
-  styleUrls: ['./gherkin-generator.component.css']
+  styleUrls: ['./gherkin-generator.component.scss']
 })
 export class GherkinGeneratorComponent implements OnInit {
   private sections: Section[] = [];

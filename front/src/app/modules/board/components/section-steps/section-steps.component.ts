@@ -6,7 +6,7 @@ import { SectionServiceService } from '../../services/section-service/section-se
 @Component({
   selector: 'section-steps',
   templateUrl: './section-steps.component.html',
-  styleUrls: ['./section-steps.component.css']
+  styleUrls: ['./section-steps.component.scss']
 })
 export class SectionStepsComponent implements OnInit {
 

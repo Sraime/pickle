@@ -33,6 +33,10 @@ When('je me rend sur l\'écran d\'accueil', () => {
     I.amOnPage(AppContext.front_url);
 });
 
+When('je me rend sur l\'interface de création d\'une feature', () => {
+    I.amOnPage(AppContext.front_url+'/board/feature')
+});
+
 Then('je suis redirigé sur l\'écran de connexion', () => {
     I.amOnPage(AppContext.front_url+'/auth/login');
 });

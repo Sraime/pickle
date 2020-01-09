@@ -24,7 +24,7 @@
     display: inline-block;
 }
 
-:host /deep/ .mat-form-field-infix {
+:host ::ng-deep .mat-form-field-infix {
     padding-top: 0;
     border: 0;
 }

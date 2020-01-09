@@ -5,7 +5,7 @@ import { Step } from '../../interfaces/step';
 @Component({
   selector: 'app-edit-step-dialog',
   templateUrl: './edit-step-dialog.component.html',
-  styleUrls: ['./edit-step-dialog.component.css']
+  styleUrls: ['./edit-step-dialog.component.scss']
 })
 export class EditStepDialogComponent implements OnInit {
 

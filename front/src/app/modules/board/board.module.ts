@@ -13,6 +13,7 @@ import { EditStepDialogComponent } from './components/edit-step-dialog/edit-step
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ScenarioBuilderComponent } from './components/scenario-builder/scenario-builder.component';
+import { BoardFeaturePageComponent } from './components/board-feature-page/board-feature-page.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ScenarioBuilderComponent } from './components/scenario-builder/scenario
     GherkinGeneratorComponent,
     EditStepDialogComponent,
     ScenarioBuilderComponent,
+    BoardFeaturePageComponent,
   ],
   entryComponents: [
     EditStepDialogComponent
