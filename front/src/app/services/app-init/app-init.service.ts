@@ -12,7 +12,7 @@ export class AppInitService {
 	public init() {
 		return this.httpClient
 			.get('assets/feature-config.json')
-			.pipe(tap(features => (this.featureToggleService.features = features as any)))
+			.pipe(tap((features) => (this.featureToggleService.features = features as any)))
 			.toPromise();
 	}
 }

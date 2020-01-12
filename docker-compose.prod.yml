@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  pickle_mongo_prod:
+    container_name: 'pickle_mongo_prod'
+    image: mongo
+    volumes:
+      - ./data/prod/db:/data/db
+      - ./data/prod/dumps:/data/dumps
+    environment:
+      MONGO_INITDB_DATABASE: pickle
+
+  pickle_back_prod:
+    container_name: 'pickle_back_prod'
+    build: ./back
+    ports: 
+      - 3000:3000
+    links:
+      - pickle_mongo_prod
+    volumes:
+      - ./back:/pickle_back
+    environment:
+      NODE_ENV: prod
+      DB_HOST: pickle_mongo_prod
+      DB_PORT: 27017
+      DB_NAME: pickle
+      AUTH_SECRET: randomsecretpassword
+
+  pickle_front_prod:
+    container_name: 'pickle_front_prod'
+    build:
+      context: ./front
+      dockerfile: Dockerfile-prod
+    volumes:
+      - ./front/dist/ngCliWebpackSample:/usr/local/apache2/htdocs
+    ports: 
+      - 80:80

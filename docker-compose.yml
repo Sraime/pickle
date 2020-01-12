@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  pickle_mongo_dev:
+    container_name: 'pickle_mongo_dev'
+    image: mongo
+    volumes:
+      - ./data/dev/db:/data/db
+    ports: 
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: pickle
+
+  pickle_back_dev:
+    container_name: 'pickle_back_dev'
+    build: ./back
+    ports: 
+      - 3000:3000
+    links:
+      - pickle_mongo_dev
+    volumes:
+      - ./back:/pickle_back
+    environment:
+      NODE_ENV: dev
+      DB_HOST: pickle_mongo_dev
+      DB_PORT: 27017
+      DB_NAME: pickle
+      AUTH_SECRET: randomsecretpassword
+
+  pickle_front_dev:
+    container_name: 'pickle_front_dev'
+    build: ./front
+    volumes:
+      - ./front:/pickle_front
+    ports: 
+      - 4200:4200
+    environment:
+      NODE_ENV: dev

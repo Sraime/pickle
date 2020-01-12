@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  pickle_mongo_test:
+    container_name: 'pickle_mongo_test'
+    image: mongo
+    volumes:
+      - ./data/test/db:/data/db
+    ports: 
+      - 27018:27017
+    environment:
+      MONGO_INITDB_DATABASE: pickle
+
+  pickle_back_test:
+    container_name: 'pickle_back_test'
+    build: ./back
+    ports: 
+      - 3001:3001
+    links:
+      - pickle_mongo_test
+    volumes:
+      - ./back:/pickle_back
+    environment:
+      NODE_ENV: test
+      DB_HOST: pickle_mongo_test
+      DB_PORT: 27017
+      DB_NAME: pickle
+      AUTH_SECRET: randomsecretpassword
+
+  pickle_front_test:
+    container_name: 'pickle_front_test'
+    build: ./front
+    volumes:
+      - ./front:/pickle_front
+    ports:
+      - 4201:4201
+    environment:
+      NODE_ENV: test

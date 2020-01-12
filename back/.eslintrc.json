@@ -3,9 +3,16 @@
         "browser": true,
         "commonjs": true,
         "es6": true,
-        "mocha": true
+        "mocha": true,
+        "jest/globals": true
     },
-    "extends": "airbnb-base",
+    "plugins": ["prettier", "jest"],
+    "extends": [
+        "airbnb-base",
+        "prettier",
+        "plugin:jest/recommended",
+        "plugin:jest/style"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -14,5 +21,14 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "func-names": 0,
+        "consistent-return": 0,
+        "radix": 0,
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error",
+        "jest/no-try-expect": 0
     }
 }

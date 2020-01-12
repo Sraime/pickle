@@ -1,0 +1,10 @@
+  
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# don't rewrite requests for css, js and images
+RewriteCond %{REQUEST_URI} !\.(?:css|js|map|jpe?g|gif|png)$ [NC]
+
+# rewrite everything else to index.html
+RewriteRule ^(.*)$ /index.html?path=$1 [NC,L,QSA]

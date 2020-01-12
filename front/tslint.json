@@ -4,7 +4,6 @@
 	"rules": {
 		"prettier": [ true, ".prettierrc" ],
 		"array-type": false,
-		"arrow-parens": false,
 		"deprecation": {
 			"severity": "warn"
 		},
