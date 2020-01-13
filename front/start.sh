@@ -3,7 +3,7 @@
 cd /pickle_front
 if [ $NODE_ENV = test ]
 then
-    npm install --only=prod
+    npm install
     npm run start:test
 else
     npm install
