@@ -24,7 +24,7 @@ export class LoginFormComponent implements OnInit {
 
 	onSubmit() {
 		this.authService.login(this.form.value.email, this.form.value.password).subscribe(
-			result => {
+			() => {
 				this.router.navigate(['/bank']);
 			},
 			() => {

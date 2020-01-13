@@ -31,7 +31,7 @@ describe('GherkinGeneratorComponent', () => {
 	});
 
 	beforeEach(() => {
-		sectionService.getSectionObservable.mockImplementation(sn => {
+		sectionService.getSectionObservable.mockImplementation((sn) => {
 			return sectionsDispatcher[sn];
 		});
 		fixture = TestBed.createComponent(GherkinGeneratorComponent);
@@ -84,7 +84,7 @@ describe('GherkinGeneratorComponent', () => {
 			);
 
 			it('should not generate the code and display an error if the section is not valid', async(() => {
-				sectionService.getSectionObservable.mockImplementation(sn => {
+				sectionService.getSectionObservable.mockImplementation((sn) => {
 					if (sn === sectionName) {
 						return of({ isValid: false, name: '', steps: [] });
 					}
@@ -103,7 +103,7 @@ describe('GherkinGeneratorComponent', () => {
 			}));
 
 			it('should display the 2 steps returned by the service', async(() => {
-				sectionService.getSectionObservable.mockImplementation(sn => {
+				sectionService.getSectionObservable.mockImplementation((sn) => {
 					if (sn === sectionName) {
 						return of({ isValid: true, name: '', steps: [{ name: 'step1' }, { name: 'step2' }] });
 					}

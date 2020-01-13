@@ -8,7 +8,6 @@ import { of, Subject } from 'rxjs';
 
 describe('AuthService', () => {
 	let http: HttpClient;
-	const builder: HttpOptionsBuilder = new HttpOptionsBuilder();
 	let service: AuthService;
 
 	beforeEach(() => {
@@ -57,7 +56,7 @@ describe('AuthService', () => {
 			const response = { pseudo: 'toto', token: 'azerty', tokenExpiration: 10 };
 			spyPost.mockReturnValue(of(response));
 			const obs = service.login('aa@bb.cc', 'azerty');
-			obs.subscribe(v => {
+			obs.subscribe((v) => {
 				// FIXME: il faudrait expect le call sur le spy du setItem du localStorage
 				expect(localStorage.getItem('token')).toEqual(response.token.toString());
 				expect(localStorage.getItem('pseudo')).toEqual(response.pseudo.toString());
@@ -69,7 +68,7 @@ describe('AuthService', () => {
 			const response = { pseudo: 'toto', token: 'azerty', tokenExpiration: 10 };
 			spyPost.mockReturnValue(of(response));
 			const obs = service.login('aa@bb.cc', 'azerty');
-			obs.subscribe(v => {
+			obs.subscribe((v) => {
 				expect(spyNextSubject).toHaveBeenCalledWith(true);
 			});
 		}));
@@ -110,14 +109,14 @@ describe('AuthService', () => {
 		});
 
 		it('should trigger login action to Observers', async(() => {
-			service.getLoginEvent().subscribe(val => {
+			service.getLoginEvent().subscribe((val) => {
 				expect(val).toBeTruthy();
 			});
 			sub.next(true);
 		}));
 
 		it('should trigger logout action to Observers', async(() => {
-			service.getLoginEvent().subscribe(val => {
+			service.getLoginEvent().subscribe((val) => {
 				expect(val).toBeFalsy();
 			});
 			sub.next(false);
@@ -152,7 +151,6 @@ describe('AuthService', () => {
 
 		beforeEach(() => {
 			spyPost = jest.spyOn(http, 'post');
-			const spyGetHeader = jest.fn();
 			httpOtions = {};
 			HttpOptionsBuilder.prototype.getHeader = jest.fn().mockReturnValue(httpOtions);
 		});

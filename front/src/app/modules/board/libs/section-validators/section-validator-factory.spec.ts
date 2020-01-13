@@ -9,7 +9,7 @@ describe('get section validator', () => {
 
 	const sections = ['Given', 'When', 'Then'];
 
-	sections.forEach(sectionName => {
+	sections.forEach((sectionName) => {
 		it('should get the NotEmptySectionValidator for the section ' + sectionName, () => {
 			const validator = factory.getSectionValidator(sectionName);
 			expect(validator instanceof NotEmptySectionValidator).toBeTruthy();

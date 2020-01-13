@@ -16,7 +16,7 @@ describe('SectionServiceService', () => {
 		stubsValidate.Given = jest.fn().mockReturnValue(true);
 		stubsValidate.When = jest.fn().mockReturnValue(true);
 		stubsValidate.Then = jest.fn().mockReturnValue(true);
-		stubGetValidator = jest.fn().mockImplementation(sn => {
+		stubGetValidator = jest.fn().mockImplementation((sn) => {
 			if (sn === 'Given') {
 				return { validate: stubsValidate.Given };
 			}
@@ -52,7 +52,7 @@ describe('SectionServiceService', () => {
 		expect(stubGetValidator).toBeCalledWith('Then');
 	});
 
-	sections.forEach(section => {
+	sections.forEach((section) => {
 		describe('section ' + section + ' subscription', () => {
 			it('should return an observable for the ' + section + ' section', () => {
 				let obs: Observable<Section>;
@@ -60,22 +60,22 @@ describe('SectionServiceService', () => {
 				expect(obs).toBeTruthy();
 			});
 
-			it('should dispatch the updated section', done => {
+			it('should dispatch the updated section', (done) => {
 				const updatedSteps: Step[] = [{ name: 'step1' }, { name: 'step2' }];
 				const expectedUpdate: Section = { name: section, isValid: true, steps: updatedSteps };
 
-				service.getSectionObservable(section).subscribe(steps => {
+				service.getSectionObservable(section).subscribe((steps) => {
 					expect(steps).toEqual(expectedUpdate);
 					done();
 				});
 				service.updateSection(section, updatedSteps);
 			});
 
-			it('should mark the result of the validator in the dispatched object', done => {
+			it('should mark the result of the validator in the dispatched object', (done) => {
 				const updatedSteps: Step[] = [{ name: 'step1' }, { name: 'step2' }];
 				const expectedUpdate: Section = { name: section, isValid: false, steps: updatedSteps };
 				stubsValidate[section].mockReturnValue(false);
-				service.getSectionObservable(section).subscribe(steps => {
+				service.getSectionObservable(section).subscribe((steps) => {
 					expect(steps).toEqual(expectedUpdate);
 					done();
 				});
@@ -85,13 +85,13 @@ describe('SectionServiceService', () => {
 
 		it('should dispatch the updated only for the updated section', () => {
 			let nbCall = 0;
-			service.getSectionObservable('Given').subscribe(s => {
+			service.getSectionObservable('Given').subscribe((s) => {
 				nbCall++;
 			});
-			service.getSectionObservable('When').subscribe(s => {
+			service.getSectionObservable('When').subscribe((s) => {
 				nbCall++;
 			});
-			service.getSectionObservable('Then').subscribe(s => {
+			service.getSectionObservable('Then').subscribe((s) => {
 				nbCall++;
 			});
 			service.updateSection(section, []);

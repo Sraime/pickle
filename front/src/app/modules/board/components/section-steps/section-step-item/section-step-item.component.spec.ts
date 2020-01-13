@@ -58,10 +58,10 @@ describe('SectionStepItemComponent', () => {
 		expect(del).toBeTruthy();
 	});
 
-	it('should emit an event when the del button is prressed', done => {
+	it('should emit an event when the del button is prressed', (done) => {
 		component.name = 'step1';
 		const del = fixture.debugElement.query(By.css('.btn-step-del'));
-		component.delEvent.subscribe(step => {
+		component.delEvent.subscribe((step) => {
 			expect(step.name).toEqual('step1');
 			done();
 		});

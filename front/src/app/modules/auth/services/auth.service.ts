@@ -25,7 +25,7 @@ export class AuthService {
 	login(email: string, password: string): Observable<AuthResponse> {
 		const h: HttpHeaders = this.httpBuilder.getHeader();
 		return this.http.post<AuthResponse>(this.baseAuthUrl + '/signin', { email, password }, { headers: h }).pipe(
-			tap(response => {
+			tap((response) => {
 				localStorage.setItem('token', response.token.toString());
 				localStorage.setItem('pseudo', response.pseudo.toString());
 				localStorage.setItem('tokenExpiration', response.tokenExpiration.toString());
@@ -39,7 +39,7 @@ export class AuthService {
 
 	isLoggedIn(): boolean {
 		const delay = parseInt(localStorage.getItem('tokenExpiration')) - Date.now();
-		return delay > 0 ? true : false;
+		return delay > 0;
 	}
 
 	getLoginEvent(): Observable<boolean> {

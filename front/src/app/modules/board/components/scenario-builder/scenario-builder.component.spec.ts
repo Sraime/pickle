@@ -28,7 +28,7 @@ describe('ScenarioBuilderComponent', () => {
 
 	const sections = [{ sectionName: 'Given' }, { sectionName: 'When' }, { sectionName: 'Then' }];
 
-	sections.forEach(section => {
+	sections.forEach((section) => {
 		describe('section ' + section.sectionName, () => {
 			it(
 				'should have a component with name' + section.sectionName,

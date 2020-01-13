@@ -28,7 +28,7 @@ export class SectionStepItemComponent implements OnInit {
 			width: '400px',
 			data: { name: this.name }
 		});
-		dialog.afterClosed().subscribe(updatedValue => {
+		dialog.afterClosed().subscribe((updatedValue) => {
 			this.name = updatedValue.name;
 		});
 	}

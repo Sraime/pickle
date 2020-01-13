@@ -31,11 +31,11 @@ export class RegisterFormComponent implements OnInit {
 		if (this.form.valid) {
 			const t = this.authService.register(this.form.value.pseudo, this.form.value.email, this.form.value.password);
 			t.subscribe(
-				result => {
+				() => {
 					this.router.navigate(['/auth/login']);
 				},
-				err => {
-					err.error.forEach(elem => {
+				(err) => {
+					err.error.forEach((elem) => {
 						const ferr = {};
 						ferr[elem[1][0]] = true;
 						this.form.controls[elem[0]].setErrors(ferr);

@@ -113,7 +113,7 @@ describe('LoginFormComponent', () => {
 
 		it('should request the server with given data', async(() => {
 			const email = 'aaaa@bb.cc';
-			const pwd = 'azery';
+			const fakePwd = 'azery';
 			spyLogin.mockReturnValue(of({}));
 
 			fixture.whenStable().then(() => {
@@ -122,12 +122,12 @@ describe('LoginFormComponent', () => {
 				iemail.value = email;
 				iemail.dispatchEvent(new Event('input'));
 				const ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
-				ipwd.value = pwd;
+				ipwd.value = fakePwd;
 				ipwd.dispatchEvent(new Event('input'));
 				const btnLogin = fixture.debugElement.query(By.css('#login-form button'));
 				btnLogin.nativeElement.click();
 
-				expect(spyLogin).toHaveBeenCalledWith(email, pwd);
+				expect(spyLogin).toHaveBeenCalledWith(email, fakePwd);
 			});
 		}));
 
@@ -140,13 +140,13 @@ describe('LoginFormComponent', () => {
 		}));
 
 		it('should reset the password field when login fail', async(() => {
-			const pwd = 'azery';
+			const fakePwd = 'azery';
 			spyLogin.mockReturnValue(throwError('error'));
 
 			fixture.whenStable().then(() => {
 				fixture.detectChanges();
 				let ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
-				ipwd.value = pwd;
+				ipwd.value = fakePwd;
 				ipwd.dispatchEvent(new Event('input'));
 				component.onSubmit();
 				ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;

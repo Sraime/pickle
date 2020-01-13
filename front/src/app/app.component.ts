@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 		}
 		this.isLoggedIn = this.authService.isLoggedIn();
 		this.pseudo = this.isLoggedIn ? localStorage.getItem('pseudo') : '';
-		this.authService.getLoginEvent().subscribe(newLoginState => {
+		this.authService.getLoginEvent().subscribe((newLoginState) => {
 			this.isLoggedIn = newLoginState;
 			if (newLoginState !== false) {
 				this.pseudo = localStorage.getItem('pseudo');

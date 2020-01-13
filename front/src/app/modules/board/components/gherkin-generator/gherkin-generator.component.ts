@@ -17,7 +17,7 @@ export class GherkinGeneratorComponent implements OnInit {
 
 	ngOnInit() {
 		this.sectionOrder.forEach((sectionName, index) => {
-			this.service.getSectionObservable(sectionName).subscribe(s => {
+			this.service.getSectionObservable(sectionName).subscribe((s) => {
 				this.sections[index] = s;
 				this.updateGenerationState();
 			});
