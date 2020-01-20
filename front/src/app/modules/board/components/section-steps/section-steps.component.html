@@ -13,10 +13,9 @@
         </mat-list>
         <mat-form-field class="field-new-step">
             <input type="text" 
-                id="new-{{sectionName.toLowerCase()}}-step" 
-                matInput 
                 placeholder="your step"
                 class="input-new-step"
+                matInput 
                 maxlength="100"
                 (keydown.enter)="addStep($event)"/>
             <mat-icon matSuffix>mode_edit</mat-icon>

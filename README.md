@@ -1,4 +1,4 @@
-Pickle is tool that allow you to build and manage collaboratively your tests scenarios with the Gherkin syntax. 
+Pickle is tool that allows you to build and manage collaboratively your tests scenarios with the Gherkin syntax. 
 
 A demo is available on : https://pickle.prodgie.tech
 

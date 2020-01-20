@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Section } from '../../interfaces/section';
 import { Step } from '../../interfaces/step';
 import { SectionValidatorFactory } from '../../libs/section-validators/section-validator-factory';
+import { SectionModel } from '../../models/section.model';
 
 describe('SectionServiceService', () => {
 	let service: SectionServiceService;
@@ -62,24 +63,34 @@ describe('SectionServiceService', () => {
 
 			it('should dispatch the updated section', (done) => {
 				const updatedSteps: Step[] = [{ name: 'step1' }, { name: 'step2' }];
-				const expectedUpdate: Section = { name: section, isValid: true, steps: updatedSteps };
+				const expectedUpdate: Section = {
+					name: section,
+					isValid: true,
+					steps: updatedSteps,
+					codeBlockId: 'codeBlockId'
+				};
 
 				service.getSectionObservable(section).subscribe((steps) => {
 					expect(steps).toEqual(expectedUpdate);
 					done();
 				});
-				service.updateSection(section, updatedSteps);
+				service.updateSection(new SectionModel(section, 'codeBlockId', updatedSteps));
 			});
 
 			it('should mark the result of the validator in the dispatched object', (done) => {
 				const updatedSteps: Step[] = [{ name: 'step1' }, { name: 'step2' }];
-				const expectedUpdate: Section = { name: section, isValid: false, steps: updatedSteps };
+				const expectedUpdate: Section = {
+					name: section,
+					isValid: false,
+					steps: updatedSteps,
+					codeBlockId: 'codeBlockId'
+				};
 				stubsValidate[section].mockReturnValue(false);
 				service.getSectionObservable(section).subscribe((steps) => {
 					expect(steps).toEqual(expectedUpdate);
 					done();
 				});
-				service.updateSection(section, updatedSteps);
+				service.updateSection(new SectionModel(section, 'codeBlockId', updatedSteps));
 			});
 		});
 
@@ -94,7 +105,7 @@ describe('SectionServiceService', () => {
 			service.getSectionObservable('Then').subscribe((s) => {
 				nbCall++;
 			});
-			service.updateSection(section, []);
+			service.updateSection(new SectionModel(section, 'codeBlockId', []));
 			expect(nbCall).toEqual(1);
 		});
 
@@ -109,7 +120,7 @@ describe('SectionServiceService', () => {
 
 		it('should throw an expection when updating an innexiting section', () => {
 			try {
-				service.updateSection('NOT_EXISTING_SECTION', []);
+				service.updateSection(new SectionModel('NOT_EXISTING_SECTION', 'codeBlockId', []));
 			} catch (e) {
 				expect(e.name).toEqual('UnknownSectionException');
 				expect(e.message).toEqual('this section does not exist');

@@ -10,6 +10,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { SectionServiceService } from '../../services/section-service/section-service.service';
 import { of } from 'rxjs';
 import { Section } from '../../interfaces/section';
+import { SectionModel } from '../../models/section.model';
 
 describe('SectionSetpsComponent', () => {
 	let component: SectionStepsComponent;
@@ -53,11 +54,30 @@ describe('SectionSetpsComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should get the step list from the service', () => {
-		const updatedSection: Section = { name: 'Given', isValid: true, steps: [{ name: 'step' }] };
+	it('should get the step list from the service when it is the same code block', () => {
+		component.codeBlockId = 'currentBlockID';
+		const updatedSection: Section = {
+			name: 'Given',
+			isValid: true,
+			steps: [{ name: 'step' }],
+			codeBlockId: 'currentBlockID'
+		};
 		sectionService.getSectionObservable.mockReturnValue(of(updatedSection));
 		component.ngOnInit();
 		expect(component.steps).toEqual([{ name: 'step' }]);
+	});
+
+	it('should not update the steps when code block is not the same', () => {
+		component.codeBlockId = 'currentBlockID';
+		const updatedSection: Section = {
+			name: 'Given',
+			isValid: true,
+			steps: [{ name: 'step' }],
+			codeBlockId: 'anotherBlockID'
+		};
+		sectionService.getSectionObservable.mockReturnValue(of(updatedSection));
+		component.ngOnInit();
+		expect(component.steps).toEqual([]);
 	});
 
 	it('should have a title', async(() => {
@@ -91,7 +111,7 @@ describe('SectionSetpsComponent', () => {
 		component.sectionName = 'Given';
 		fixture.whenStable().then(() => {
 			fixture.detectChanges();
-			const input = fixture.debugElement.query(By.css('input#new-given-step.input-new-step'));
+			const input = fixture.debugElement.query(By.css('input.input-new-step'));
 			expect(input).toBeTruthy();
 		});
 	}));
@@ -116,10 +136,12 @@ describe('SectionSetpsComponent', () => {
 
 			it('should add a new step and clean the input after filling the it and pressing Enter', () => {
 				component.sectionName = 'Given';
+				component.codeBlockId = 'idblock';
 				input.nativeElement.value = 'step1';
+				const sentSectionUpdate = new SectionModel('Given', 'idblock', [{ name: 'step1' }]);
 				input.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }));
 				expect(component.steps.length).toEqual(1);
-				expect(stubUpdateSection).toHaveBeenCalledWith('Given', [{ name: 'step1' }]);
+				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 				expect(input.nativeElement.value).toEqual('');
 			});
 
@@ -132,8 +154,10 @@ describe('SectionSetpsComponent', () => {
 		describe('remove step', () => {
 			it('should send the list the deleted element to the service when it emit a delEvent', () => {
 				component.steps = [{ name: 'step1' }];
+				component.codeBlockId = 'idblock';
 				component.delStep({ name: 'step1' });
-				expect(stubUpdateSection).toHaveBeenCalledWith('', []);
+				const sentSectionUpdate = new SectionModel('', 'idblock', []);
+				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 			});
 		});
 
@@ -154,10 +178,12 @@ describe('SectionSetpsComponent', () => {
 
 			it('should move the step to its new index after a drop event', () => {
 				component.steps = [{ name: 'step1' }, { name: 'step2' }];
+				component.codeBlockId = 'idblock';
 				mockDragDropEvent.previousIndex = 1;
 				mockDragDropEvent.currentIndex = 0;
 				component.dropStep(mockDragDropEvent);
-				expect(stubUpdateSection).toHaveBeenCalledWith('', [{ name: 'step2' }, { name: 'step1' }]);
+				const sentSectionUpdate = new SectionModel('', 'idblock', [{ name: 'step2' }, { name: 'step1' }]);
+				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 			});
 		});
 	});

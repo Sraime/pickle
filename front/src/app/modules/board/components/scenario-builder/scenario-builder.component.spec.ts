@@ -30,15 +30,13 @@ describe('ScenarioBuilderComponent', () => {
 
 	sections.forEach((section) => {
 		describe('section ' + section.sectionName, () => {
-			it(
-				'should have a component with name' + section.sectionName,
-				async(() => {
-					const htmlSection = fixture.debugElement.query(
-						By.css('section-steps[sectionName="' + section.sectionName + '"]')
-					).nativeElement;
-					expect(htmlSection).toBeTruthy();
-				})
-			);
+			it('should have a component with name' + section.sectionName, () => {
+				const htmlSection = fixture.debugElement.query(
+					By.css('section-steps[sectionName="' + section.sectionName + '"]')
+				).nativeElement;
+				expect(htmlSection).toBeTruthy();
+				expect(htmlSection.getAttribute('sectionName')).toEqual(section.sectionName);
+			});
 		});
 	});
 
