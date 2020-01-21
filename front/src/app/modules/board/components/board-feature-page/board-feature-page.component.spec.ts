@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { BoardFeaturePageComponent } from './board-feature-page.component';
 import { configureTestSuite } from 'ng-bullet';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { DeleteScenarioEventData } from '../scenario-builder/delete-scenario-event-data';
 
 describe('BoardFeaturePageComponent', () => {
 	let component: BoardFeaturePageComponent;
@@ -50,5 +50,13 @@ describe('BoardFeaturePageComponent', () => {
 				expect(builders.length).toEqual(2);
 			});
 		}));
+	});
+
+	describe('delete scenario', () => {
+		it('should remove the given scenario from the list after receiving a delete event', () => {
+			component.scenarios = ['S1', 'S2'];
+			component.delScenario(new DeleteScenarioEventData('S1'));
+			expect(component.scenarios).toEqual(['S2']);
+		});
 	});
 });

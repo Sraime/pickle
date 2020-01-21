@@ -4,6 +4,7 @@ import { ScenarioBuilderComponent } from './scenario-builder.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
+import { DeleteScenarioEventData } from './delete-scenario-event-data';
 
 describe('ScenarioBuilderComponent', () => {
 	let component: ScenarioBuilderComponent;
@@ -37,6 +38,27 @@ describe('ScenarioBuilderComponent', () => {
 				expect(htmlSection).toBeTruthy();
 				expect(htmlSection.getAttribute('sectionName')).toEqual(section.sectionName);
 			});
+		});
+	});
+
+	describe('delete scenario', () => {
+		let btnDel;
+
+		beforeEach(() => {
+			btnDel = fixture.debugElement.query(By.css('.btn-del-scenario'));
+		});
+
+		it('should have a delete button', () => {
+			expect(btnDel).toBeTruthy();
+		});
+
+		it('should emit an event with the codeBlockId after clicking on the button', (done) => {
+			component.codeBlockId = 'codeID';
+			component.delEvent.subscribe((codeBlockId) => {
+				expect(codeBlockId).toEqual(new DeleteScenarioEventData('codeID'));
+				done();
+			});
+			btnDel.nativeElement.click();
 		});
 	});
 

@@ -1,39 +1,40 @@
 .sections-steps {
-    display: flex;
+	display: flex;
 }
 
 .section-steps {
-    flex: 1 0px;
+	flex: 1 0px;
 }
 
 .scenario-header {
-    height: 70px;
+	font-size: 1.5em;
+	height: 70px;
+	display: flex;
 }
 
 .section-steps:not(:last-child) {
-    margin-right: 20px;
+	margin-right: 20px;
 }
 
-.scenario-header-msg label {
-    font-weight: bold;
-    margin-right: 10px;
+.scenario-header label {
+	font-weight: bold;
+	margin-right: 10px;
 }
 
-.scenario-header-msg, .scenario-header-opts {
-    font-size: 1.5em;
-    display: inline-block;
+.scenario-header .scenario-header-msg {
+	flex: 1 1 auto;
 }
 
 :host ::ng-deep .mat-form-field-infix {
-    padding-top: 0;
-    border: 0;
+	padding-top: 0;
+	border: 0;
 }
 
 .field-edit-scenario-name {
-    width: 500px;
+	width: 100%;
 }
 
 .scenario-name-placeholder {
-    color: #aaa;
-    font-style: italic;
+	color: #aaa;
+	font-style: italic;
 }

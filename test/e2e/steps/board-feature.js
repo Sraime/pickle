@@ -1,34 +1,32 @@
 const I = actor();
-const BoardSectionLocators = require('./locators/board-section-locators');
+const FeatureBoardLocators = require('./locators/board-feature-locators');
+const FeatureBoardClass = require('./helpers/feature-board-helper');
+const FeatureBoardHelper = new FeatureBoardClass(I);
 
-Given('les scénarios suivant sont renseignés :', (scTable) => {
-    let builderLocator;
+Given('les scénarios suivant sont enregistrés :', (scTable) => {
     scTable.parse().hashes().forEach((sc, index) => {
-        builderLocator = '.scenario-builder-card:nth-child(' + (index+1) + ')';
-        if(index > 0){
-            I.click('.btn-add-scenario');
-            I.waitForElement(builderLocator)
+        if(index === 0){
+            FeatureBoardHelper.renameLastScenario(sc.name);
+        } else {
+            FeatureBoardHelper.addScenario(sc.name);
         }
-        I.click(builderLocator + ' .scenario-name');
-        I.fillField(builderLocator + ' .input-edit-scenario-name', sc.name);
-        I.click(builderLocator + ' .btn-save-scenario-name');
     })
 });
 
 When('je clique sur l\'option d\'ajout d\'un scénario', () => {
-    I.click('.btn-add-scenario');
+    FeatureBoardHelper.addScenario();
 });
 
 When('j\'ajoute les steps suivants :', (stepsTable) => {
     let indexScenario;
     stepsTable.parse().hashes().forEach((step) => {
         indexScenario = step.scenarioNumber ? step.scenarioNumber : 1;
-        I.fillField({css: '.scenario-builder-card:nth-child(' + indexScenario + ') ' 
-        + BoardSectionLocators.sectionStepsAddLocator(step.sectionName)}
-        , step.stepName
-        );
-        I.pressKey('Enter');
+        FeatureBoardHelper.addStep(indexScenario, step.sectionName, step.stepName);
     });
+});
+
+When('je supprime le scenario en position {int}', (position) => {
+    FeatureBoardHelper.deleteScenario(position);
 });
 
 Then('la feature contient {int} scénarios', (nbScenarios) => {
@@ -40,8 +38,13 @@ Then('les steps suivant ne sont pas présents :', (stepsTable) => {
     stepsTable.parse().hashes().forEach((step) => {
         indexScenario = step.scenarioNumber ? step.scenarioNumber : 1;
         I.dontSee(step.stepName, 
-            {css: '.scenario-builder-card:nth-child(' + indexScenario + ') ' 
-            + BoardSectionLocators.sectionStepsListLocator(step.sectionName)}
+            FeatureBoardLocators.scenarioSection(indexScenario, step.sectionName)
         );
     });
+});
+
+Then('la feature contient les scénarios dans l\'ordre suivant :', (scTable) => {
+    scTable.parse().hashes().forEach((sc, index) => {
+        I.see(sc.name, FeatureBoardLocators.scenarioName(index+1));
+    })
 });

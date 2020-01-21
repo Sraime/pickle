@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { v1 as uuid } from 'uuid';
+import { DeleteScenarioEventData } from '../scenario-builder/delete-scenario-event-data';
 
 @Component({
 	selector: 'app-board-feature-page',
@@ -7,7 +8,7 @@ import { v1 as uuid } from 'uuid';
 	styleUrls: ['./board-feature-page.component.scss']
 })
 export class BoardFeaturePageComponent implements OnInit {
-	private scenarios: Array<string> = [];
+	scenarios: Array<string> = [];
 
 	constructor() {}
 
@@ -17,5 +18,9 @@ export class BoardFeaturePageComponent implements OnInit {
 
 	addScenario() {
 		this.scenarios.push(uuid());
+	}
+
+	delScenario(delEventData: DeleteScenarioEventData) {
+		this.scenarios = this.scenarios.filter((sc) => sc !== delEventData.codeBlockId);
 	}
 }

@@ -12,7 +12,7 @@ describe('GherkinGeneratorComponent', () => {
 	let component: GherkinGeneratorComponent;
 	let fixture: ComponentFixture<GherkinGeneratorComponent>;
 	let sectionService;
-	const defaultSectionValue: Section = { isValid: true, name: '', steps: [{ name: 'step' }] };
+	const defaultSectionValue: Section = { isValid: true, name: '', steps: [{ name: 'step' }], codeBlockId: 'xxx' };
 	const sectionsDispatcher = {
 		Given: new Subject<Section>(),
 		When: new Subject<Section>(),

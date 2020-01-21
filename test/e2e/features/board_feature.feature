@@ -19,7 +19,7 @@ Feature: board de création des scenario d'une Feature
     @US26
     Scenario: ajout d'un step dans un scénario sans impacte sur les autres
         Given je suis sur l'interface de création d'une feature
-        And les scénarios suivant sont renseignés :
+        And les scénarios suivant sont enregistrés :
             | name |
             | S1   |
             | S2   |
@@ -29,3 +29,15 @@ Feature: board de création des scenario d'une Feature
         Then les steps suivant ne sont pas présents :
             | scenarioNumber | sectionName | stepName |
             | 2              | Given       | step1    |
+
+    @US20
+    Scenario: suppression d'un scenario
+        Given je suis sur l'interface de création d'une feature
+        And les scénarios suivant sont enregistrés :
+            | name |
+            | S1   |
+            | S2   |
+        When je supprime le scenario en position 2
+        Then la feature contient les scénarios dans l'ordre suivant :
+            | name |
+            | S1   |
