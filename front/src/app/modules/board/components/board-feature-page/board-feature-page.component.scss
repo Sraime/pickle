@@ -1,7 +1,25 @@
 .code-builder-card {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
-.btn-add-scenario{
-    width: 100%;
+.btn-add-scenario {
+	width: 100%;
+}
+
+.feature-header {
+	font-size: 2em;
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	margin-bottom: 30px;
+	label {
+		font-weight: bold;
+	}
+}
+
+.feature-name {
+	display: inline-block;
+	width: 30%;
+}
+
+.feature-header {
+	height: 80px;
 }

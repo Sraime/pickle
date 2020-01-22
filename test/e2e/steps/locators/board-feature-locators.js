@@ -8,6 +8,7 @@ const xpathLocator = (xpath) => {
 
 const CssLocators = {
   lastScenario: '.scenario-builder-card:nth-last-child(2)',
+  featureHeader: '.feature-header',
   scenarioPosition: (position) => { 
     return '.scenario-builder-card:nth-child(' + position + ')' 
   },
@@ -21,13 +22,17 @@ module.exports = {
 
   btnAddScenario: cssLocator('.btn-add-scenario'),
 
+  featureName: cssLocator(CssLocators.featureHeader + ' .feature-name'),
+  featureNameInput: cssLocator(CssLocators.featureHeader + ' .input-edit-text'),
+  featureNameBtnSave: cssLocator(CssLocators.featureHeader + ' .btn-save-text'),
+
   scenarioName: (position) => {
     return cssLocator('.scenario-builder-card:nth-child(' + position + ') .scenario-name');
   },
 
   lastScenarioName: cssLocator(CssLocators.lastScenario + ' .scenario-name'),
-  lastScenarioNameInput: cssLocator(CssLocators.lastScenario + ' .input-edit-scenario-name'),
-  lastScenarioNameBtnSave: cssLocator(CssLocators.lastScenario + ' .btn-save-scenario-name'),
+  lastScenarioNameInput: cssLocator(CssLocators.lastScenario + ' .input-edit-text'),
+  lastScenarioNameBtnSave: cssLocator(CssLocators.lastScenario + ' .btn-save-text'),
 
   scenarioBtnDel: (position) => {
     return cssLocator(CssLocators.scenarioPosition(position) 

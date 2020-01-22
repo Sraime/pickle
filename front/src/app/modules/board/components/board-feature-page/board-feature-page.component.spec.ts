@@ -31,6 +31,11 @@ describe('BoardFeaturePageComponent', () => {
 		expect(sbuilder).toBeTruthy();
 	});
 
+	it('should have a scenarion name in an edit text', () => {
+		const name = fixture.debugElement.query(By.css('.feature-header edit-text.feature-name'));
+		expect(name).toBeTruthy();
+	});
+
 	describe('add scenario', () => {
 		let btnAdd;
 

@@ -41,3 +41,9 @@ Feature: board de création des scenario d'une Feature
         Then la feature contient les scénarios dans l'ordre suivant :
             | name |
             | S1   |
+
+    @US29
+    Scenario: nommage de la feature
+        Given je suis sur l'interface de création d'une feature
+        When je renomme la feature en "amazing feature"
+        Then le nom de la feature est "amazing feature"

@@ -1,8 +1,14 @@
-<mat-card class="code-builder-card scenario-builder-card" *ngFor="let id of scenarios">
-	<mat-card-content>
-		<scenario-builder codeBlockId="{{ id }}" (delete)="delScenario($event)"></scenario-builder>
-	</mat-card-content>
-</mat-card>
-<button mat-stroked-button color="primary" class="btn-add-scenario" (click)="addScenario()">
-	<mat-icon>add</mat-icon>New Scenario
-</button>
+<div class="feature-header">
+	<label>Feature: </label>
+	<edit-text class="feature-name"></edit-text>
+</div>
+<div class="feature-scenarios">
+	<mat-card class="code-builder-card scenario-builder-card" *ngFor="let id of scenarios">
+		<mat-card-content>
+			<scenario-builder codeBlockId="{{ id }}" (delete)="delScenario($event)"></scenario-builder>
+		</mat-card-content>
+	</mat-card>
+	<button mat-stroked-button color="primary" class="btn-add-scenario" (click)="addScenario()">
+		<mat-icon>add</mat-icon>New Scenario
+	</button>
+</div>

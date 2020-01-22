@@ -24,17 +24,3 @@
 .scenario-header .scenario-header-msg {
 	flex: 1 1 auto;
 }
-
-:host ::ng-deep .mat-form-field-infix {
-	padding-top: 0;
-	border: 0;
-}
-
-.field-edit-scenario-name {
-	width: 100%;
-}
-
-.scenario-name-placeholder {
-	color: #aaa;
-	font-style: italic;
-}

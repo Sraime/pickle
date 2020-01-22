@@ -29,6 +29,10 @@ When('je supprime le scenario en position {int}', (position) => {
     FeatureBoardHelper.deleteScenario(position);
 });
 
+When('je renomme la feature en {string}', (name) => {
+    FeatureBoardHelper.renameFeature(name);
+});
+
 Then('la feature contient {int} scénarios', (nbScenarios) => {
     I.seeNumberOfElements('scenario-builder',nbScenarios)
 });
@@ -47,4 +51,8 @@ Then('la feature contient les scénarios dans l\'ordre suivant :', (scTable) => 
     scTable.parse().hashes().forEach((sc, index) => {
         I.see(sc.name, FeatureBoardLocators.scenarioName(index+1));
     })
+});
+
+Then('le nom de la feature est {string}', (name) => {
+    I.see(name, FeatureBoardLocators.featureName);
 });

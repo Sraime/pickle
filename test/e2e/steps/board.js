@@ -105,8 +105,8 @@ When("je modifie le texte du step en {string}", (newTexteStep) => {
 
 When("je renomme le scénario en {string}", (newName) => {
   I.click(".scenario-name");
-  I.fillField(".input-edit-scenario-name", newName);
-  I.click(".btn-save-scenario-name");
+  I.fillField(".input-edit-text", newName);
+  I.click(".btn-save-text");
 });
 
 Then("la section d'édition {string} est affichée", (sectionName) => {

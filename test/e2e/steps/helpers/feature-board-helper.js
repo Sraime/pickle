@@ -28,6 +28,12 @@ class FeatureBoardHelper {
       step
     );
   }
+
+  renameFeature(name) {
+    this.actor.click(FeatureBoardLoacators.featureName);
+    this.actor.fillField(FeatureBoardLoacators.featureNameInput, name);
+    this.actor.click(FeatureBoardLoacators.featureNameBtnSave);
+  }
 }
 
 module.exports = FeatureBoardHelper;
