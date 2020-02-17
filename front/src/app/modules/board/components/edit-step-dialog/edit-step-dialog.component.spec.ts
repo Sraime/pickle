@@ -13,12 +13,14 @@ import {
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of, Subject } from 'rxjs';
 
 describe('EditStepDialogComponent', () => {
 	let component: EditStepDialogComponent;
 	let fixture: ComponentFixture<EditStepDialogComponent>;
 	const stubDialogRef = {
-		close: jest.fn()
+		close: jest.fn(),
+		backdropClick: jest.fn().mockReturnValue(new Subject())
 	};
 
 	configureTestSuite(() => {
@@ -57,6 +59,11 @@ describe('EditStepDialogComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	it('should close with the current text when a backdropClick is emited', () => {
+		stubDialogRef.backdropClick().next();
+		expect(stubDialogRef.close).toHaveBeenCalled();
+	});
+
 	it('should display the title : Step Edition', () => {
 		const title = fixture.debugElement.query(By.css('h2.mat-dialog-title'));
 		expect(title.nativeElement.textContent).toEqual('Step Edition');
@@ -92,7 +99,9 @@ describe('EditStepDialogComponent', () => {
 		const input = fixture.debugElement.query(By.css('.mat-dialog-content input.edit-step'));
 		input.nativeElement.value = 'edited';
 		input.nativeElement.dispatchEvent(new Event('input'));
-		const btnSave = fixture.debugElement.query(By.css('.mat-dialog-content button.cancel-edit-step'));
+		const btnSave = fixture.debugElement.query(
+			By.css('.mat-dialog-content button.cancel-edit-step')
+		);
 		btnSave.nativeElement.click();
 		expect(stubDialogRef.close).toHaveBeenLastCalledWith({ name: 'hello' });
 	});
