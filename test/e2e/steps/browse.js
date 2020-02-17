@@ -14,7 +14,7 @@ Given('je suis sur l\'interface de création d\'un scénario', () => {
 });
 
 Given('je suis sur l\'interface de création d\'une feature', () => {
-    I.amOnPage(AppContext.front_url+'/board/feature')
+    I.amOnPage(AppContext.front_url+'/board')
 });
 
 When('je me rend sur la page de création d\'un scénario', () => {
@@ -38,7 +38,7 @@ When('je me rend sur l\'écran d\'accueil', () => {
 });
 
 When('je me rend sur l\'interface de création d\'une feature', () => {
-    I.amOnPage(AppContext.front_url+'/board/feature')
+    I.amOnPage(AppContext.front_url+'/board')
 });
 
 Then('je suis redirigé sur l\'écran de connexion', () => {

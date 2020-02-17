@@ -3,7 +3,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditTextComponent } from './edit-text.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule } from '@angular/material';
+import {
+	MatFormFieldModule,
+	MatIconModule,
+	MatInputModule,
+	MatButtonModule
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
@@ -119,5 +124,20 @@ describe('EditTextComponent', () => {
 				expect(text).toBeFalsy();
 			});
 		}));
+
+		it('should emit a save event after updating the text', (done) => {
+			component.text = 'my text';
+			component.saveEvent.subscribe((updatedText: string) => {
+				expect(updatedText).toEqual('my text');
+				done();
+			});
+			text.nativeElement.click();
+			fixture.whenStable().then(() => {
+				fixture.detectChanges();
+				const saveBtn = fixture.debugElement.query(By.css(EDIT_BTN_SELECTOR));
+				saveBtn.nativeElement.click();
+				fixture.detectChanges();
+			});
+		});
 	});
 });

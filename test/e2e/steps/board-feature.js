@@ -13,6 +13,14 @@ Given('les scénarios suivant sont enregistrés :', (scTable) => {
     })
 });
 
+Given('les steps suivants sont enregistrés :', (scTable) => {
+    let indexScenario;
+    stepsTable.parse().hashes().forEach((step) => {
+        indexScenario = step.scenarioNumber ? step.scenarioNumber : 1;
+        FeatureBoardHelper.addStep(indexScenario, step.sectionName, step.stepName);
+    });
+});
+
 When('je clique sur l\'option d\'ajout d\'un scénario', () => {
     FeatureBoardHelper.addScenario();
 });
@@ -54,5 +62,5 @@ Then('la feature contient les scénarios dans l\'ordre suivant :', (scTable) => 
 });
 
 Then('le nom de la feature est {string}', (name) => {
-    I.see(name, FeatureBoardLocators.featureName);
+    FeatureBoardHelper.renameFeature(name);
 });

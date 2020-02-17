@@ -1,6 +1,6 @@
 import { SectionModel } from './section.model';
 import { SectionValidator } from '../libs/section-validators/section-validator';
-import { Step } from '../interfaces/step';
+import { Step } from '../interfaces/step.interface';
 
 describe('section model', () => {
 	it('should set the step list to an empty array when null is given', () => {

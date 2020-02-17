@@ -1,8 +1,0 @@
-<p *ngIf="isValid === false" class="section-code-error">Toute les contraintes doivent être respectées pour générer le code Gherkin</p>
-<code *ngIf="isValid" class="gherkin-scenario">
-    <div class="section-code" *ngFor="let section of sections; let i = index">
-        <div class="step-code" *ngFor="let step of section.steps; let j = index">
-            {{j > 0 ? 'And' : sectionOrder[i]}} {{step.name}}
-        </div>
-    </div>
-</code>

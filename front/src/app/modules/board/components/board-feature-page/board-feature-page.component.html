@@ -1,6 +1,13 @@
 <div class="feature-header">
-	<label>Feature: </label>
-	<edit-text class="feature-name"></edit-text>
+	<div class="content-feature-header">
+		<label>Feature: </label>
+		<edit-text class="feature-name" (update)="updateName($event)"></edit-text>
+	</div>
+	<div class="opts-feature-header">
+		<button class="btn-generate-code" mat-stroked-button (click)="openGenerator()">
+			&lt; code &gt;
+		</button>
+	</div>
 </div>
 <div class="feature-scenarios">
 	<mat-card class="code-builder-card scenario-builder-card" *ngFor="let id of scenarios">

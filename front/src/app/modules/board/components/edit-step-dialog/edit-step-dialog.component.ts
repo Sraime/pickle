@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Step } from '../../interfaces/step';
+import { Step } from '../../interfaces/step.interface';
 
 @Component({
 	selector: 'app-edit-step-dialog',

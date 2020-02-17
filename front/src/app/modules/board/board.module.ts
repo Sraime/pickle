@@ -16,26 +16,26 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SectionStepItemComponent } from './components/section-steps/section-step-item/section-step-item.component';
-import { GherkinGeneratorComponent } from './components/gherkin-generator/gherkin-generator.component';
 import { EditStepDialogComponent } from './components/edit-step-dialog/edit-step-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ScenarioBuilderComponent } from './components/scenario-builder/scenario-builder.component';
 import { BoardFeaturePageComponent } from './components/board-feature-page/board-feature-page.component';
 import { EditTextComponent } from './components/edit-text/edit-text.component';
+import { GherkinGeneratorDialogComponent } from './components/gherkin-generator-dialog/gherkin-generator-dialog.component';
 
 @NgModule({
 	declarations: [
 		SectionStepsComponent,
 		BoardPageComponent,
 		SectionStepItemComponent,
-		GherkinGeneratorComponent,
 		EditStepDialogComponent,
 		ScenarioBuilderComponent,
 		BoardFeaturePageComponent,
-		EditTextComponent
+		EditTextComponent,
+		GherkinGeneratorDialogComponent
 	],
-	entryComponents: [EditStepDialogComponent],
+	entryComponents: [EditStepDialogComponent, GherkinGeneratorDialogComponent],
 	imports: [
 		CommonModule,
 		FormsModule,

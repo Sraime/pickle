@@ -3,13 +3,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionStepsComponent } from './section-steps.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
-import { MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule, MatListModule } from '@angular/material';
+import {
+	MatCardModule,
+	MatFormFieldModule,
+	MatInputModule,
+	MatIconModule,
+	MatListModule
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { SectionServiceService } from '../../services/section-service/section-service.service';
+import { SectionServiceService } from '../../services/updaters/section-service/section-service.service';
 import { of } from 'rxjs';
-import { Section } from '../../interfaces/section';
+import { Section } from '../../interfaces/section.interface';
 import { SectionModel } from '../../models/section.model';
 
 describe('SectionSetpsComponent', () => {
@@ -46,7 +52,9 @@ describe('SectionSetpsComponent', () => {
 	beforeEach(() => {
 		fixture = TestBed.createComponent(SectionStepsComponent);
 		component = fixture.componentInstance;
-		sectionService.getSectionObservable.mockReturnValue(of({ isValid: true, name: 'Given', steps: [] }));
+		sectionService.getSectionObservable.mockReturnValue(
+			of({ isValid: true, name: 'Given', steps: [] })
+		);
 		fixture.detectChanges();
 	});
 
@@ -56,9 +64,8 @@ describe('SectionSetpsComponent', () => {
 
 	it('should get the step list from the service when it is the same code block', () => {
 		component.codeBlockId = 'currentBlockID';
-		const updatedSection: Section = {
+		const updatedSection = {
 			name: 'Given',
-			isValid: true,
 			steps: [{ name: 'step' }],
 			codeBlockId: 'currentBlockID'
 		};
@@ -69,9 +76,8 @@ describe('SectionSetpsComponent', () => {
 
 	it('should not update the steps when code block is not the same', () => {
 		component.codeBlockId = 'currentBlockID';
-		const updatedSection: Section = {
+		const updatedSection = {
 			name: 'Given',
-			isValid: true,
 			steps: [{ name: 'step' }],
 			codeBlockId: 'anotherBlockID'
 		};
@@ -139,14 +145,18 @@ describe('SectionSetpsComponent', () => {
 				component.codeBlockId = 'idblock';
 				input.nativeElement.value = 'step1';
 				const sentSectionUpdate = new SectionModel('Given', 'idblock', [{ name: 'step1' }]);
-				input.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }));
+				input.nativeElement.dispatchEvent(
+					new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' })
+				);
 				expect(component.steps.length).toEqual(1);
 				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 				expect(input.nativeElement.value).toEqual('');
 			});
 
 			it('should not add new step when the input is empty', () => {
-				input.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }));
+				input.nativeElement.dispatchEvent(
+					new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' })
+				);
 				expect(component.steps.length).toEqual(0);
 			});
 		});
@@ -182,29 +192,12 @@ describe('SectionSetpsComponent', () => {
 				mockDragDropEvent.previousIndex = 1;
 				mockDragDropEvent.currentIndex = 0;
 				component.dropStep(mockDragDropEvent);
-				const sentSectionUpdate = new SectionModel('', 'idblock', [{ name: 'step2' }, { name: 'step1' }]);
+				const sentSectionUpdate = new SectionModel('', 'idblock', [
+					{ name: 'step2' },
+					{ name: 'step1' }
+				]);
 				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 			});
 		});
-	});
-
-	describe('constraints helper', () => {
-		it('should display the minimum steps constraints when there is O step', () => {
-			const minSectionCotraints = fixture.debugElement.query(
-				By.css('.section-steps-constraints .min-steps-constraint')
-			);
-			expect(minSectionCotraints.nativeElement.textContent).toEqual('At least one step is required');
-		});
-
-		it('should not display the minimum steps required if there is 1 step', async(() => {
-			component.steps = [{ name: 'step1' }];
-			fixture.whenStable().then(() => {
-				fixture.detectChanges();
-				const minSectionCotraints = fixture.debugElement.query(
-					By.css('.section-steps-constraints .min-steps-constraint')
-				);
-				expect(minSectionCotraints).toBeFalsy();
-			});
-		}));
 	});
 });

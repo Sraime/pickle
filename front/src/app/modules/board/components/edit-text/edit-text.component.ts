@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
 	selector: 'edit-text',
@@ -7,10 +7,13 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class EditTextComponent implements OnInit {
 	@Input()
-	text = '';
+	text: string = '';
 
 	@Input()
 	placeholder = 'your text here';
+
+	@Output('update')
+	saveEvent = new EventEmitter();
 
 	isEditMode = false;
 
@@ -19,6 +22,9 @@ export class EditTextComponent implements OnInit {
 	ngOnInit() {}
 
 	switchEditMode() {
+		if (this.isEditMode) {
+			this.saveEvent.emit(this.text);
+		}
 		this.isEditMode = !this.isEditMode;
 	}
 }

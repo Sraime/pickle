@@ -1,7 +1,7 @@
 <div class="scenario-header">
 	<label>Scenario: </label>
 	<div class="scenario-header-msg">
-		<edit-text class="scenario-name"></edit-text>
+		<edit-text class="scenario-name" (update)="updateName($event)"></edit-text>
 	</div>
 	<div class="scenario-header-opts">
 		<button mat-icon-button class="btn-del-scenario" (click)="delScenario()">

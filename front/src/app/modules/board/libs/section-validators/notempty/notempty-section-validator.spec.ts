@@ -1,5 +1,5 @@
 import { NotEmptySectionValidator } from './notempty-section-validator';
-import { Step } from '../../../interfaces/step';
+import { Step } from '../../../interfaces/step.interface';
 describe('validate', () => {
 	let validator;
 

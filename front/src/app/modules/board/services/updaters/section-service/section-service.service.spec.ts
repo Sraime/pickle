@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { SectionServiceService } from './section-service.service';
 import { Observable } from 'rxjs';
-import { Section } from '../../interfaces/section';
-import { Step } from '../../interfaces/step';
-import { SectionValidatorFactory } from '../../libs/section-validators/section-validator-factory';
-import { SectionModel } from '../../models/section.model';
+import { Section } from '../../../interfaces/section.interface';
+import { Step } from '../../../interfaces/step.interface';
+import { SectionValidatorFactory } from '../../../libs/section-validators/section-validator-factory';
+import { SectionModel } from '../../../models/section.model';
 
 describe('SectionServiceService', () => {
 	let service: SectionServiceService;
@@ -63,29 +63,12 @@ describe('SectionServiceService', () => {
 
 			it('should dispatch the updated section', (done) => {
 				const updatedSteps: Step[] = [{ name: 'step1' }, { name: 'step2' }];
-				const expectedUpdate: Section = {
+				const expectedUpdate = {
 					name: section,
-					isValid: true,
 					steps: updatedSteps,
 					codeBlockId: 'codeBlockId'
 				};
 
-				service.getSectionObservable(section).subscribe((steps) => {
-					expect(steps).toEqual(expectedUpdate);
-					done();
-				});
-				service.updateSection(new SectionModel(section, 'codeBlockId', updatedSteps));
-			});
-
-			it('should mark the result of the validator in the dispatched object', (done) => {
-				const updatedSteps: Step[] = [{ name: 'step1' }, { name: 'step2' }];
-				const expectedUpdate: Section = {
-					name: section,
-					isValid: false,
-					steps: updatedSteps,
-					codeBlockId: 'codeBlockId'
-				};
-				stubsValidate[section].mockReturnValue(false);
 				service.getSectionObservable(section).subscribe((steps) => {
 					expect(steps).toEqual(expectedUpdate);
 					done();

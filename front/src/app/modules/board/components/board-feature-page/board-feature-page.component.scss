@@ -22,4 +22,8 @@
 
 .feature-header {
 	height: 80px;
+	display: flex;
+	.content-feature-header {
+		flex: 1;
+	}
 }

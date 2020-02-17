@@ -1,4 +1,5 @@
 const FeatureBoardLoacators = require('../locators/board-feature-locators');
+const GherkinGeneratorLoacators = require('../locators/gherkin-generator-locators');
 
 class FeatureBoardHelper {
 
@@ -27,12 +28,17 @@ class FeatureBoardHelper {
       FeatureBoardLoacators.scenarioSectionInputStep(posScenario, sectionName),
       step
     );
+    this.actor.pressKey("Enter");
   }
 
   renameFeature(name) {
     this.actor.click(FeatureBoardLoacators.featureName);
     this.actor.fillField(FeatureBoardLoacators.featureNameInput, name);
     this.actor.click(FeatureBoardLoacators.featureNameBtnSave);
+  }
+
+  generateGherkinCode() {
+    this.actor.click(GherkinGeneratorLoacators.btnGenerateGherkin)
   }
 }
 

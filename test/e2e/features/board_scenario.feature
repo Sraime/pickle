@@ -60,42 +60,6 @@ Feature: board de création d'un scénario
         When je supprime le step "step1" de la section "Given"
         Then le step "step1" n'existe pas la section "Given"
 
-    @GherkinGenerator
-    Scenario Outline: l'affichage du scénario en Gherkin ne se fait pas si une contrainte n'est pas respectée
-        Given je suis sur l'interface de création d'un scénario
-        When j'ajoute les steps suivant à la section "<sectionName>":
-            |step1|
-        Then le scénario Gherkin n'est pas affiché
-        And le message suivant est affiché:
-            """
-            Toute les contraintes doivent être respectées pour générer le code Gherkin
-            """
-
-            Examples:
-                | sectionName |
-                | Given |
-                | When |
-                | Then |
-
-    @GherkinGenerator
-    Scenario: le scénario Gherkin est affiché quand les contraintes sont respectées
-        Given je suis sur l'interface de création d'un scénario
-        When j'ajoute les steps suivant:
-            | Given |step1|
-            | Given |step11|
-            | When |step2|
-            | When |step21|
-            | Then |step3|
-            | Then |step31|
-        Then le scénario Gherkin suivant est affiché:
-            """
-            Given step1
-            And step11
-            When step2
-            And step21
-            Then step3
-            And step31
-            """
     @EditStep
     Scenario: affichage de l'écran d'édition à la sélection du step
         Given je suis sur l'interface de création d'un scénario

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { UnknownSectionError } from '../../errors/unknown-section.error';
-import { Section } from '../../interfaces/section';
-import { SectionValidatorFactory } from '../../libs/section-validators/section-validator-factory';
-import { SectionModel } from '../../models/section.model';
+import { UnknownSectionError } from '../../../errors/unknown-section.error';
+import { Section } from '../../../interfaces/section.interface';
+import { SectionValidatorFactory } from '../../../libs/section-validators/section-validator-factory';
+import { SectionModel } from '../../../models/section.model';
+import { SectionUpdateData } from '../../../interfaces/section-update.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -28,7 +29,7 @@ export class SectionServiceService {
 		};
 	}
 
-	getSectionObservable(sectionName: string): Observable<Section> {
+	getSectionObservable(sectionName: string): Observable<SectionUpdateData> {
 		if (Object.keys(this.sectionRepositories).indexOf(sectionName) < 0) {
 			throw new UnknownSectionError();
 		}
@@ -39,10 +40,8 @@ export class SectionServiceService {
 		if (Object.keys(this.sectionRepositories).indexOf(updatedSection.name) < 0) {
 			throw new UnknownSectionError();
 		}
-		const valid = this.sectionRepositories[updatedSection.name].validator.validate(updatedSection.steps);
 		this.sectionRepositories[updatedSection.name].dispatcher.next({
 			name: updatedSection.name,
-			isValid: valid,
 			steps: updatedSection.steps,
 			codeBlockId: updatedSection.codeBlockId
 		});

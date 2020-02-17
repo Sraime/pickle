@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Step } from '../../interfaces/step';
+import { Step } from '../../interfaces/step.interface';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { SectionServiceService } from '../../services/section-service/section-service.service';
+import { SectionServiceService } from '../../services/updaters/section-service/section-service.service';
 import { SectionModel } from '../../models/section.model';
 
 @Component({
@@ -31,7 +31,9 @@ export class SectionStepsComponent implements OnInit {
 	addStep(e) {
 		if (e.srcElement.value) {
 			this.steps.push({ name: e.srcElement.value });
-			this.sectionService.updateSection(new SectionModel(this.sectionName, this.codeBlockId, this.steps));
+			this.sectionService.updateSection(
+				new SectionModel(this.sectionName, this.codeBlockId, this.steps)
+			);
 			e.srcElement.value = '';
 		}
 	}
@@ -39,11 +41,15 @@ export class SectionStepsComponent implements OnInit {
 	delStep(step: Step) {
 		const index = this.steps.findIndex((s) => s.name === step.name);
 		this.steps.splice(index, 1);
-		this.sectionService.updateSection(new SectionModel(this.sectionName, this.codeBlockId, this.steps));
+		this.sectionService.updateSection(
+			new SectionModel(this.sectionName, this.codeBlockId, this.steps)
+		);
 	}
 
 	dropStep(event: CdkDragDrop<string[]>) {
 		moveItemInArray(this.steps, event.previousIndex, event.currentIndex);
-		this.sectionService.updateSection(new SectionModel(this.sectionName, this.codeBlockId, this.steps));
+		this.sectionService.updateSection(
+			new SectionModel(this.sectionName, this.codeBlockId, this.steps)
+		);
 	}
 }
