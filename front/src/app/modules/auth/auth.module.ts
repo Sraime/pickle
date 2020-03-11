@@ -7,14 +7,11 @@ import { LoginRoutingModule } from './auth-routing.module';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AuthInterceptor } from './auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-	MatCardModule,
-	MatButtonModule,
-	MatFormFieldModule,
-	MatInputModule,
-	ErrorStateMatcher,
-	ShowOnDirtyErrorStateMatcher
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 
 @NgModule({

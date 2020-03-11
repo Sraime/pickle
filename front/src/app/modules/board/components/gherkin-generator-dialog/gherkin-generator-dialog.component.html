@@ -1,4 +1,11 @@
-<h1 mat-dialog-title>Generated Code</h1>
+<div mat-dialog-title class="dialog-with-options">
+	<h3 class="dialog-title">Generated Code</h3>
+</div>
 <div mat-dialog-content>
 	<code class="generated-feature-code">{{ featureCode }}</code>
+</div>
+<div mat-dialog-actions class="centered-dialog-options">
+	<button mat-stroked-button class="btn-text-icon btn-download-code" (click)="downloadCode()">
+		<mat-icon>save_alt</mat-icon>Download
+	</button>
 </div>

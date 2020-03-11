@@ -6,7 +6,9 @@ import { DeleteScenarioEventData } from '../scenario-builder/delete-scenario-eve
 import { FeatureUpdaterService } from '../../services/updaters/feature-updater/feature-updater.service';
 import { EventUpdateType } from '../../libs/EventUpdateType.enums';
 import { ScenarioUpdaterService } from '../../services/updaters/scenario-updater/scenario-updater.service';
-import { MatDialog, MatCardModule, MatIconModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { GherkinGeneratorDialogComponent } from '../gherkin-generator-dialog/gherkin-generator-dialog.component';
 import { FeatureAssemblyService } from '../../services/feature-assembly/feature-assembly.service';
 import { EditTextComponent } from '../edit-text/edit-text.component';

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Feature } from '../../interfaces/feature.interface';
 import { FeatureAssemblyService } from '../../services/feature-assembly/feature-assembly.service';
-import { MatDialogRef } from '@angular/material';
-import { GherkinCodeGeneratorService } from '../../services/gherkin-code-generator/gherkin-code-generator.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { GherkinCodeGenerator } from '../../libs/gherkin-code-generator/gherkin-code-generator';
+import saveAs from 'file-saver';
 
 @Component({
 	selector: 'app-gherkin-generator-dialog',
@@ -11,16 +12,20 @@ import { GherkinCodeGeneratorService } from '../../services/gherkin-code-generat
 })
 export class GherkinGeneratorDialogComponent implements OnInit {
 	private feature: Feature;
-	public featureCode: string = '';
+	public featureCode = '';
 
 	constructor(
 		private featureAssembly: FeatureAssemblyService,
-		private codeGenerator: GherkinCodeGeneratorService,
 		public dialogRef: MatDialogRef<GherkinGeneratorDialogComponent>
 	) {}
 
 	ngOnInit() {
 		this.feature = this.featureAssembly.getAssembledFeature();
-		this.featureCode = GherkinCodeGeneratorService.generateFeatureCode(this.feature);
+		this.featureCode = GherkinCodeGenerator.generateFeatureCode(this.feature);
+	}
+
+	downloadCode() {
+		const blob = new Blob([this.featureCode], { type: 'text/plain' });
+		saveAs(blob, 'feature_code.feature');
 	}
 }

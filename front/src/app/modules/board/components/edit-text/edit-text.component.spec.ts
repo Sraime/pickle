@@ -3,12 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditTextComponent } from './edit-text.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
-import {
-	MatFormFieldModule,
-	MatIconModule,
-	MatInputModule,
-	MatButtonModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 

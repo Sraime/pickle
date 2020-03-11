@@ -51,7 +51,6 @@ export class FeatureAssemblyService {
 	private listenFeatureEvents(featureUpdaterService) {
 		this.subscriptions.push(
 			featureUpdaterService.getObservable().subscribe((update: FeatureUpdateData) => {
-				console.log('featureUpdate', update);
 				this.featureName = update.name;
 			})
 		);

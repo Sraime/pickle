@@ -56,13 +56,13 @@ describe('FeatureAssemblyService', () => {
 	describe('getAssembledFeature', () => {
 		let assembledFeature: Feature;
 
-		const simpleScenarioCreated = {
+		const simpleScenarioCreated: ScenarioUpdateData = {
 			name: 'First Scenario',
 			codeBlockId: 'S1',
 			updateType: EventUpdateType.CREATE
 		};
 
-		const simpleScenarioUpdated = {
+		const simpleScenarioUpdated: ScenarioUpdateData = {
 			name: 'First Scenario Update',
 			codeBlockId: 'S1',
 			updateType: EventUpdateType.UPDATE

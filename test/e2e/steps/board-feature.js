@@ -13,7 +13,7 @@ Given('les scénarios suivant sont enregistrés :', (scTable) => {
     })
 });
 
-Given('les steps suivants sont enregistrés :', (scTable) => {
+Given('les steps suivants sont enregistrés :', (stepsTable) => {
     let indexScenario;
     stepsTable.parse().hashes().forEach((step) => {
         indexScenario = step.scenarioNumber ? step.scenarioNumber : 1;
@@ -64,3 +64,4 @@ Then('la feature contient les scénarios dans l\'ordre suivant :', (scTable) => 
 Then('le nom de la feature est {string}', (name) => {
     FeatureBoardHelper.renameFeature(name);
 });
+

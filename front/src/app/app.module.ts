@@ -6,7 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { LoginModule } from './modules/auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BoardModule } from './modules/board/board.module';
 import { AppInitService } from './services/app-init/app-init.service';
 

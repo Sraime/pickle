@@ -3,14 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditStepDialogComponent } from './edit-step-dialog.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By, BrowserModule } from '@angular/platform-browser';
-import {
-	MatDialogModule,
-	MatDialogRef,
-	MAT_DIALOG_DATA,
-	MatButtonModule,
-	MatFormFieldModule,
-	MatInputModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Subject } from 'rxjs';

@@ -21,7 +21,13 @@ module.exports = {
   featureNameBtnSave: LocatorsExporter.cssLocator(CssLocators.featureHeader + ' .btn-save-text'),
 
   scenarioName: (position) => {
-    return LocatorsExporter.cssLocator('.scenario-builder-card:nth-child(' + position + ') .scenario-name');
+    return LocatorsExporter.cssLocator(CssLocators.scenarioPosition(position) + ' .scenario-name');
+  },
+  scenarioNameInput: (position) => {
+    return LocatorsExporter.cssLocator(CssLocators.scenarioPosition(position) + ' .input-edit-text');
+  },
+  scenarioNameBtnSave: (position) => {
+    return LocatorsExporter.cssLocator(CssLocators.scenarioPosition(position) + ' .btn-save-text');
   },
 
   lastScenarioName: LocatorsExporter.cssLocator(CssLocators.lastScenario + ' .scenario-name'),

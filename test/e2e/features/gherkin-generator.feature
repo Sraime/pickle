@@ -23,3 +23,26 @@ Feature: génération du code gherkin d'une feature
           When step2
           Then step3
       """
+
+  @US28
+  Scenario: téléchargement du code gherkin
+    Given je suis sur l'interface de création d'une feature
+    And les scénarios suivant sont enregistrés :
+      | name |
+      | S1 |
+    And les steps suivants sont enregistrés :
+      | scenarioNumber | sectionName | stepName |
+      | 1              | Given       | step1    |
+      | 1              | When        | step2    |
+      | 1              | Then        | step3    |
+    When je demande la generation du code gherkin
+    And je demande l'export du code gherkin généré
+    Then le fichier "feature_code.feature" est téléchargé et contient le code suivant : 
+      """
+      Feature: 
+
+        Scenario: S1
+          Given step1
+          When step2
+          Then step3
+      """

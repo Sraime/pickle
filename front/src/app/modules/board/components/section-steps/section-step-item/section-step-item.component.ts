@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Step } from '../../../interfaces/step.interface';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EditStepDialogComponent } from '../../edit-step-dialog/edit-step-dialog.component';
 
 @Component({

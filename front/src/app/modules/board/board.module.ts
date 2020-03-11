@@ -4,15 +4,13 @@ import { CommonModule } from '@angular/common';
 import { BoardRoutingModule } from './board-routing.module';
 import { BoardPageComponent } from './components/board-page/board-page.component';
 import { SectionStepsComponent } from './components/section-steps/section-steps.component';
-import {
-	MatCardModule,
-	MatIconModule,
-	MatInputModule,
-	MatFormFieldModule,
-	MatListModule,
-	MatButtonModule,
-	MatDialogModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SectionStepItemComponent } from './components/section-steps/section-step-item/section-step-item.component';

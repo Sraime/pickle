@@ -9,7 +9,7 @@ import { EventUpdateType } from '../../libs/EventUpdateType.enums';
 import { MockComponent } from 'ng-mocks';
 import { SectionStepsComponent } from '../section-steps/section-steps.component';
 import { EditTextComponent } from '../edit-text/edit-text.component';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('ScenarioBuilderComponent', () => {
 	let component: ScenarioBuilderComponent;

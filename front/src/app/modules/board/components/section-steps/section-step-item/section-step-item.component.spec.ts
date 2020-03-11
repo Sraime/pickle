@@ -3,7 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionStepItemComponent } from './section-step-item.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
-import { MatIconModule, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { EditStepDialogComponent } from '../../edit-step-dialog/edit-step-dialog.component';
 import { of } from 'rxjs';
 

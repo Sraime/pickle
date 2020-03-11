@@ -19,6 +19,12 @@ class FeatureBoardHelper {
     this.actor.click(FeatureBoardLoacators.lastScenarioNameBtnSave);
   }
 
+  renameScenario(name, position = 1) {
+    this.actor.click(FeatureBoardLoacators.scenarioName(position));
+    this.actor.fillField(FeatureBoardLoacators.scenarioNameInput(position), name);
+    this.actor.click(FeatureBoardLoacators.scenarioNameBtnSave(position));
+  }
+
   deleteScenario(position) {
     this.actor.click(FeatureBoardLoacators.scenarioBtnDel(position));
   }
