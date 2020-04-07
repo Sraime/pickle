@@ -32,6 +32,11 @@ export class FeatureAssemblyService {
 		return { name: this.featureName, scenarios: Array.from(this.scenarios.values()) };
 	}
 
+	getAssembledScenario(codeBlockId: string): Scenario {
+		const stored = this.scenarios.get(codeBlockId);
+		return stored ? stored : null;
+	}
+
 	stopListenning(): void {
 		this.subscriptions.forEach((sub) => sub.unsubscribe());
 	}

@@ -65,3 +65,8 @@ Then('le nom de la feature est {string}', (name) => {
     FeatureBoardHelper.renameFeature(name);
 });
 
+Then('les steps suivant sont présents :', (stepsTable) => {
+    stepsTable.parse().hashes().forEach((step) => {
+        I.see(step.stepName, FeatureBoardLocators.scenarioSection(step.scenarioNumber, step.sectionName));
+    });
+});

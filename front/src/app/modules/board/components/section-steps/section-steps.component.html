@@ -5,7 +5,7 @@
 	<mat-card-content>
 		<mat-list cdkDropList (cdkDropListDropped)="dropStep($event)" class="section-steps-list">
 			<mat-list-item cdkDrag class="section-step" *ngFor="let step of steps">
-				<section-step-item (delete)="delStep($event)" name="{{ step.name }}"></section-step-item>
+				<section-step-item (delete)="delStep($event)" (update)="updateStep($event)" name="{{ step.name }}"></section-step-item>
 			</mat-list-item>
 		</mat-list>
 		<mat-form-field class="field-new-step">

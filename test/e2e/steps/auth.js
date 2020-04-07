@@ -14,6 +14,7 @@ Given('je suis connecté avec l\'email {string} avec le mdp {string}', async(ema
     I.fillField('email', email);
     I.fillField('password', mdp);
     I.click('connexion', "#login-form");
+    I.waitForElement('#pseudo-user-connected');
 });
 
 When('je suis sur l\'écran de connexion', () => {
@@ -30,6 +31,7 @@ When('je saisis le mdp {string}', (mdp) => {
 
 When('je valide la connexion', () => {
     I.click('connexion', "#login-form");
+    I.wait(1);
 });
 
 When('je valide la création du compte', () => {

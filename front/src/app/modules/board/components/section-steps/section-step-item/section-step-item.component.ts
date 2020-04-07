@@ -17,6 +17,9 @@ export class SectionStepItemComponent implements OnInit {
 	@Output('delete')
 	delEvent: EventEmitter<Step> = new EventEmitter<Step>();
 
+	@Output('update')
+	updateEvent: EventEmitter<Step[]> = new EventEmitter<Step[]>();
+
 	ngOnInit() {}
 
 	delAction() {
@@ -29,7 +32,7 @@ export class SectionStepItemComponent implements OnInit {
 			data: { name: this.name }
 		});
 		dialog.afterClosed().subscribe((updatedValue) => {
-			this.name = updatedValue.name;
+			this.updateEvent.emit([{ name: this.name },{ name: updatedValue.name }]);
 		});
 	}
 }

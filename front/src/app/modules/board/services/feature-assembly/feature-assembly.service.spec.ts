@@ -41,6 +41,19 @@ describe('FeatureAssemblyService', () => {
 			]
 		});
 	});
+
+	const simpleScenarioCreated: ScenarioUpdateData = {
+		name: 'First Scenario',
+		codeBlockId: 'S1',
+		updateType: EventUpdateType.CREATE
+	};
+
+	const simpleScenarioUpdated: ScenarioUpdateData = {
+		name: 'First Scenario Update',
+		codeBlockId: 'S1',
+		updateType: EventUpdateType.UPDATE
+	};
+
 	beforeEach(() => {
 		service = TestBed.get(FeatureAssemblyService);
 	});
@@ -55,18 +68,6 @@ describe('FeatureAssemblyService', () => {
 
 	describe('getAssembledFeature', () => {
 		let assembledFeature: Feature;
-
-		const simpleScenarioCreated: ScenarioUpdateData = {
-			name: 'First Scenario',
-			codeBlockId: 'S1',
-			updateType: EventUpdateType.CREATE
-		};
-
-		const simpleScenarioUpdated: ScenarioUpdateData = {
-			name: 'First Scenario Update',
-			codeBlockId: 'S1',
-			updateType: EventUpdateType.UPDATE
-		};
 
 		it('should return an empty feature by default', () => {
 			assembledFeature = service.getAssembledFeature();
@@ -155,6 +156,24 @@ describe('FeatureAssemblyService', () => {
 			subjectScenarioObservable.next(simpleScenarioUpdated);
 			assembledFeature = service.getAssembledFeature();
 			expect(assembledFeature.scenarios).toEqual([]);
+		});
+	});
+
+	describe('getAssembledScenario()', () => {
+		it('should return the assembled scenario with the given codeBlockId', () => {
+			subjectScenarioObservable.next(simpleScenarioCreated);
+			const assembledScenario = service.getAssembledScenario(simpleScenarioCreated.codeBlockId);
+			expect(assembledScenario).toEqual({
+				name: 'First Scenario',
+				givenSteps: [],
+				whenSteps: [],
+				thenSteps: []
+			});
+		});
+
+		it('should return null when there is scenario with the given codeBlockId', () => {
+			const assembledScenario = service.getAssembledScenario('xxx');
+			expect(assembledScenario).toEqual(null);
 		});
 	});
 });

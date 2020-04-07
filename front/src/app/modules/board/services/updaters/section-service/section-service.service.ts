@@ -5,6 +5,7 @@ import { Section } from '../../../interfaces/section.interface';
 import { SectionValidatorFactory } from '../../../libs/section-validators/section-validator-factory';
 import { SectionModel } from '../../../models/section.model';
 import { SectionUpdateData } from '../../../interfaces/section-update.interface';
+import { BoardSocketSynchro } from '../../boardSynchronizer/board-socket-synchro.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +13,10 @@ import { SectionUpdateData } from '../../../interfaces/section-update.interface'
 export class SectionServiceService {
 	private sectionRepositories;
 
-	constructor(validatorFactory: SectionValidatorFactory) {
+	constructor(
+		validatorFactory: SectionValidatorFactory,
+		private synchronizerService: BoardSocketSynchro
+	) {
 		this.sectionRepositories = {
 			Given: {
 				validator: validatorFactory.getSectionValidator('Given'),
@@ -27,6 +31,11 @@ export class SectionServiceService {
 				dispatcher: new Subject<Section>()
 			}
 		};
+		this.synchronizerService
+			.getSectionUpdateObservable()
+			.subscribe((updatedSection: SectionUpdateData) => {
+				this.sectionRepositories[updatedSection.name].dispatcher.next(updatedSection);
+			});
 	}
 
 	getSectionObservable(sectionName: string): Observable<SectionUpdateData> {
@@ -40,10 +49,14 @@ export class SectionServiceService {
 		if (Object.keys(this.sectionRepositories).indexOf(updatedSection.name) < 0) {
 			throw new UnknownSectionError();
 		}
-		this.sectionRepositories[updatedSection.name].dispatcher.next({
-			name: updatedSection.name,
-			steps: updatedSection.steps,
-			codeBlockId: updatedSection.codeBlockId
-		});
+		if (this.synchronizerService.synchonizationEnabled()) {
+			this.synchronizerService.dispatchSectionUpdate({
+				name: updatedSection.name,
+				steps: updatedSection.steps,
+				codeBlockId: updatedSection.codeBlockId
+			});
+		} else {
+			this.sectionRepositories[updatedSection.name].dispatcher.next(updatedSection);
+		}
 	}
 }

@@ -10,6 +10,7 @@ import { MockComponent } from 'ng-mocks';
 import { SectionStepsComponent } from '../section-steps/section-steps.component';
 import { EditTextComponent } from '../edit-text/edit-text.component';
 import { MatIconModule } from '@angular/material/icon';
+import { of } from 'rxjs';
 
 describe('ScenarioBuilderComponent', () => {
 	let component: ScenarioBuilderComponent;
@@ -18,12 +19,17 @@ describe('ScenarioBuilderComponent', () => {
 
 	configureTestSuite(() => {
 		TestBed.configureTestingModule({
-			declarations: [ScenarioBuilderComponent, MockComponent(SectionStepsComponent), MockComponent(EditTextComponent)],
+			declarations: [
+				ScenarioBuilderComponent,
+				MockComponent(SectionStepsComponent),
+				MockComponent(EditTextComponent)
+			],
 			imports: [MatIconModule],
 			providers: [
 				{
 					provide: ScenarioUpdaterService,
 					useValue: {
+						getObservable: jest.fn().mockReturnValue(of({})),
 						updateData: stubUpadateData
 					}
 				}
@@ -93,8 +99,10 @@ describe('ScenarioBuilderComponent', () => {
 
 		it('should dispatch through the service updater when the name change', () => {
 			component.codeBlockId = 'S1';
-			const editText: EditTextComponent = fixture.debugElement.query(By.directive(EditTextComponent)).componentInstance;
-			editText.saveEvent.emit('hello')
+			const editText: EditTextComponent = fixture.debugElement.query(
+				By.directive(EditTextComponent)
+			).componentInstance;
+			editText.saveEvent.emit('hello');
 			expect(stubUpadateData).toHaveBeenCalledWith({
 				codeBlockId: 'S1',
 				name: 'hello',

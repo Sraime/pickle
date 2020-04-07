@@ -1,5 +1,5 @@
 export enum EventUpdateType {
-	CREATE,
-	UPDATE,
-	DELETE
+	CREATE = 'CREATE',
+	UPDATE = 'UPDATE',
+	DELETE = 'DELETE'
 }

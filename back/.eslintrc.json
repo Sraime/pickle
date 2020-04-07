@@ -29,6 +29,7 @@
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
         "jest/valid-expect": "error",
-        "jest/no-try-expect": 0
+        "jest/no-try-expect": 0,
+        "jest/no-test-callback": false
     }
 }

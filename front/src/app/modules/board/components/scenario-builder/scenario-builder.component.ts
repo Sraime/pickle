@@ -13,6 +13,9 @@ export class ScenarioBuilderComponent implements OnInit {
 
 	isNameInEditMode = false;
 
+	@Input()
+	scenarioName = '';
+
 	@Output('delete')
 	delEvent: EventEmitter<DeleteScenarioEventData> = new EventEmitter<DeleteScenarioEventData>();
 
@@ -21,7 +24,13 @@ export class ScenarioBuilderComponent implements OnInit {
 
 	constructor(private scenarioUpdaterService: ScenarioUpdaterService) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.scenarioUpdaterService.getObservable().subscribe((data) => {
+			if (data.codeBlockId === this.codeBlockId && data.updateType === EventUpdateType.UPDATE) {
+				this.scenarioName = data.name;
+			}
+		});
+	}
 
 	switchEditNameMode() {
 		this.isNameInEditMode = !this.isNameInEditMode;

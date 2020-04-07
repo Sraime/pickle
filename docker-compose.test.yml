@@ -7,9 +7,9 @@ services:
     volumes:
       - ./data/test/db:/data/db
     ports: 
-      - 27018:27017
+      - 27017:27017
     environment:
-      MONGO_INITDB_DATABASE: pickle
+      MONGO_INITDB_DATABASE: pickle_test
 
   pickle_back_test:
     container_name: 'pickle_back_test'
@@ -24,7 +24,7 @@ services:
       NODE_ENV: test
       DB_HOST: pickle_mongo_test
       DB_PORT: 27017
-      DB_NAME: pickle
+      DB_NAME: pickle_test
       AUTH_SECRET: randomsecretpassword
 
   pickle_front_test:

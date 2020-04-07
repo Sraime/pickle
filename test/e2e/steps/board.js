@@ -161,3 +161,16 @@ Then("le mode d'édition d'un step s'affiche", () => {
 Then("le nom du scénario est {string}", (scenarioName) => {
   I.see(scenarioName, ".scenario-name");
 });
+
+When('je renomme le step {string} de la section {string} en {string}', (currentTextStep, sectionName, newTexteStep) => {
+  let stepElement = {
+    xpath:
+      ".//section-steps[contains(@class, 'section-steps-"
+      + sectionName.toLowerCase()
+      + "')]//mat-list-item[contains(., '"
+      + currentTextStep + "')]"
+  };
+  I.click(stepElement);
+  I.fillField(".mat-dialog-content input.edit-step", newTexteStep);
+  I.click(".mat-dialog-content .save-edit-step");
+});
