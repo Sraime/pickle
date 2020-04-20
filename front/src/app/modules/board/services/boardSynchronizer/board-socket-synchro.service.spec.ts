@@ -8,6 +8,7 @@ jest.mock('socket.io-client');
 import io from 'socket.io-client';
 import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
 import { EventUpdateType } from '../../libs/EventUpdateType.enums';
+import { FeatureUpdateData } from '../../interfaces/feature-update-data.interface';
 
 describe('SynchroBoardService', () => {
 	let service: BoardSocketSynchro;
@@ -33,13 +34,17 @@ describe('SynchroBoardService', () => {
 		updateType: EventUpdateType.CREATE
 	};
 
-	MockSocket.open.mockImplementation(() => {
+	const featureUpdate: FeatureUpdateData = {
+		name: 'sc1'
+	};
+
+	io.mockImplementation(() => {
 		MockSocket.connected = true;
+		return MockSocket;
 	});
 	MockSocket.close.mockImplementation(() => {
 		MockSocket.connected = false;
 	});
-	io.mockReturnValue(MockSocket);
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({});
@@ -47,7 +52,6 @@ describe('SynchroBoardService', () => {
 	});
 	it('should be created', () => {
 		expect(service).toBeTruthy();
-		expect(io).toHaveBeenCalled();
 	});
 
 	it('should have synchronization disabled by default', () => {
@@ -55,13 +59,13 @@ describe('SynchroBoardService', () => {
 	});
 
 	it('should enable synchronization', () => {
-		service.startSynchronization();
-		expect(MockSocket.open).toHaveBeenCalled();
+		service.startSynchronization('xxx');
+		expect(io).toHaveBeenCalled();
 		expect(service.synchonizationEnabled()).toBeTruthy();
 	});
 
 	it('should disable synchronization', () => {
-		service.startSynchronization();
+		service.startSynchronization('xxx');
 		service.stopSynchronization();
 		expect(service.synchonizationEnabled()).toBeFalsy();
 		expect(MockSocket.close).toHaveBeenCalled();
@@ -90,11 +94,17 @@ describe('SynchroBoardService', () => {
 					service.dispatchScenarioUpdate(scenarioUpdateTypeCreate);
 				}).toThrowError('Synchronization is not active');
 			});
+
+			it('should throw an error when trying a dispatch feature update', () => {
+				expect(() => {
+					service.dispatchFeatureUpdate(scenarioUpdateTypeCreate);
+				}).toThrowError('Synchronization is not active');
+			});
 		});
 
 		describe('synchro enabled', () => {
 			beforeEach(() => {
-				service.startSynchronization();
+				service.startSynchronization('xxx');
 			});
 			afterEach(() => {
 				service.stopSynchronization();
@@ -109,24 +119,35 @@ describe('SynchroBoardService', () => {
 				service.dispatchScenarioUpdate(scenarioUpdateTypeCreate);
 				expect(MockSocket.emit).toHaveBeenCalledWith('scenario-update', scenarioUpdateTypeCreate);
 			});
-		});
-	});
 
-	describe('update events received', () => {
-		it('should receive updated data on section-update event', (done) => {
-			service.getSectionUpdateObservable().subscribe((data) => {
-				expect(data).toEqual(sectionUpdate);
-				done();
+			it('should emit updated data when trying a dispatch feature update', () => {
+				service.dispatchFeatureUpdate(featureUpdate);
+				expect(MockSocket.emit).toHaveBeenCalledWith('feature-update', featureUpdate);
 			});
-			listennedEvents.get('section-update')(sectionUpdate);
-		});
 
-		it('should receive updated data on scenario-update event', (done) => {
-			service.getScenarioUpdateObservable().subscribe((data) => {
-				expect(data).toEqual(scenarioUpdateTypeCreate);
-				done();
+			it('should receive updated data on section-update event', (done) => {
+				service.getSectionUpdateObservable().subscribe((data) => {
+					expect(data).toEqual(sectionUpdate);
+					done();
+				});
+				listennedEvents.get('section-update')(sectionUpdate);
 			});
-			listennedEvents.get('scenario-update')(scenarioUpdateTypeCreate);
+
+			it('should receive updated data on scenario-update event', (done) => {
+				service.getScenarioUpdateObservable().subscribe((data) => {
+					expect(data).toEqual(scenarioUpdateTypeCreate);
+					done();
+				});
+				listennedEvents.get('scenario-update')(scenarioUpdateTypeCreate);
+			});
+
+			it('should receive updated data on feature-update event', (done) => {
+				service.getFeatureUpdateObservable().subscribe((data) => {
+					expect(data).toEqual(featureUpdate);
+					done();
+				});
+				listennedEvents.get('feature-update')(featureUpdate);
+			});
 		});
 	});
 });

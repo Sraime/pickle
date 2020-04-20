@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SectionServiceService } from './section-service.service';
+import { SectionUpdaterService } from './section-updater.service';
 import { Observable, Subject } from 'rxjs';
 import { Section } from '../../../interfaces/section.interface';
 import { Step } from '../../../interfaces/step.interface';
@@ -11,9 +11,9 @@ import { SectionUpdateData } from '../../../interfaces/section-update.interface'
 jest.mock('../../boardSynchronizer/board-socket-synchro.service');
 import { BoardSocketSynchro } from '../../boardSynchronizer/board-socket-synchro.service';
 
-describe('SectionServiceService', () => {
+describe('SectionUpdaterService', () => {
 	let MockBoardSocketSynchro: jest.Mocked<BoardSocketSynchro>;
-	let service: SectionServiceService;
+	let service: SectionUpdaterService;
 	let stubGetValidator;
 	let stubsValidate;
 	let EventSubjectSocketSection;
@@ -51,7 +51,7 @@ describe('SectionServiceService', () => {
 			]
 		});
 		MockBoardSocketSynchro.getSectionUpdateObservable.mockReturnValue(EventSubjectSocketSection);
-		service = TestBed.get(SectionServiceService);
+		service = TestBed.get(SectionUpdaterService);
 	});
 
 	it('should be created', () => {

@@ -12,13 +12,13 @@ const BoardService = {
     return ScenarioModel.findByIdAndUpdate(codeBlockId, updatedFileds);
   },
 
-  insertScenario: async (name) => {
-    const ns = new ScenarioModel({name: name});
+  insertScenario: async (scenarioData) => {
+    const ns = new ScenarioModel(scenarioData);
     return await ns.save();
   },
 
-  updateScenario: (name, codeBlockId) => {
-    return ScenarioModel.findByIdAndUpdate(codeBlockId, {name: name});
+  updateScenario: (scenarioData, codeBlockId) => {
+    return ScenarioModel.findByIdAndUpdate(codeBlockId, scenarioData);
   },
 
   deleteScenario: (codeBlockId) => {
@@ -26,7 +26,7 @@ const BoardService = {
   },
 
   getScenarioByFeatureId: (featureId) => {
-    return ScenarioModel.find({});
+    return ScenarioModel.find({featureId: featureId});
   } 
 }
 

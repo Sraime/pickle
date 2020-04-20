@@ -8,7 +8,7 @@ import { FeatureUpdateData } from '../../interfaces/feature-update-data.interfac
 import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
 import { ScenarioUpdaterService } from '../updaters/scenario-updater/scenario-updater.service';
 import { EventUpdateType } from '../../libs/EventUpdateType.enums';
-import { SectionServiceService } from '../updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../updaters/section-updater/section-updater.service';
 import { SectionUpdateData } from '../../interfaces/section-update.interface';
 
 describe('FeatureAssemblyService', () => {
@@ -33,7 +33,7 @@ describe('FeatureAssemblyService', () => {
 					}
 				},
 				{
-					provide: SectionServiceService,
+					provide: SectionUpdaterService,
 					useValue: {
 						getSectionObservable: jest.fn().mockReturnValue(subjectSectionObservable.asObservable())
 					}

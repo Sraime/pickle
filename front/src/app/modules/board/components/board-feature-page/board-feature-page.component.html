@@ -1,7 +1,11 @@
 <div class="feature-header">
 	<div class="content-feature-header">
 		<label>Feature: </label>
-		<edit-text class="feature-name" (update)="updateName($event)"></edit-text>
+		<edit-text
+			class="feature-name"
+			(update)="updateName($event)"
+			text="{{ featureName }}"
+		></edit-text>
 	</div>
 	<div class="opts-feature-header">
 		<button class="btn-generate-code" mat-stroked-button (click)="openGenerator()">

@@ -70,10 +70,26 @@ server.listen(config.app.port, function() {
 	});
 });
 
+const userBoardSynchronization = new Map();
+
 io.on("connection", (socket) => {
+	const idToConnect = socket.handshake.query.featureId;
+	if (!idToConnect){
+		throw new Error('inpossible to synchronize this board');
+	}
+	if(userBoardSynchronization.get(socket.id)) {
+		socket.leave(userBoardSynchronization.get(socket.id))
+	}
+	socket.join(idToConnect);
+	userBoardSynchronization.set(socket.id, idToConnect);
 	const server = {
 		socket,
-		io
+		io,
+		featureId: idToConnect
 	};
-	BoardEventHandler(server)
+	BoardEventHandler(server);
+	socket.on('disconnect', () => {
+    socket.leave(userBoardSynchronization.get(socket.id))
+		userBoardSynchronization.delete(socket.id);
+  });
 });

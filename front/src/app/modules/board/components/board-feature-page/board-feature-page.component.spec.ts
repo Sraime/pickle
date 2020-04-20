@@ -18,13 +18,28 @@ import { BoardSocketSynchro } from '../../services/boardSynchronizer/board-socke
 import { Subject } from 'rxjs';
 import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
 import { BoardLoaderService } from '../../services/board-loader/board-loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FeatureUpdateData } from '../../interfaces/feature-update-data.interface';
 jest.mock('../../services/board-loader/board-loader.service');
+jest.mock('@angular/router');
 
 const mockBoardLoader: jest.Mocked<BoardLoaderService> = new BoardLoaderService(
 	null,
 	null,
+	null,
+	null,
 	null
 ) as jest.Mocked<BoardLoaderService>;
+const mockRouter: jest.Mocked<Router> = new Router(
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null
+) as jest.Mocked<Router>;
 mockBoardLoader.loadFeature.mockReturnValue(Promise.resolve());
 
 describe('BoardFeaturePageComponent', () => {
@@ -36,6 +51,8 @@ describe('BoardFeaturePageComponent', () => {
 	const stubStopSocketSynchro = jest.fn();
 	const stubOpenDialog = jest.fn();
 	const subjectScenarioUpdater: Subject<ScenarioUpdateData> = new Subject<ScenarioUpdateData>();
+	const subjectFeatureUpdater: Subject<FeatureUpdateData> = new Subject<FeatureUpdateData>();
+	const featureIdLoaded = 'randomFeatureId';
 
 	configureTestSuite(() => {
 		TestBed.configureTestingModule({
@@ -50,6 +67,7 @@ describe('BoardFeaturePageComponent', () => {
 				{
 					provide: FeatureUpdaterService,
 					useValue: {
+						getObservable: jest.fn().mockReturnValue(subjectFeatureUpdater),
 						updateData: stubFeatureUpadateData
 					}
 				},
@@ -80,6 +98,14 @@ describe('BoardFeaturePageComponent', () => {
 				{
 					provide: BoardLoaderService,
 					useValue: mockBoardLoader
+				},
+				{
+					provide: ActivatedRoute,
+					useValue: { snapshot: { paramMap: { get: () => featureIdLoaded } } }
+				},
+				{
+					provide: Router,
+					useValue: mockRouter
 				}
 			]
 		});
@@ -91,6 +117,14 @@ describe('BoardFeaturePageComponent', () => {
 		fixture.detectChanges();
 	});
 
+	beforeEach(() => {
+		mockBoardLoader.loadFeature.mockReturnValue(Promise.resolve());
+	});
+
+	afterEach(() => {
+		mockBoardLoader.loadFeature.mockClear();
+	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
@@ -98,6 +132,23 @@ describe('BoardFeaturePageComponent', () => {
 	it('should have a feature name in an edit text', () => {
 		const name = fixture.debugElement.query(By.css('.feature-header edit-text.feature-name'));
 		expect(name).toBeTruthy();
+	});
+
+	it('should load the feature with the featureId url param', () => {
+		expect(mockBoardLoader.loadFeature).toHaveBeenCalledWith(featureIdLoaded);
+	});
+
+	it('should update the feature name when the feature updater dispatch an event', () => {
+		const fupdate: FeatureUpdateData = { name: 'new name' };
+		subjectFeatureUpdater.next(fupdate);
+		expect(component.featureName).toEqual('new name');
+	});
+
+	describe('loading failed', () => {
+		mockBoardLoader.loadFeature.mockRejectedValue(new Error('This feature does not exist'));
+		it('should redirect to the not found page when loading feature fails', () => {
+			expect(mockRouter.navigate).toHaveBeenCalledWith(['/not-found']);
+		});
 	});
 
 	describe('add scenario', () => {

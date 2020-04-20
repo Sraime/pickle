@@ -4,7 +4,7 @@ import { BoardPageComponent } from './components/board-page/board-page.component
 import { BoardFeaturePageComponent } from './components/board-feature-page/board-feature-page.component';
 
 const routes: Routes = [
-	{ path: 'board', component: BoardFeaturePageComponent },
+	{ path: 'board/:featureId', component: BoardFeaturePageComponent },
 ];
 
 @NgModule({

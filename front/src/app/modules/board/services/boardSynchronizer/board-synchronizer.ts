@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
 
 export interface BoardSynchronizer {
-	startSynchronization();
+	startSynchronization(featureId: string);
 	stopSynchronization();
 	synchonizationEnabled(): boolean;
 	dispatchSectionUpdate(sectionData: SectionUpdateData);

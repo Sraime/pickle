@@ -11,6 +11,9 @@ export const environment = {
 		},
 		scenario: {
 			url: 'http://localhost:3000/scenario'
+		},
+		feature: {
+			url: 'http://localhost:3000/feature'
 		}
 	},
 	socket: {

@@ -10,7 +10,7 @@ import { BoardSocketSynchro } from '../../boardSynchronizer/board-socket-synchro
 @Injectable({
 	providedIn: 'root'
 })
-export class SectionServiceService {
+export class SectionUpdaterService {
 	private sectionRepositories;
 
 	constructor(

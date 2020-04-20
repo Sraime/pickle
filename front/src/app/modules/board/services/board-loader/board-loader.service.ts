@@ -1,25 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ScenarioService } from '../scenario/scenario.service';
-import { ApiScenario } from '../scenario/api-scenario.interface';
+import { ScenarioService } from '../api/scenario/scenario.service';
+import { ApiScenario } from '../api/scenario/api-scenario.interface';
 import { ScenarioUpdaterService } from '../updaters/scenario-updater/scenario-updater.service';
 import { EventUpdateType } from '../../libs/EventUpdateType.enums';
-import { SectionServiceService } from '../updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../updaters/section-updater/section-updater.service';
 import { SectionModel } from '../../models/section.model';
+import { ApiFeature } from '../api/feature/api-feature.interface';
+import { FeatureService } from '../api/feature/feature.service';
+import { FeatureUpdaterService } from '../updaters/feature-updater/feature-updater.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class BoardLoaderService {
 	constructor(
+		private featureService: FeatureService,
 		private scenarioService: ScenarioService,
 		private scenarioUpdater: ScenarioUpdaterService,
-		private sectionUpdater: SectionServiceService
+		private sectionUpdater: SectionUpdaterService,
+		private featureUpdater: FeatureUpdaterService
 	) {}
 
-	async loadFeature() {
+	async loadFeature(featureId: string = '') {
+		const apiFeature: ApiFeature = await this.featureService.getFeature(featureId).toPromise();
+		if (!apiFeature) {
+			throw new Error('This feature does not exist');
+		}
+		this.featureUpdater.updateData({ name: apiFeature.name });
 		const apiScenarios: ApiScenario[] = await this.scenarioService
-			.getScenariosFeature()
+			.getScenariosFeature(featureId)
 			.toPromise();
 		apiScenarios.forEach((apiSc: ApiScenario) => {
 			this.scenarioUpdater.updateData({

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Step } from '../../interfaces/step.interface';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { SectionServiceService } from '../../services/updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../../services/updaters/section-updater/section-updater.service';
 import { SectionModel } from '../../models/section.model';
 import { FeatureAssemblyService } from '../../services/feature-assembly/feature-assembly.service';
 
@@ -12,7 +12,7 @@ import { FeatureAssemblyService } from '../../services/feature-assembly/feature-
 })
 export class SectionStepsComponent implements OnInit {
 	constructor(
-		private sectionService: SectionServiceService,
+		private sectionService: SectionUpdaterService,
 		private featureAssembly: FeatureAssemblyService
 	) {}
 

@@ -1,0 +1,23 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "_id": {"type": "string"},
+      "name": {"type": "string"},
+      "givenSteps": {
+        "type": "array",
+        "items": {"type": "string"}
+      },
+      "whenSteps": {
+        "type": "array",
+        "items": {"type": "string"}
+      },
+      "thenSteps": {
+        "type": "array",
+        "items": {"type": "string"}
+      }
+    },
+    "required": ["_id", "name"]
+  }
+}

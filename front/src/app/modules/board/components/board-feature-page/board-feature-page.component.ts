@@ -8,6 +8,8 @@ import { GherkinGeneratorDialogComponent } from '../gherkin-generator-dialog/ghe
 import { FeatureAssemblyService } from '../../services/feature-assembly/feature-assembly.service';
 import { BoardSocketSynchro } from '../../services/boardSynchronizer/board-socket-synchro.service';
 import { BoardLoaderService } from '../../services/board-loader/board-loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FeatureUpdateData } from '../../interfaces/feature-update-data.interface';
 
 @Component({
 	selector: 'app-board-feature-page',
@@ -17,19 +19,41 @@ import { BoardLoaderService } from '../../services/board-loader/board-loader.ser
 export class BoardFeaturePageComponent implements OnInit, OnDestroy {
 	scenarios: Map<string, string> = new Map<string, string>();
 
+	featureName = '';
+
 	constructor(
 		private featureUpdaterService: FeatureUpdaterService,
 		private scenarioUpdaterService: ScenarioUpdaterService,
 		private featureAssemblyService: FeatureAssemblyService,
 		private synchronizerService: BoardSocketSynchro,
 		private dialog: MatDialog,
-		private boardLoaderService: BoardLoaderService
+		private boardLoaderService: BoardLoaderService,
+		private route: ActivatedRoute,
+		private router: Router
 	) {}
 
 	ngOnInit() {
-		this.boardLoaderService.loadFeature().then(() => {
-			this.synchronizerService.startSynchronization();
+		this.listenScenarioUpdates();
+		this.featureUpdaterService.getObservable().subscribe((featureUpdate: FeatureUpdateData) => {
+			this.featureName = featureUpdate.name;
 		});
+		const featureIdToLoad = this.route.snapshot.paramMap.get('featureId');
+		this.boardLoaderService
+			.loadFeature(featureIdToLoad)
+			.then(() => {
+				this.synchronizerService.startSynchronization(featureIdToLoad);
+			})
+			.catch((error) => {
+				console.log(error)
+				this.router.navigate(['/not-found']);
+			});
+	}
+
+	ngOnDestroy(): void {
+		this.synchronizerService.stopSynchronization();
+	}
+
+	listenScenarioUpdates() {
 		this.scenarioUpdaterService.getObservable().subscribe((eventData) => {
 			switch (eventData.updateType) {
 				case EventUpdateType.DELETE:
@@ -40,10 +64,6 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
 					break;
 			}
 		});
-	}
-
-	ngOnDestroy(): void {
-		this.synchronizerService.stopSynchronization();
 	}
 
 	addScenario() {
@@ -70,7 +90,7 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
 		this.dialog.open(GherkinGeneratorDialogComponent, { width: '50%' });
 	}
 
-	shouldBeRendered(index:number, keyValueScenario:any): number {
-    return keyValueScenario.key;
-  }
+	shouldBeRendered(index: number, keyValueScenario: any): number {
+		return keyValueScenario.key;
+	}
 }

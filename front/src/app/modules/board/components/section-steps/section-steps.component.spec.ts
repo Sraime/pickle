@@ -11,7 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { SectionServiceService } from '../../services/updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../../services/updaters/section-updater/section-updater.service';
 import { of } from 'rxjs';
 import { SectionModel } from '../../models/section.model';
 import { FeatureAssemblyService } from '../../services/feature-assembly/feature-assembly.service';
@@ -42,7 +42,7 @@ describe('SectionSetpsComponent', () => {
 			schemas: [NO_ERRORS_SCHEMA],
 			providers: [
 				{
-					provide: SectionServiceService,
+					provide: SectionUpdaterService,
 					useValue: sectionService
 				},
 				{

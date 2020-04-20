@@ -1,34 +1,50 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BoardLoaderService } from './board-loader.service';
-import { ScenarioService } from '../scenario/scenario.service';
-import { ApiScenario } from '../scenario/api-scenario.interface';
+import { FeatureService } from '../api/feature/feature.service';
+import { ScenarioService } from '../api/scenario/scenario.service';
+import { ApiScenario } from '../api/scenario/api-scenario.interface';
 import { of } from 'rxjs';
 import { ScenarioUpdaterService } from '../updaters/scenario-updater/scenario-updater.service';
 import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
 import { EventUpdateType } from '../../libs/EventUpdateType.enums';
-import { SectionServiceService } from '../updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../updaters/section-updater/section-updater.service';
 import { SectionModel } from '../../models/section.model';
+import { ApiFeature } from '../api/feature/api-feature.interface';
+import { FeatureUpdaterService } from '../updaters/feature-updater/feature-updater.service';
+import { FeatureUpdateData } from '../../interfaces/feature-update-data.interface';
 
-jest.mock('../scenario/scenario.service');
+jest.mock('../api/feature/feature.service');
+jest.mock('../api/scenario/scenario.service');
 jest.mock('../updaters/scenario-updater/scenario-updater.service');
-jest.mock('../updaters/section-service/section-service.service');
+jest.mock('../updaters/section-updater/section-updater.service');
+jest.mock('../updaters/feature-updater/feature-updater.service');
 
 describe('BoardLoaderService', () => {
 	let service: BoardLoaderService;
+	const mockFeatureService: jest.Mocked<FeatureService> = new FeatureService(null) as jest.Mocked<
+		FeatureService
+	>;
 	const mockScenarioService: jest.Mocked<ScenarioService> = new ScenarioService(
 		null
 	) as jest.Mocked<ScenarioService>;
 	const mockScenarioUpdater: jest.Mocked<ScenarioUpdaterService> = new ScenarioUpdaterService(
 		null
 	) as jest.Mocked<ScenarioUpdaterService>;
-	const mockSectionUpdater: jest.Mocked<SectionServiceService> = new SectionServiceService(
+	const mockSectionUpdater: jest.Mocked<SectionUpdaterService> = new SectionUpdaterService(
 		null,
 		null
-	) as jest.Mocked<SectionServiceService>;
+	) as jest.Mocked<SectionUpdaterService>;
+	const mockFeatureUpdater: jest.Mocked<FeatureUpdaterService> = new FeatureUpdaterService() as jest.Mocked<
+		FeatureUpdaterService
+	>;
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			providers: [
+				{
+					provide: FeatureService,
+					useValue: mockFeatureService
+				},
 				{
 					provide: ScenarioService,
 					useValue: mockScenarioService
@@ -38,8 +54,13 @@ describe('BoardLoaderService', () => {
 					useValue: mockScenarioUpdater
 				},
 				{
-					provide: SectionServiceService,
+					provide: SectionUpdaterService,
 					useValue: mockSectionUpdater
+				},
+
+				{
+					provide: FeatureUpdaterService,
+					useValue: mockFeatureUpdater
 				}
 			]
 		});
@@ -68,7 +89,13 @@ describe('BoardLoaderService', () => {
 			}
 		];
 
+		const apiFeature: ApiFeature = {
+			_id: 'fid',
+			name: 'my feature'
+		};
+
 		beforeEach(() => {
+			mockFeatureService.getFeature.mockReturnValue(of(apiFeature));
 			mockScenarioService.getScenariosFeature.mockReturnValue(of(apiScenarios));
 		});
 
@@ -78,8 +105,26 @@ describe('BoardLoaderService', () => {
 			mockSectionUpdater.updateSection.mockClear();
 		});
 
-		it('should request the scenario service', () => {
-			service.loadFeature();
+		it('should request the feature service with the given feature id', async () => {
+			await service.loadFeature(apiFeature._id);
+			expect(mockFeatureService.getFeature).toHaveBeenCalledWith(apiFeature._id);
+		});
+
+		it('should update the feature returned by the service through the feature updater', async () => {
+			await service.loadFeature(apiFeature._id);
+			const updateFeatureData: FeatureUpdateData = {
+				name: apiFeature.name
+			};
+			expect(mockFeatureUpdater.updateData).toHaveBeenCalledWith(updateFeatureData);
+		});
+
+		it('should throw an error when the feature does not exist', async () => {
+			mockFeatureService.getFeature.mockReturnValue(of(null));
+			await expect(service.loadFeature()).rejects.toThrow(new Error('This feature does not exist'));
+		});
+
+		it('should request the scenario service', async () => {
+			await service.loadFeature();
 			expect(mockScenarioService.getScenariosFeature).toHaveBeenCalled();
 		});
 
