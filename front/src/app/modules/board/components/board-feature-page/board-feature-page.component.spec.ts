@@ -14,26 +14,60 @@ import { FeatureAssemblyService } from '../../services/feature-assembly/feature-
 import { EditTextComponent } from '../edit-text/edit-text.component';
 import { MockComponent } from 'ng-mocks';
 import { ScenarioBuilderComponent } from '../scenario-builder/scenario-builder.component';
+import { BoardSocketSynchro } from '../../services/boardSynchronizer/board-socket-synchro.service';
+import { Subject } from 'rxjs';
+import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
+import { BoardLoaderService } from '../../services/board-loader/board-loader.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FeatureUpdateData } from '../../interfaces/feature-update-data.interface';
+jest.mock('../../services/board-loader/board-loader.service');
+jest.mock('@angular/router');
+
+const mockBoardLoader: jest.Mocked<BoardLoaderService> = new BoardLoaderService(
+	null,
+	null,
+	null,
+	null,
+	null
+) as jest.Mocked<BoardLoaderService>;
+const mockRouter: jest.Mocked<Router> = new Router(
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null
+) as jest.Mocked<Router>;
+mockBoardLoader.loadFeature.mockReturnValue(Promise.resolve());
 
 describe('BoardFeaturePageComponent', () => {
 	let component: BoardFeaturePageComponent;
 	let fixture: ComponentFixture<BoardFeaturePageComponent>;
 	const stubFeatureUpadateData = jest.fn();
 	const stubScenarioUpadateData = jest.fn();
+	const stubStartSocketSynchro = jest.fn();
+	const stubStopSocketSynchro = jest.fn();
 	const stubOpenDialog = jest.fn();
+	const subjectScenarioUpdater: Subject<ScenarioUpdateData> = new Subject<ScenarioUpdateData>();
+	const subjectFeatureUpdater: Subject<FeatureUpdateData> = new Subject<FeatureUpdateData>();
+	const featureIdLoaded = 'randomFeatureId';
 
 	configureTestSuite(() => {
 		TestBed.configureTestingModule({
 			declarations: [
 				BoardFeaturePageComponent,
-				MockComponent(EditTextComponent),
-				MockComponent(ScenarioBuilderComponent)
+				MockComponent(ScenarioBuilderComponent),
+				MockComponent(EditTextComponent)
 			],
 			imports: [MatCardModule, MatIconModule],
+
 			providers: [
 				{
 					provide: FeatureUpdaterService,
 					useValue: {
+						getObservable: jest.fn().mockReturnValue(subjectFeatureUpdater),
 						updateData: stubFeatureUpadateData
 					}
 				},
@@ -44,7 +78,15 @@ describe('BoardFeaturePageComponent', () => {
 				{
 					provide: ScenarioUpdaterService,
 					useValue: {
+						getObservable: jest.fn().mockReturnValue(subjectScenarioUpdater),
 						updateData: stubScenarioUpadateData
+					}
+				},
+				{
+					provide: BoardSocketSynchro,
+					useValue: {
+						startSynchronization: stubStartSocketSynchro,
+						stopSynchronization: stubStopSocketSynchro
 					}
 				},
 				{
@@ -52,6 +94,18 @@ describe('BoardFeaturePageComponent', () => {
 					useValue: {
 						open: stubOpenDialog
 					}
+				},
+				{
+					provide: BoardLoaderService,
+					useValue: mockBoardLoader
+				},
+				{
+					provide: ActivatedRoute,
+					useValue: { snapshot: { paramMap: { get: () => featureIdLoaded } } }
+				},
+				{
+					provide: Router,
+					useValue: mockRouter
 				}
 			]
 		});
@@ -63,18 +117,38 @@ describe('BoardFeaturePageComponent', () => {
 		fixture.detectChanges();
 	});
 
+	beforeEach(() => {
+		mockBoardLoader.loadFeature.mockReturnValue(Promise.resolve());
+	});
+
+	afterEach(() => {
+		mockBoardLoader.loadFeature.mockClear();
+	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should display a one scenario builder by default', () => {
-		const sbuilder = fixture.debugElement.query(By.css('scenario-builder'));
-		expect(sbuilder).toBeTruthy();
-	});
-
-	it('should have a scenarion name in an edit text', () => {
+	it('should have a feature name in an edit text', () => {
 		const name = fixture.debugElement.query(By.css('.feature-header edit-text.feature-name'));
 		expect(name).toBeTruthy();
+	});
+
+	it('should load the feature with the featureId url param', () => {
+		expect(mockBoardLoader.loadFeature).toHaveBeenCalledWith(featureIdLoaded);
+	});
+
+	it('should update the feature name when the feature updater dispatch an event', () => {
+		const fupdate: FeatureUpdateData = { name: 'new name' };
+		subjectFeatureUpdater.next(fupdate);
+		expect(component.featureName).toEqual('new name');
+	});
+
+	describe('loading failed', () => {
+		mockBoardLoader.loadFeature.mockRejectedValue(new Error('This feature does not exist'));
+		it('should redirect to the not found page when loading feature fails', () => {
+			expect(mockRouter.navigate).toHaveBeenCalledWith(['/not-found']);
+		});
 	});
 
 	describe('add scenario', () => {
@@ -88,20 +162,24 @@ describe('BoardFeaturePageComponent', () => {
 			expect(btnAdd.nativeElement.textContent.includes('New Scenario')).toBeTruthy();
 		});
 
-		it('should add a new scenario after clicking on the add btn', async(() => {
-			btnAdd.nativeElement.click();
+		it('should add a scenarios emited by the updater', async(() => {
+			subjectScenarioUpdater.next({
+				name: 'hello',
+				codeBlockId: 'S1',
+				updateType: EventUpdateType.CREATE
+			});
 			fixture.whenStable().then(() => {
 				fixture.detectChanges();
 				const builders = fixture.debugElement.queryAll(By.css('scenario-builder'));
-				expect(builders.length).toEqual(2);
+				expect(builders.length).toEqual(1);
 			});
 		}));
 
-		it('should dispatch a add event through the service updater', () => {
+		it('should dispatch a add event through the service updater after clicking on the add btn', () => {
 			btnAdd.nativeElement.click();
 			expect(stubScenarioUpadateData).toHaveBeenCalledWith({
 				name: '',
-				codeBlockId: expect.any(String),
+				codeBlockId: '',
 				updateType: EventUpdateType.CREATE
 			});
 		});
@@ -109,13 +187,22 @@ describe('BoardFeaturePageComponent', () => {
 
 	describe('delete scenario', () => {
 		it('should remove the given scenario from the list after receiving a delete event', () => {
-			component.scenarios = ['S1', 'S2'];
-			component.delScenario(new DeleteScenarioEventData('S1'));
-			expect(component.scenarios).toEqual(['S2']);
+			const existingScenarios: Map<string, string> = new Map<string, string>();
+			existingScenarios.set('S1', 'Scenairo1');
+			existingScenarios.set('S2', 'Scenairo2');
+			component.scenarios = existingScenarios;
+			subjectScenarioUpdater.next({
+				name: '',
+				codeBlockId: 'S2',
+				updateType: EventUpdateType.DELETE
+			});
+			expect(Array.from(component.scenarios.keys())).toEqual(['S1']);
 		});
 
 		it('should dispatch a delete event through the service updater', () => {
-			component.scenarios = ['S1'];
+			const existingScenarios: Map<string, string> = new Map<string, string>();
+			existingScenarios.set('S1', 'Scenairo1');
+			component.scenarios = existingScenarios;
 			component.delScenario(new DeleteScenarioEventData('S1'));
 			expect(stubScenarioUpadateData).toHaveBeenCalledWith({
 				name: '',

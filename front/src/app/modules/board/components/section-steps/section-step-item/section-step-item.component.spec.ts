@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { EditStepDialogComponent } from '../../edit-step-dialog/edit-step-dialog.component';
 import { of } from 'rxjs';
+import { Step } from '../../../interfaces/step.interface';
 
 describe('SectionStepItemComponent', () => {
 	let component: SectionStepItemComponent;
@@ -80,14 +81,17 @@ describe('SectionStepItemComponent', () => {
 			});
 		});
 
-		it('should update the name with the step returned by the edit dialog', () => {
+		it('should emit an event with the updated name returned by the edit dialog', (done) => {
 			component.name = 'step1';
 			stubEditDialog.open.mockReturnValue({
 				afterClosed: () => of({ name: 'edited' })
 			});
+			component.updateEvent.subscribe((step: Step[]) => {
+				expect(step).toEqual([{name: 'step1'},{name: 'edited'}]);
+				done();
+			});
 			const step = fixture.debugElement.query(By.css('.step-content-item'));
 			step.nativeElement.click();
-			expect(component.name).toEqual('edited');
 		});
 	});
 });

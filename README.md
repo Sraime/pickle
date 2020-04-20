@@ -5,9 +5,16 @@ A demo is available on : https://pickle.prodgie.tech
 You can follow the project on : https://tree.taiga.io/project/sraime-pickle/kanban
 
 ### Key Features : 
-- Writing a feature's test suite (WIP - Next Release)
-- Exporting your feature in a .feature file (WIP - Next Release)
-- Collaborative scenario writing (coming soon)
+- feature's writing test suite (DONE)
+- Feature's exportation in a .feature file (DONE)
+- Collaborative test writing with live synchro (DONE)
+- Features management (next release)
+- Background code block support (not planned yet)
+- Project management (not planned yet)
+- Step's autocompletion (not planned yet)
+- Data Tables support (not planned yet)
+- Tags support (not planned yet)
+- Examples support (not planned yet)
 
 ### Environnement's URLs : 
 |Local Environnement|Backend URL          |Frontend URL         |

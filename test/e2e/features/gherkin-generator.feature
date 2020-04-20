@@ -1,9 +1,12 @@
 @GherkinGenerator
 Feature: génération du code gherkin d'une feature
 
+  Background:
+    Given une feature avec l’identifiant "5e9cb1ac31111718631563fd"
+
   @US27
   Scenario: generation du code avec un scénario
-    Given je suis sur l'interface de création d'une feature
+    Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
     And le nom de la feature est "amazing feature"
     And les scénarios suivant sont enregistrés :
       | name |
@@ -26,7 +29,7 @@ Feature: génération du code gherkin d'une feature
 
   @US28
   Scenario: téléchargement du code gherkin
-    Given je suis sur l'interface de création d'une feature
+    Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
     And les scénarios suivant sont enregistrés :
       | name |
       | S1 |

@@ -4,15 +4,18 @@ Feature: board de création d'un scénario
     Je veux construire un scénario via l'interface
     Afin de structurer son écriture collaborativement et facilité l'accès au Gherkin
 
+    Background:
+        Given une feature avec l’identifiant "5e9cb1ac31111718631563fd"
+            
     Scenario: accès à l'interface de création
         Given le navigateur web est ouvert
-        When je me rend sur la page de création d'un scénario
+        When je me rend sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         Then la section d'édition "Given" est affichée
         And la section d'édition "When" est affichée
         And la section d'édition "Then" est affichée
 
     Scenario Outline: ajout d'un step une section
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         When j'ajoute le step suivant à la section "<sectionName>"
             """step test"""
         Then la section "<sectionName>" contient le step
@@ -25,7 +28,7 @@ Feature: board de création d'un scénario
                 |Then|
 
     Scenario Outline: ajout de plusieurs steps une section
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         When j'ajoute les steps suivant à la section "<sectionName>":
             |step1|
             |step2|
@@ -40,7 +43,7 @@ Feature: board de création d'un scénario
                 |Then|
 
     Scenario Outline: ajout d'un step avec plus 100 caractères
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         When j'ajoute le step suivant à la section "<sectionName>"
             """xxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyyxxxxxyyyyy1"""
         Then la section "<sectionName>" contient le step 
@@ -54,7 +57,7 @@ Feature: board de création d'un scénario
     
     @DeleteStep
     Scenario: suppression d'un step dans la section Given
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         And les steps suivants ont été ajoutés
             | Given | step1 |
         When je supprime le step "step1" de la section "Given"
@@ -62,7 +65,7 @@ Feature: board de création d'un scénario
 
     @EditStep
     Scenario: affichage de l'écran d'édition à la sélection du step
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         And les steps suivants ont été ajoutés
             | Given | step1 |
         When j'active le mode d'édition pour le step "step1" de la section "Given"
@@ -71,7 +74,7 @@ Feature: board de création d'un scénario
 
     @EditStep
     Scenario: modification d'un step avec validation
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         And les steps suivants ont été ajoutés
             | Given | step1 |
         And le step "step1" de la section "Given" est en mode édition
@@ -84,7 +87,7 @@ Feature: board de création d'un scénario
             
     @EditStep
     Scenario: modification d'un step avec annulation
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         And les steps suivants ont été ajoutés
             | Given | step1 |
         And le step "step1" de la section "Given" est en mode édition
@@ -96,6 +99,6 @@ Feature: board de création d'un scénario
 
     @EditScenarioName
     Scenario: nommage du scénario
-        Given je suis sur l'interface de création d'un scénario
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         When je renomme le scénario en "scénario nominal"
         Then le nom du scénario est "scénario nominal"

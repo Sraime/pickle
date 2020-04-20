@@ -7,7 +7,7 @@ import { Scenario } from '../../interfaces/scenario.interface';
 import { ScenarioUpdateData } from '../../interfaces/scenario-update-data.interface';
 import { Subscription } from 'rxjs';
 import { EventUpdateType } from '../../libs/EventUpdateType.enums';
-import { SectionServiceService } from '../updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../updaters/section-updater/section-updater.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -21,7 +21,7 @@ export class FeatureAssemblyService {
 	constructor(
 		featureUpdaterService: FeatureUpdaterService,
 		scenarioUpdaterService: ScenarioUpdaterService,
-		sectionService: SectionServiceService
+		sectionService: SectionUpdaterService
 	) {
 		this.listenFeatureEvents(featureUpdaterService);
 		this.listenScenarioEvents(scenarioUpdaterService);
@@ -30,6 +30,11 @@ export class FeatureAssemblyService {
 
 	getAssembledFeature(): Feature {
 		return { name: this.featureName, scenarios: Array.from(this.scenarios.values()) };
+	}
+
+	getAssembledScenario(codeBlockId: string): Scenario {
+		const stored = this.scenarios.get(codeBlockId);
+		return stored ? stored : null;
 	}
 
 	stopListenning(): void {

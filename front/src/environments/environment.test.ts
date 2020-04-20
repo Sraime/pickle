@@ -9,8 +9,16 @@ export const environment = {
 		auth: {
 			url: 'http://localhost:3001/auth'
 		},
-		bank: {
-			url: 'http://localhost:3001/bank'
+		scenario: {
+			url: 'http://localhost:3001/scenario'
+		},
+		feature: {
+			url: 'http://localhost:3001/feature'
+		}
+	},
+	socket: {
+		board: {
+			url: 'http://localhost:3001'
 		}
 	}
 };

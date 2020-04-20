@@ -1,14 +1,20 @@
+
 const express = require('express');
+
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { createLogger, format, transports, loggers } = require('winston');
 
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
 const { combine, timestamp, printf } = format;
 const routes = require('./app/routes');
 const config = require('./config');
+const BoardEventHandler = require('./app/sockets/board/board-events-handler');
 
-const app = express();
 
 // eslint-disable-next-line no-shadow
 const loggerFormat = printf(({ level, message, timestamp }) => {
@@ -41,6 +47,7 @@ mongoose
 
 app.use(cors({ origin: true, credentials: true }));
 
+
 app.use(
 	bodyParser.urlencoded({
 		extended: true
@@ -56,9 +63,33 @@ app.use(function(req, res, next) {
 });
 app.use('/', routes);
 
-app.listen(config.app.port, function() {
+server.listen(config.app.port, function() {
 	logger.log({
 		level: 'info',
 		message: `[ENV=${config.app.env}] Application running on port ${config.app.port}`
 	});
+});
+
+const userBoardSynchronization = new Map();
+
+io.on("connection", (socket) => {
+	const idToConnect = socket.handshake.query.featureId;
+	if (!idToConnect){
+		throw new Error('inpossible to synchronize this board');
+	}
+	if(userBoardSynchronization.get(socket.id)) {
+		socket.leave(userBoardSynchronization.get(socket.id))
+	}
+	socket.join(idToConnect);
+	userBoardSynchronization.set(socket.id, idToConnect);
+	const server = {
+		socket,
+		io,
+		featureId: idToConnect
+	};
+	BoardEventHandler(server);
+	socket.on('disconnect', () => {
+    socket.leave(userBoardSynchronization.get(socket.id))
+		userBoardSynchronization.delete(socket.id);
+  });
 });

@@ -1,7 +1,11 @@
 <div class="feature-header">
 	<div class="content-feature-header">
 		<label>Feature: </label>
-		<edit-text class="feature-name" (update)="updateName($event)"></edit-text>
+		<edit-text
+			class="feature-name"
+			(update)="updateName($event)"
+			text="{{ featureName }}"
+		></edit-text>
 	</div>
 	<div class="opts-feature-header">
 		<button class="btn-generate-code" mat-stroked-button (click)="openGenerator()">
@@ -10,9 +14,16 @@
 	</div>
 </div>
 <div class="feature-scenarios">
-	<mat-card class="code-builder-card scenario-builder-card" *ngFor="let id of scenarios">
+	<mat-card
+		class="code-builder-card scenario-builder-card"
+		*ngFor="let scenario of scenarios | keyvalue; trackBy: shouldBeRendered"
+	>
 		<mat-card-content>
-			<scenario-builder codeBlockId="{{ id }}" (delete)="delScenario($event)"></scenario-builder>
+			<scenario-builder
+				codeBlockId="{{ scenario.key }}"
+				(delete)="delScenario($event)"
+				scenarioName="{{ scenario.value }}"
+			></scenario-builder>
 		</mat-card-content>
 	</mat-card>
 	<button mat-stroked-button color="primary" class="btn-add-scenario" (click)="addScenario()">

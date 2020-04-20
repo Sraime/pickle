@@ -11,10 +11,21 @@ import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { SectionServiceService } from '../../services/updaters/section-service/section-service.service';
+import { SectionUpdaterService } from '../../services/updaters/section-updater/section-updater.service';
 import { of } from 'rxjs';
-import { Section } from '../../interfaces/section.interface';
 import { SectionModel } from '../../models/section.model';
+import { FeatureAssemblyService } from '../../services/feature-assembly/feature-assembly.service';
+import { Scenario } from '../../interfaces/scenario.interface';
+
+jest.mock('../../services/feature-assembly/feature-assembly.service');
+
+const mockAssemblyService: jest.Mocked<FeatureAssemblyService> = new FeatureAssemblyService(
+	null,
+	null,
+	null
+) as jest.Mocked<FeatureAssemblyService>;
+
+mockAssemblyService.getAssembledScenario.mockReturnValue(null);
 
 describe('SectionSetpsComponent', () => {
 	let component: SectionStepsComponent;
@@ -31,8 +42,12 @@ describe('SectionSetpsComponent', () => {
 			schemas: [NO_ERRORS_SCHEMA],
 			providers: [
 				{
-					provide: SectionServiceService,
+					provide: SectionUpdaterService,
 					useValue: sectionService
+				},
+				{
+					provide: FeatureAssemblyService,
+					useValue: mockAssemblyService
 				}
 			],
 			imports: [
@@ -56,8 +71,31 @@ describe('SectionSetpsComponent', () => {
 		fixture.detectChanges();
 	});
 
+	beforeEach(() => {
+		mockAssemblyService.getAssembledScenario.mockReturnValue(null);
+	});
+
+	afterEach(() => {
+		mockAssemblyService.getAssembledScenario.mockClear();
+	});
+
 	it('should create', () => {
 		expect(component).toBeTruthy();
+	});
+
+	it('should initialize steps whith stored step by the assembly', () => {
+		component.sectionName = 'Given';
+		component.codeBlockId = 'xxx';
+		const storedScenario: Scenario = {
+			name: 'hello',
+			givenSteps: [{ name: 'step1' }],
+			whenSteps: [],
+			thenSteps: []
+		};
+		mockAssemblyService.getAssembledScenario.mockReturnValue(storedScenario);
+		component.ngOnInit();
+		expect(mockAssemblyService.getAssembledScenario).toHaveBeenCalledWith('xxx');
+		expect(component.steps).toEqual(storedScenario.givenSteps);
 	});
 
 	it('should get the step list from the service when it is the same code block', () => {
@@ -160,11 +198,21 @@ describe('SectionSetpsComponent', () => {
 		});
 
 		describe('remove step', () => {
-			it('should send the list the deleted element to the service when it emit a delEvent', () => {
+			it('should send the list with the deleted element to the service when it emit a delete event', () => {
 				component.steps = [{ name: 'step1' }];
 				component.codeBlockId = 'idblock';
 				component.delStep({ name: 'step1' });
 				const sentSectionUpdate = new SectionModel('', 'idblock', []);
+				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
+			});
+		});
+
+		describe('update step', () => {
+			it('should send the list with the updated element to the service when it emit an update event', () => {
+				component.steps = [{ name: 'step1' }];
+				component.codeBlockId = 'idblock';
+				component.updateStep([{ name: 'step1' }, { name: 'edited' }]);
+				const sentSectionUpdate = new SectionModel('', 'idblock', [{ name: 'edited' }]);
 				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 			});
 		});
