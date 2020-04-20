@@ -1,35 +1,23 @@
 const I = actor();
 const mongoose = require('mongoose');
 const UserModel = require('../models/user.model');
+const FeatureModel = require('../models/feature.model');
 const ScenarioModel = require('../models/scenario.model');
 const config = require('../../config');
 
-Before(async() => {
-  if(mongoose.connection.readyState === 0) {
-    var mongoDB = 'mongodb://'+config.mongodb.host+':'+config.mongodb.port+'/'+config.mongodb.db+'';
-    mongoose.connect(mongoDB, { useNewUrlParser: true })
-    .then(()=> {})
-    .catch((e)=> console.error("DB error !", e));
-  }
-  await cleanUpDb();
-});
-
 const cleanUpDb = async() => {
-  await UserModel.deleteMany({});
-  await ScenarioModel.deleteMany({});
-  const sc = new ScenarioModel({});
-  await sc.save();
+  const up = UserModel.deleteMany({});
+  const us = ScenarioModel.deleteMany({});
+  const uf = FeatureModel.deleteMany({});
+
+  await Promise.all([
+    up,us,uf
+  ]);
+  
 }
 
 After(async() => {
   await cleanUpDb();
-  mongoose.connection.close()
-    .then(()=> {})
-    .catch((e)=> console.error("DB closing error !", e));
-});
-
-Fail(async(test, err) => {
-  
 });
 
 When('je saisis le champ {string} avec {string}', (name, value) => {

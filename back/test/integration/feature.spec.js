@@ -2,6 +2,7 @@ const request = require('request-promise-native');
 const { Validator } = require('jsonschema');
 const config = require('../../config');
 const FeatureModel = require('../../app/models/feature.model');
+const ScenarioModel = require('../../app/models/scenario.model');
 const featureGetResponseSchema = require('./schemas/feature/feature-get-response.json');
 const featureScenarioGetResponseSchema = require('./schemas/feature/feature-scenario-get-response.json');
 
@@ -13,16 +14,27 @@ describe('featrure', () => {
 	const validator = new Validator();
 	const existingFeature = {
 		name: 'existing feature',
-  };
+	};
+	let existingScenario;
   let nfeature;
+  let nscenario;
 
 	beforeAll(async () => {
 		nfeature = new FeatureModel(existingFeature);
 		await nfeature.save();
+
+		existingScenario = {
+			name: 'SC1',
+			featureId: nfeature._id,
+			givenSteps: [{name: 'step1'}]
+		};
+		nscenario = new ScenarioModel(existingScenario);
+		await nscenario.save();
 	});
 
 	afterAll(async () => {
 		await FeatureModel.deleteOne({ name: existingFeature.name });
+		await ScenarioModel.deleteOne({ name: existingScenario.name });
 	});
 
 	beforeEach(() => {
@@ -54,6 +66,7 @@ describe('featrure', () => {
     it('should return scenario of the requested feature', async () => {
 			reqOptions.uri = reqOptions.uri + '/' + nfeature._id + '/scenario';
 			const res = await request(reqOptions);
+			console.log(res[0].givenSteps)
 			expect(validator.validate(res, featureScenarioGetResponseSchema).errors).toHaveLength(0);
 		});
     

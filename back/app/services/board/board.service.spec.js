@@ -25,7 +25,7 @@ describe('BoardService', () => {
 
     it('should create and save the scenario', async() => {
       mockSaveScenario.mockReturnValue(simpleSavedModel)
-      const result  = await BoardService.insertScenario(simpleSavedModel.name);
+      const result  = await BoardService.insertScenario({name: simpleSavedModel.name});
       expect(result).toEqual(simpleSavedModel)
     });
   });

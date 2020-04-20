@@ -35,7 +35,7 @@ describe('BoardLoaderService', () => {
 		null,
 		null
 	) as jest.Mocked<SectionUpdaterService>;
-	const mockFeatureUpdater: jest.Mocked<FeatureUpdaterService> = new FeatureUpdaterService() as jest.Mocked<
+	const mockFeatureUpdater: jest.Mocked<FeatureUpdaterService> = new FeatureUpdaterService(null) as jest.Mocked<
 		FeatureUpdaterService
 	>;
 	beforeEach(() => {
@@ -114,6 +114,15 @@ describe('BoardLoaderService', () => {
 			await service.loadFeature(apiFeature._id);
 			const updateFeatureData: FeatureUpdateData = {
 				name: apiFeature.name
+			};
+			expect(mockFeatureUpdater.updateData).toHaveBeenCalledWith(updateFeatureData);
+		});
+
+		it('should update the feature returned by the service through the feature updater', async () => {
+			mockFeatureService.getFeature.mockReturnValue(of({ _id: 'xxx', name: undefined }));
+			await service.loadFeature('xxx');
+			const updateFeatureData: FeatureUpdateData = {
+				name: ''
 			};
 			expect(mockFeatureUpdater.updateData).toHaveBeenCalledWith(updateFeatureData);
 		});

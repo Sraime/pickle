@@ -5,19 +5,38 @@
     "properties": {
       "_id": {"type": "string"},
       "name": {"type": "string"},
+      "featureId": {"type": "string"},
       "givenSteps": {
         "type": "array",
-        "items": {"type": "string"}
+        "items": {
+          "type": "object", 
+          "properties": {
+            "name": {"type": "string"}
+          },
+          "required": ["name"]
+        }
       },
       "whenSteps": {
         "type": "array",
-        "items": {"type": "string"}
+        "items": {
+          "type": "object", 
+          "properties": {
+            "name": {"type": "string"}
+          },
+          "required": ["name"]
+        }
       },
       "thenSteps": {
         "type": "array",
-        "items": {"type": "string"}
+        "items": {
+          "type": "object", 
+          "properties": {
+            "name": {"type": "string"}
+          },
+          "required": ["name"]
+        }
       }
     },
-    "required": ["_id", "name"]
+    "required": ["_id", "name", "givenSteps", "whenSteps", "thenSteps"]
   }
 }

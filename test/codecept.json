@@ -18,8 +18,8 @@
     "I": "./e2e/steps/steps.js"
   },
   "mocha": {},
-  "bootstrap": false,
-  "teardown": null,
+  "bootstrap": "./e2e/bootstrapTests.js",
+  "teardown": "./e2e/teardownTests.js",
   "hooks": [],
   "gherkin": {
     "features": "./e2e/features/*.feature",

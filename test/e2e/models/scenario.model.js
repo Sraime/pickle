@@ -7,6 +7,10 @@ const scenarioSchema = new mongoose.Schema(
 			trim: true,
 			maxlength: 100
     },
+    featureId: {
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'features'
+    },
     givenSteps: {
       type: Array,
       required: true,

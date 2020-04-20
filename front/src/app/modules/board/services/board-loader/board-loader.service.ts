@@ -27,7 +27,7 @@ export class BoardLoaderService {
 		if (!apiFeature) {
 			throw new Error('This feature does not exist');
 		}
-		this.featureUpdater.updateData({ name: apiFeature.name });
+		this.featureUpdater.updateData({ name: apiFeature.name ? apiFeature.name : '' });
 		const apiScenarios: ApiScenario[] = await this.scenarioService
 			.getScenariosFeature(featureId)
 			.toPromise();

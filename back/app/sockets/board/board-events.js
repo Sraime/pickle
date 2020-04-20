@@ -13,11 +13,11 @@ const BoardEvents = {
     switch(scenarioData.updateType) {
       case 'CREATE' : serviceResult = BoardService.insertScenario({
         name: scenarioData.name,
-        fratureId: server.featureId
+        featureId: server.featureId
       }); break;
       case 'UPDATE' : serviceResult = BoardService.updateScenario({
         name: scenarioData.name,
-        fratureId: server.featureId
+        featureId: server.featureId
       }, scenarioData.codeBlockId); break;
       case 'DELETE' : serviceResult = BoardService.deleteScenario(scenarioData.codeBlockId); break;
       default: throw new Error('updateType is not specified');

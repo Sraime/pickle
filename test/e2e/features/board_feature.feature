@@ -4,21 +4,24 @@ Feature: board de création des scenario d'une Feature
     Je veux construire un les scenarios de ma Feature en Gherkin
     Afin de structurer et standardiser leur écriture
 
+    Background:
+        Given une feature avec l’identifiant "5e9cb1ac31111718631563fd"
+
     @US30
     Scenario: accès au board de création d'une feature
         Given le navigateur web est ouvert
-        When je me rend sur l'écran d'édition d'une nouvelle feature
+        When je me rend sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         Then la feature contient 1 scénarios
 
     @US19
     Scenario: ajout d'un nouveau scénario
-        Given je suis sur l'écran d'édition d'une nouvelle feature
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         When je clique sur l'option d'ajout d'un scénario
         Then la feature contient 2 scénarios
 
     @US26
     Scenario: ajout d'un step dans un scénario sans impacte sur les autres
-        Given je suis sur l'écran d'édition d'une nouvelle feature
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         And les scénarios suivant sont enregistrés :
             | name |
             | S1   |
@@ -32,7 +35,7 @@ Feature: board de création des scenario d'une Feature
 
     @US20
     Scenario: suppression d'un scenario
-        Given je suis sur l'écran d'édition d'une nouvelle feature
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         And les scénarios suivant sont enregistrés :
             | name |
             | S1   |
@@ -44,6 +47,6 @@ Feature: board de création des scenario d'une Feature
 
     @US29
     Scenario: nommage de la feature
-        Given je suis sur l'écran d'édition d'une nouvelle feature
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
         When je renomme la feature en "amazing feature"
-        Then le nom de la feature est "amazing feature"
+        Then le nom de la feature sur le board est "amazing feature"
