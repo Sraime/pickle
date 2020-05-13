@@ -9,7 +9,7 @@
                 <button routerLink="/auth/login" routerLinkActive="active" mat-stroked-button>Connexion</button>
             </span>
             <span *ngIf="isLoggedIn" class="right-nav">
-                <span id="pseudo-user-connected">{{pseudo}}</span>
+                <a mat-button href="/feature"><span id="pseudo-user-connected">{{pseudo}}</span></a>
                 <button mat-stroked-button (click)="singout()">Déconnexion</button>
             </span>
         </ng-container>

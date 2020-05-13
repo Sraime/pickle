@@ -8,7 +8,7 @@ import { Step } from '../../interfaces/step.interface';
 	styleUrls: ['./edit-step-dialog.component.scss']
 })
 export class EditStepDialogComponent implements OnInit {
-	private editedStepName = 'hello';
+	editedStepName = 'hello';
 
 	constructor(private dialogRef: MatDialogRef<EditStepDialogComponent>, @Inject(MAT_DIALOG_DATA) public step: Step) {
 		dialogRef.backdropClick().subscribe(() => {

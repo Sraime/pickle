@@ -6,7 +6,7 @@
 		"start": "npm run start:dev",
 		"start:dev": "ng serve --host 0.0.0.0",
 		"start:test": "ng serve --host 0.0.0.0 --configuration=test --port 4201",
-		"build": "ng build",
+		"build": "ng build --prod=\"true\"", 
 		"test:unit": "ng test --coverage",
 		"test:debug": "node --inspect node_modules/.bin/jest src/app/components/amazing --config=./jest.config.js --runInBand",
 		"lint": "ng lint",

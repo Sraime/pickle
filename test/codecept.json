@@ -29,7 +29,9 @@
       "./e2e/steps/browse.js",
       "./e2e/steps/auth.js",
       "./e2e/steps/board-feature.js",
-      "./e2e/steps/gherkin-generator.js"
+      "./e2e/steps/gherkin-generator.js",
+      "./e2e/steps/feature-management.js",
+      "./e2e/steps/jdd.js"
     ]
   },
   "plugins": {

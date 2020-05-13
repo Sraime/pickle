@@ -21,6 +21,15 @@ When('je suis sur l\'écran de connexion', () => {
     I.amOnPage(AppContext.front_url+'/auth/login');
 });
 
+
+When('je me connecte avec le login {string} et le mdp {string}', async(email, mdp) => {
+    I.amOnPage(AppContext.front_url+'/auth/login');
+    I.fillField('email', email);
+    I.fillField('password', mdp);
+    I.click('connexion', "#login-form");
+    I.waitForElement('#pseudo-user-connected');
+});
+
 When('je saisis l\'email {string}', (email) => {
     I.fillField('email', email);
 });

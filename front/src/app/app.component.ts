@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
 	pseudo: string;
 
-	private isAuthFeatureEnabled: boolean;
+	isAuthFeatureEnabled: boolean;
 
 	constructor(
 		private authService: AuthService,
