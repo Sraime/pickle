@@ -7,13 +7,16 @@ import { Subject } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { ApiFeature } from 'src/app/modules/board/services/api/feature/api-feature.interface';
+import { Router } from '@angular/router';
 
+jest.mock('@angular/router');
 jest.mock('../../services/user-feature/user-feature.service');
 const mockUserFeatureService: jest.Mocked<UserFeatureService> = new UserFeatureService(
 	null,
-	null
+	null,
 ) as jest.Mocked<UserFeatureService>;
 
+const mockRouter: jest.Mocked<Router> = {} as jest.Mocked<Router>;
 const subjectGetFeatures: Subject<ApiFeature[]> = new Subject<ApiFeature[]>();
 mockUserFeatureService.getUserFeatures.mockReturnValue(subjectGetFeatures);
 
@@ -29,6 +32,10 @@ describe('FeaturesPageComponent', () => {
 				{
 					provide: UserFeatureService,
 					useValue: mockUserFeatureService
+				},
+				{
+					provide: Router,
+					useValue: mockRouter
 				}
 			]
 		}).compileComponents();
