@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 const featureSchema = new mongoose.Schema(
 	{
@@ -6,7 +7,12 @@ const featureSchema = new mongoose.Schema(
 			type: String,
 			trim: true,
 			maxlength: 100
-    }
+		},
+		
+		userId: {
+      type: Schema.Types.ObjectId, 
+      ref: 'users'
+		}
   }
 );
 

@@ -109,5 +109,4 @@ Given('le nom de la feature sur le board est {string}', (name) => {
 
 Then('le nom de la feature n\'est pas renseigné sur le board', () => {
     I.see('your text here', FeatureBoardLocators.featureName);
-    I.wait(10)
 });

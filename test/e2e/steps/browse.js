@@ -53,3 +53,11 @@ Then('je suis redirigé sur l\'écran de connexion', () => {
 Then('je suis redirigé sur l\'écran d\'inscription', () => {
     I.amOnPage(AppContext.front_url+'/auth/register');
 });
+
+Then('je suis redirigé sur l\'écran de gestion des features', () => {
+    I.amOnPage(AppContext.front_url+'/feature');
+});
+
+Then('je suis redirigé sur le board de la feature avec l\'identifiant {string}', (featureId) => {
+    I.amOnPage(AppContext.front_url+'/board/'+featureId);
+});
