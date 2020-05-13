@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BoardModule } from './modules/board/board.module';
 import { AppInitService } from './services/app-init/app-init.service';
+import { FeatureManagementModule } from './modules/feature-management/feature-management.module';
 
 export function init_app(appLoadService: AppInitService) {
 	return () => appLoadService.init();
@@ -21,6 +22,7 @@ export function init_app(appLoadService: AppInitService) {
 		BrowserModule,
 		LoginModule,
 		BoardModule,
+		FeatureManagementModule,
 		AppRoutingModule,
 		BrowserAnimationsModule,
 		MatToolbarModule,

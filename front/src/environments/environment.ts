@@ -14,6 +14,9 @@ export const environment = {
 		},
 		feature: {
 			url: 'http://localhost:3000/feature'
+		},
+		user: {
+			url: 'http://localhost:3000/user'
 		}
 	},
 	socket: {

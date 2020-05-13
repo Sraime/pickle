@@ -121,10 +121,12 @@ describe('LoginFormComponent', () => {
 
 			fixture.whenStable().then(() => {
 				fixture.detectChanges();
-				const iemail = fixture.debugElement.query(By.css('#login-form input[name=email]')).nativeElement;
+				const iemail = fixture.debugElement.query(By.css('#login-form input[name=email]'))
+					.nativeElement;
 				iemail.value = email;
 				iemail.dispatchEvent(new Event('input'));
-				const ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
+				const ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]'))
+					.nativeElement;
 				ipwd.value = fakePwd;
 				ipwd.dispatchEvent(new Event('input'));
 				const btnLogin = fixture.debugElement.query(By.css('#login-form button'));
@@ -148,7 +150,8 @@ describe('LoginFormComponent', () => {
 
 			fixture.whenStable().then(() => {
 				fixture.detectChanges();
-				let ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]')).nativeElement;
+				let ipwd = fixture.debugElement.query(By.css('#login-form input[name=password]'))
+					.nativeElement;
 				ipwd.value = fakePwd;
 				ipwd.dispatchEvent(new Event('input'));
 				component.onSubmit();
@@ -160,7 +163,7 @@ describe('LoginFormComponent', () => {
 		it('should redirect to the bank page when login succeed', async(() => {
 			spyLogin.mockReturnValue(of());
 			component.onSubmit();
-			expect(router.navigate).toHaveBeenCalledWith(['/bank']);
+			expect(router.navigate).toHaveBeenCalledWith(['/feature']);
 		}));
 	});
 });
