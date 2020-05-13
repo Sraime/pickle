@@ -66,7 +66,6 @@ describe('featrure', () => {
     it('should return scenario of the requested feature', async () => {
 			reqOptions.uri = reqOptions.uri + '/' + nfeature._id + '/scenario';
 			const res = await request(reqOptions);
-			console.log(res[0].givenSteps)
 			expect(validator.validate(res, featureScenarioGetResponseSchema).errors).toHaveLength(0);
 		});
     
