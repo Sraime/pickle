@@ -12,12 +12,17 @@
 	margin-bottom: 30px;
 	label {
 		font-weight: bold;
+		margin-right: 10px;
 	}
 }
 
+.content-feature-header {
+	display: flex;
+}
+
 .feature-name {
-	display: inline-block;
-	width: 30%;
+	padding-right: 20px;
+	flex: 1 1 auto;
 }
 
 .feature-header {

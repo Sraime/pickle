@@ -1,14 +1,36 @@
 <div class="edit-text-content">
-	<span class="editable-text text-placeholder" *ngIf="!isEditMode && !text" (click)="switchEditMode()">{{
-		placeholder
+	<span
+		class="editable-text text-placeholder"
+		*ngIf="!isEditMode && !text"
+		(click)="switchEditMode()"
+		>{{ placeholder }}</span
+	>
+	<span class="editable-text" *ngIf="!isEditMode && text" (click)="switchEditMode()">{{
+		text
 	}}</span>
-	<span class="editable-text" *ngIf="!isEditMode && text" (click)="switchEditMode()">{{ text }}</span>
 	<span *ngIf="isEditMode" class="text-edit-mode">
 		<mat-form-field class="field-edit-text">
-			<input autofocus matInput [(ngModel)]="text" value="{{ text }}" type="text" class="input-edit-text" />
+			<input
+				(focusout)="switchEditMode()"
+				(keydown.enter)="switchEditMode()"
+				#inputText
+				autofocus
+				matInput
+				[(ngModel)]="text"
+				value="{{ text }}"
+				type="text"
+				class="input-edit-text"
+			/>
+			<button
+				matSuffix
+				mat-flat-button
+				color="valide"
+				*ngIf="isEditMode"
+				class="btn-save-text"
+				(click)="switchEditMode()"
+			>
+				Save
+			</button>
 		</mat-form-field>
 	</span>
-	<button mat-icon-button *ngIf="isEditMode" class="btn-save-text" (click)="switchEditMode()">
-		<mat-icon>save</mat-icon>
-	</button>
 </div>

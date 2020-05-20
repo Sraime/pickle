@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Step } from '../../interfaces/step.interface';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SectionUpdaterService } from '../../services/updaters/section-updater/section-updater.service';
@@ -15,6 +15,11 @@ export class SectionStepsComponent implements OnInit {
 		private sectionService: SectionUpdaterService,
 		private featureAssembly: FeatureAssemblyService
 	) {}
+
+	hasFocus = false;
+
+	@ViewChild('inputText', { static: false })
+	inputText: ElementRef;
 
 	@Input()
 	codeBlockId = '';
@@ -36,13 +41,13 @@ export class SectionStepsComponent implements OnInit {
 		});
 	}
 
-	addStep(e) {
-		if (e.srcElement.value) {
-			this.steps.push({ name: e.srcElement.value });
+	addStep() {
+		if (this.inputText.nativeElement.value) {
+			this.steps.push({ name: this.inputText.nativeElement.value });
 			this.sectionService.updateSection(
 				new SectionModel(this.sectionName, this.codeBlockId, this.steps)
 			);
-			e.srcElement.value = '';
+			this.inputText.nativeElement.value = '';
 		}
 	}
 
@@ -67,5 +72,12 @@ export class SectionStepsComponent implements OnInit {
 		this.sectionService.updateSection(
 			new SectionModel(this.sectionName, this.codeBlockId, this.steps)
 		);
+	}
+
+	switchMode() {
+		if (this.hasFocus) {
+			this.addStep();
+		}
+		this.hasFocus = !this.hasFocus;
 	}
 }

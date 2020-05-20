@@ -1,4 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	Input,
+	Output,
+	EventEmitter,
+	ViewChild,
+	ChangeDetectorRef,
+	ElementRef
+} from '@angular/core';
+import { MatInput } from '@angular/material/input';
 
 @Component({
 	selector: 'edit-text',
@@ -6,6 +16,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 	styleUrls: ['./edit-text.component.scss']
 })
 export class EditTextComponent implements OnInit {
+	@ViewChild('inputText', { static: false })
+	inputText: ElementRef;
+
 	@Input()
 	text: string = '';
 
@@ -17,14 +30,17 @@ export class EditTextComponent implements OnInit {
 
 	isEditMode = false;
 
-	constructor() {}
+	constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
 	ngOnInit() {}
 
 	switchEditMode() {
-		if (this.isEditMode) {
-			this.saveEvent.emit(this.text);
-		}
 		this.isEditMode = !this.isEditMode;
+		this.changeDetectorRef.detectChanges();
+		if (!this.isEditMode) {
+			this.saveEvent.emit(this.text);
+		} else {
+			this.inputText.nativeElement.focus();
+		}
 	}
 }

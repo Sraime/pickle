@@ -1,8 +1,12 @@
 .step-spacer {
-    flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
 .step-content-item {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
+}
+
+.step-name {
+	word-break: break-word;
 }

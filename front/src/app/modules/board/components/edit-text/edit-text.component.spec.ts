@@ -114,6 +114,18 @@ describe('EditTextComponent', () => {
 			});
 		}));
 
+		it('should stop the edit mode when the input lost focus', async(() => {
+			text.nativeElement.click();
+			fixture.whenStable().then(() => {
+				fixture.detectChanges();
+				let input = fixture.debugElement.query(By.css(EDIT_INPUT_SELECTOR));
+				input.nativeElement.dispatchEvent(new Event('focusout'));
+				fixture.detectChanges();
+				input = fixture.debugElement.query(By.css(EDIT_INPUT_SELECTOR));
+				expect(input).toBeFalsy();
+			});
+		}));
+
 		it('should not display the text', async(() => {
 			text.nativeElement.click();
 			fixture.whenStable().then(() => {

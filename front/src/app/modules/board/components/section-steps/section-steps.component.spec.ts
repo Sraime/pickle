@@ -171,16 +171,17 @@ describe('SectionSetpsComponent', () => {
 
 		describe('adding steps', () => {
 			let input;
+			const sentSectionUpdate = new SectionModel('Given', 'idblock', [{ name: 'step1' }]);
 
 			beforeEach(() => {
 				input = fixture.debugElement.query(By.css('input.input-new-step'));
+				component.sectionName = 'Given';
+				component.codeBlockId = 'idblock';
+				component.steps = [];
 			});
 
 			it('should add a new step and clean the input after filling the it and pressing Enter', () => {
-				component.sectionName = 'Given';
-				component.codeBlockId = 'idblock';
 				input.nativeElement.value = 'step1';
-				const sentSectionUpdate = new SectionModel('Given', 'idblock', [{ name: 'step1' }]);
 				input.nativeElement.dispatchEvent(
 					new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' })
 				);
@@ -188,6 +189,39 @@ describe('SectionSetpsComponent', () => {
 				expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
 				expect(input.nativeElement.value).toEqual('');
 			});
+
+			it('should have a save button when the input has the focus', async(() => {
+				input.nativeElement.focus();
+				fixture.whenStable().then(() => {
+					fixture.detectChanges();
+					const btnsave = fixture.debugElement.query(By.css('button.btn-add-step'));
+					expect(btnsave).toBeTruthy();
+				});
+			}));
+
+			it('should add the step after clicking on the add button', async(() => {
+				input.nativeElement.focus();
+				input.nativeElement.value = 'step1';
+				fixture.whenStable().then(() => {
+					fixture.detectChanges();
+					const btnsave = fixture.debugElement.query(By.css('button.btn-add-step'));
+					btnsave.nativeElement.click();
+					expect(component.steps.length).toEqual(1);
+					expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
+				});
+			}));
+
+			it('should add the step when the input lost focus', async(() => {
+				input.nativeElement.focus();
+				input.nativeElement.value = 'step1';
+				fixture.whenStable().then(() => {
+					fixture.detectChanges();
+					input.nativeElement.dispatchEvent(new Event('focusout'));
+					fixture.detectChanges();
+					expect(component.steps.length).toEqual(1);
+					expect(stubUpdateSection).toHaveBeenCalledWith(sentSectionUpdate);
+				});
+			}));
 
 			it('should not add new step when the input is empty', () => {
 				input.nativeElement.dispatchEvent(

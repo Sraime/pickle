@@ -3,7 +3,8 @@
 	.editable-text {
 		flex: 1;
 	}
-	.field-edit-text, .text-edit-mode {
+	.field-edit-text,
+	.text-edit-mode {
 		width: 100%;
 	}
 }
@@ -16,4 +17,9 @@
 .text-placeholder {
 	color: #aaa;
 	font-style: italic;
+}
+
+.btn-save-text {
+	margin-left: 10px;
+	margin-bottom: 7px;
 }
