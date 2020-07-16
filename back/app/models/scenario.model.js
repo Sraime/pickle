@@ -13,6 +13,10 @@ const scenarioSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId, 
       ref: 'features'
     },
+    isBackground: {
+      type: Boolean, 
+      default: false
+    },
     givenSteps: {
       type: [stepSchema],
       required: true,
@@ -25,7 +29,8 @@ const scenarioSchema = new mongoose.Schema(
       type: [stepSchema],
       required: true,
     }
-  }
+  },
+  { collection: 'code-blocks' }
 );
 
-module.exports = mongoose.model('code-block', scenarioSchema);
+module.exports = mongoose.model('scenario', scenarioSchema);

@@ -1,7 +1,7 @@
-@LoadFeature
-Feature: chargement de la feature à l'ouverture board
+@LoadFeature @Board
+Feature: chargement de la Feature à l'ouverture board
     
-  Scenario: chargement des informations de la feature
+  Scenario: chargement des informations d'une Feature avec un Scénario
     Given les features suivantes :
       | id                       | name |
       | 5e9cb1ac31111718631563fd | FT1  |
@@ -17,3 +17,12 @@ Feature: chargement de la feature à l'ouverture board
       | 1              | Given       | step1    |
       | 1              | When        | step2    |
       | 1              | Then        | step3    |
+
+  @Background
+  Scenario: chargement des informations d'une Feature avec un Background
+    Given les features suivantes :
+      | id                       | name |
+      | 5e9cb1ac31111718631563fd | FT1  |
+    And le Background de la feature avec l'identifiant "5e9cb1ac31111718631563fd" avec le step "step1"
+    When je me rend sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
+    Then le Background contient le step "step1"

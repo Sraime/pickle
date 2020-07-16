@@ -1,0 +1,27 @@
+.sections-steps {
+  display: flex;
+}
+
+.section-steps {
+  flex: 1 0px;
+  width: 20%;
+}
+
+.codeblock-header {
+  font-size: 1.5em;
+  height: 70px;
+  display: flex;
+}
+
+.section-steps:not(:last-child) {
+  margin-right: 20px;
+}
+
+.codeblock-header label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.codeblock-header .codeblock-header-msg {
+  flex: 1 1 auto;
+}

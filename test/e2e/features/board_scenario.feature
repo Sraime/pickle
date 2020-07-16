@@ -1,11 +1,11 @@
-@board
+@Board
 Feature: board de création d'un scénario
     En tant que Concepteur de tests
     Je veux construire un scénario via l'interface
     Afin de structurer son écriture collaborativement et facilité l'accès au Gherkin
 
     Background:
-        Given une feature avec l’identifiant "5e9cb1ac31111718631563fd"
+        Given une nouvelle Feature avec l’identifiant "5e9cb1ac31111718631563fd"
             
     Scenario: accès à l'interface de création
         Given le navigateur web est ouvert

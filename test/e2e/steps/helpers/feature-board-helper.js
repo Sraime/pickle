@@ -1,14 +1,13 @@
-const FeatureBoardLoacators = require('../locators/board-feature-locators');
-const GherkinGeneratorLoacators = require('../locators/gherkin-generator-locators');
+const FeatureBoardLoacators = require("../locators/board-feature-locators");
+const GherkinGeneratorLoacators = require("../locators/gherkin-generator-locators");
 
 class FeatureBoardHelper {
-
   constructor(actor) {
     this.actor = actor;
   }
   addScenario(name) {
     this.actor.click(FeatureBoardLoacators.btnAddScenario);
-    if(name) {
+    if (name) {
       this.renameLastScenario(name);
     }
   }
@@ -21,7 +20,10 @@ class FeatureBoardHelper {
 
   renameScenario(name, position = 1) {
     this.actor.click(FeatureBoardLoacators.scenarioName(position));
-    this.actor.fillField(FeatureBoardLoacators.scenarioNameInput(position), name);
+    this.actor.fillField(
+      FeatureBoardLoacators.scenarioNameInput(position),
+      name
+    );
     this.actor.click(FeatureBoardLoacators.scenarioNameBtnSave(position));
   }
 
@@ -29,11 +31,16 @@ class FeatureBoardHelper {
     this.actor.click(FeatureBoardLoacators.scenarioBtnDel(position));
   }
 
-  addStep(posScenario, sectionName, step) {
+  addScenarioStep(posScenario, sectionName, step) {
     this.actor.fillField(
       FeatureBoardLoacators.scenarioSectionInputStep(posScenario, sectionName),
       step
     );
+    this.actor.pressKey("Enter");
+  }
+
+  addBackgroundStep(step) {
+    this.actor.fillField(FeatureBoardLoacators.backgroundInputStep, step);
     this.actor.pressKey("Enter");
   }
 
@@ -44,7 +51,7 @@ class FeatureBoardHelper {
   }
 
   generateGherkinCode() {
-    this.actor.click(GherkinGeneratorLoacators.btnGenerateGherkin)
+    this.actor.click(GherkinGeneratorLoacators.btnGenerateGherkin);
   }
 }
 

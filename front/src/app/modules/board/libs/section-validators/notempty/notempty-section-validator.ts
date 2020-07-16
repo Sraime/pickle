@@ -1,7 +1,7 @@
-import { SectionValidator } from '../section-validator';
-import { Step } from '../../../interfaces/step.interface';
+import { SectionValidator } from "../section-validator";
+import { Step } from "../../../services/updaters/section-updater/step.interface";
 export class NotEmptySectionValidator implements SectionValidator {
-	validate(steps: Step[]): boolean {
-		return steps.length > 0;
-	}
+  validate(steps: Step[]): boolean {
+    return steps.length > 0;
+  }
 }

@@ -1,4 +1,5 @@
 const ScenarioModel = require('../../models/scenario.model');
+const CodeblockModel = require('../../models/codeblock.model');
 
 const validSectionName = ['Given', 'When', 'Then'];
 
@@ -25,8 +26,8 @@ const BoardService = {
     return ScenarioModel.findByIdAndDelete(codeBlockId);
   },
 
-  getScenarioByFeatureId: (featureId) => {
-    return ScenarioModel.find({featureId: featureId});
+  getCodeblocksByFeatureId: (featureId) => {
+    return CodeblockModel.find({featureId: featureId});
   } 
 }
 

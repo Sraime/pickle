@@ -1,8 +1,8 @@
-@BoardSynchro
+@BoardSynchro @Board
 Feature: synchronisation du board avec les autres utilisateur
 
   Background:
-    Given une feature avec l’identifiant "5e9cb1ac31111718631563fd"
+    Given une nouvelle Feature avec l’identifiant "5e9cb1ac31111718631563fd"
 
   Scenario: synchronisation de l'ajout d'un scenario
     Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
@@ -24,6 +24,7 @@ Feature: synchronisation du board avec les autres utilisateur
       | name |
       | S1   |
 
+  @SynchroTest
   Scenario: synchronisation du renommage d'un scenario
     Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
     And un autre onglet sur l'écran de d'édition de la feature "5e9cb1ac31111718631563fd"
@@ -33,7 +34,7 @@ Feature: synchronisation du board avec les autres utilisateur
       | name |
       | scénario nominal |
 
-  Scenario: synchronisation de l'ajout d'un step
+  Scenario: synchronisation de l'ajout de steps à un Scénario
     Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
     And un autre onglet sur l'écran de d'édition de la feature "5e9cb1ac31111718631563fd"
     When j'ajoute les steps suivants :
@@ -47,6 +48,14 @@ Feature: synchronisation du board avec les autres utilisateur
       | 1              | Given       | step1    |
       | 1              | When        | step2    |
       | 1              | Then        | step3    |
+
+  @Background
+  Scenario: synchronisation de l'ajout d'un step au Background
+    Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
+    And un autre onglet sur l'écran de d'édition de la feature "5e9cb1ac31111718631563fd"
+    When j'ajoute le step "step1" dans le Background
+    And je retourne à l'onglet précédent
+    Then le Background contient le step "step1"
 
   @SynchroDelStep
   Scenario: synchronisation de la suppression d'un step
@@ -76,7 +85,7 @@ Feature: synchronisation du board avec les autres utilisateur
 
   @indep
   Scenario: les modification du board ne sont pas propagées aux utilisateur d'un autre board
-    Given une feature avec l’identifiant "5b9bb1bb31111718631563bb"
+    Given une nouvelle Feature avec l’identifiant "5b9bb1bb31111718631563bb"
     And je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
     And un autre onglet sur l'écran de d'édition de la feature "5b9bb1bb31111718631563bb"
     When je clique sur l'option d'ajout d'un scénario

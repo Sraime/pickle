@@ -15,10 +15,10 @@ const FeatureController = {
 			})
 	},
 
-	getAllScenariosByFeature : (req, res) => {
-		return BoardService.getScenarioByFeatureId(req.params.featureId)
-			.then((dbScenarios) => {
-				res.json(dbScenarios);
+	getAllCodeblocksByFeature : (req, res) => {
+		return BoardService.getCodeblocksByFeatureId(req.params.featureId)
+			.then((dbCodeblocks) => {
+				res.json(dbCodeblocks);
 			})
 			.catch((error) => {
 				res.status(400).send(error.message);
