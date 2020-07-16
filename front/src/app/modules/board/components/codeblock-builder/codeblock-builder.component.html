@@ -1,0 +1,28 @@
+<div class="codeblock-header">
+  <label>{{ codeblockLabel }}: </label>
+  <div class="codeblock-header-msg" *ngIf="isNamed">
+    <edit-text
+      class="codeblock-name"
+      (update)="updateName($event)"
+      text="{{ codeblockName }}"
+    ></edit-text>
+  </div>
+  <div class="codeblock-header-opts">
+    <button
+      *ngIf="deletable"
+      mat-icon-button
+      class="btn-del-codeblock"
+      (click)="delCodeblock()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="sections-steps">
+  <section-steps
+    *ngFor="let sectionName of sectionNames"
+    class="section-steps section-steps-{{ sectionName.toLowerCase() }}"
+    sectionName="{{ sectionName }}"
+    codeBlockId="{{ codeBlockId }}"
+  ></section-steps>
+</div>

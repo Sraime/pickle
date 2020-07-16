@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const scenarioSchema = new mongoose.Schema(
-	{
-		name: {
-			type: String,
-			trim: true,
-			maxlength: 100
+  {
+    name: {
+      type: String,
+      trim: true,
+      maxlength: 100,
     },
     featureId: {
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: 'features'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "features",
     },
     givenSteps: {
       type: Array,
@@ -22,8 +22,9 @@ const scenarioSchema = new mongoose.Schema(
     thenSteps: {
       type: Array,
       required: true,
-    }
-  }
+    },
+  },
+  { collection: "code-blocks" }
 );
 
-module.exports = mongoose.model('code-block', scenarioSchema);
+module.exports = mongoose.model("scenario", scenarioSchema);

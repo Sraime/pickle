@@ -1,11 +1,11 @@
-@FeatureBoard
+@Board
 Feature: board de création des scenario d'une Feature
     En tant que Concepteur des scenarios de tests
     Je veux construire un les scenarios de ma Feature en Gherkin
     Afin de structurer et standardiser leur écriture
 
     Background:
-        Given une feature avec l’identifiant "5e9cb1ac31111718631563fd"
+        Given une nouvelle Feature avec l’identifiant "5e9cb1ac31111718631563fd"
 
     @US30
     Scenario: accès au board de création d'une feature
@@ -32,6 +32,12 @@ Feature: board de création des scenario d'une Feature
         Then les steps suivant ne sont pas présents :
             | scenarioNumber | sectionName | stepName |
             | 2              | Given       | step1    |
+
+    @Background @AddB
+    Scenario: ajout d'un step dans un background
+        Given je suis sur l'interface d'édition de la feature "5e9cb1ac31111718631563fd"
+        When j'ajoute le step "step1" dans le Background
+        Then le Background contient le step "step1"
 
     @US20
     Scenario: suppression d'un scenario

@@ -1,5 +1,7 @@
 const I = actor();
 const BoardSectionLocators = require("./locators/board-section-locators");
+const FeatureBoardClass = require("./helpers/feature-board-helper");
+const FeatureBoardHelper = new FeatureBoardClass(I);
 
 function addStepsFromDataTable(steps) {
   var stepName;
@@ -29,7 +31,7 @@ Given(
         sectionName +
         "')]//mat-list-item[contains(., '" +
         step +
-        "')]"
+        "')]",
     };
     I.click(stepElement);
   }
@@ -70,7 +72,7 @@ When(
         sectionName.toLowerCase() +
         "')]//mat-list-item[contains(., '" +
         step +
-        "')]//button[contains(@class,'btn-step-del')]"
+        "')]//button[contains(@class,'btn-step-del')]",
     };
     I.click(btnLocator);
   }
@@ -85,7 +87,7 @@ When(
   () => {
     let stepElement = {
       xpath:
-        ".//section-steps[contains(@class, 'section-steps-given')]//mat-list-item[contains(., 'step1')]"
+        ".//section-steps[contains(@class, 'section-steps-given')]//mat-list-item[contains(., 'step1')]",
     };
     I.click(stepElement);
   }
@@ -104,20 +106,18 @@ When("je modifie le texte du step en {string}", (newTexteStep) => {
 });
 
 When("je renomme le scénario en {string}", (newName) => {
-  I.click(".scenario-name");
-  I.fillField(".input-edit-text", newName);
-  I.click(".btn-save-text");
+  FeatureBoardHelper.renameScenario(newName, 1);
 });
 
 Then("la section d'édition {string} est affichée", (sectionName) => {
   I.see(sectionName, {
-    css: BoardSectionLocators.sectionStepsTitleLocator(sectionName)
+    css: BoardSectionLocators.sectionStepsTitleLocator(sectionName),
   });
 });
 
 Then("la section {string} contient le step", (sectionName, stepName) => {
   I.see(stepName.content, {
-    css: BoardSectionLocators.sectionStepsListLocator(sectionName)
+    css: BoardSectionLocators.sectionStepsListLocator(sectionName),
   });
 });
 
@@ -128,7 +128,7 @@ Then(
     steps.rows.forEach((step) => {
       stepName = step.cells[0].value;
       I.see(stepName, {
-        css: BoardSectionLocators.sectionStepsListLocator(sectionName)
+        css: BoardSectionLocators.sectionStepsListLocator(sectionName),
       });
     });
   }
@@ -159,18 +159,22 @@ Then("le mode d'édition d'un step s'affiche", () => {
 });
 
 Then("le nom du scénario est {string}", (scenarioName) => {
-  I.see(scenarioName, ".scenario-name");
+  I.see(scenarioName, ".codeblock-name");
 });
 
-When('je renomme le step {string} de la section {string} en {string}', (currentTextStep, sectionName, newTexteStep) => {
-  let stepElement = {
-    xpath:
-      ".//section-steps[contains(@class, 'section-steps-"
-      + sectionName.toLowerCase()
-      + "')]//mat-list-item[contains(., '"
-      + currentTextStep + "')]"
-  };
-  I.click(stepElement);
-  I.fillField(".mat-dialog-content input.edit-step", newTexteStep);
-  I.click(".mat-dialog-content .save-edit-step");
-});
+When(
+  "je renomme le step {string} de la section {string} en {string}",
+  (currentTextStep, sectionName, newTexteStep) => {
+    let stepElement = {
+      xpath:
+        ".//section-steps[contains(@class, 'section-steps-" +
+        sectionName.toLowerCase() +
+        "')]//mat-list-item[contains(., '" +
+        currentTextStep +
+        "')]",
+    };
+    I.click(stepElement);
+    I.fillField(".mat-dialog-content input.edit-step", newTexteStep);
+    I.click(".mat-dialog-content .save-edit-step");
+  }
+);

@@ -1,4 +1,5 @@
-import { Step } from '../../interfaces/step.interface';
+import { Step } from "../../services/updaters/section-updater/step.interface";
+
 export interface SectionValidator {
-	validate(steps: Step[]): boolean;
+  validate(steps: Step[]): boolean;
 }

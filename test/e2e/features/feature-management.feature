@@ -1,4 +1,4 @@
-@FTM
+@FeatureManagement
 Feature: gestion des feature depuis l'espace utilisateur
 
   Background:
