@@ -16,7 +16,7 @@ const loggerFormat = printf(({ level, message }) => {
 
 const logger = createLogger({
 	format: combine(loggerFormat),
-	transports: [ new transports.Console() ]
+	transports: [new transports.Console()],
 });
 
 loggers.add('test-logs', logger);
@@ -26,16 +26,11 @@ beforeAll(async () => {
 		const mongoDB = `mongodb://${config.mongodb.host}:${config.mongodb.port}/${config.mongodb.db}`;
 		mongoose
 			.connect(mongoDB, { useNewUrlParser: true })
-			.then(() => {
-				logger.log({
-					level: 'info',
-					message: 'Connection to database has been established successfully.'
-				});
-			})
+			.then(() => {})
 			.catch((err) => {
 				logger.log({
 					level: 'info',
-					message: `Unable to connect to the database ${err}`
+					message: `Unable to connect to the database ${err}`,
 				});
 			});
 	}
@@ -44,10 +39,13 @@ beforeAll(async () => {
 
 afterAll(async () => {
 	await cleanUpDb();
-	mongoose.connection.close().then(() => {}).catch((e) =>
-		logger.log({
-			level: 'error',
-			message: `DB closing error !${e}`
-		})
-	);
+	mongoose.connection
+		.close()
+		.then(() => {})
+		.catch((e) =>
+			logger.log({
+				level: 'error',
+				message: `DB closing error !${e}`,
+			})
+		);
 });
