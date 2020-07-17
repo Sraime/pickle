@@ -14,9 +14,9 @@ const AuthController = {
 			return res.status(400).send();
 		}
 		const token = jwt.sign({ id: user.id, pseudo: user.pseudo }, config.auth.secret, {
-			// algorithm: 'RS256',
+			algorithm: 'HS512',
 			expiresIn: config.auth.expiresIn,
-			subject: user.id.toString()
+			subject: user.id.toString(),
 		});
 		return res.json({ pseudo: user.pseudo, token, tokenExpiration: Date.now() + config.auth.expiresIn * 1000 });
 	},
@@ -28,7 +28,7 @@ const AuthController = {
 		} catch (err) {
 			return res.status(400).send(errorParser.parseError(err));
 		}
-	}
+	},
 };
 
 module.exports = AuthController;

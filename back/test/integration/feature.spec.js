@@ -8,7 +8,6 @@ const featureScenarioGetResponseSchema = require('./schemas/feature/feature-scen
 
 const BASE_URI = `http://localhost:${config.app.port}`;
 
-
 describe('featrure', () => {
 	let reqOptions;
 	const validator = new Validator();
@@ -16,8 +15,8 @@ describe('featrure', () => {
 		name: 'existing feature',
 	};
 	let existingScenario;
-  let nfeature;
-  let nscenario;
+	let nfeature;
+	let nscenario;
 
 	beforeAll(async () => {
 		nfeature = new FeatureModel(existingFeature);
@@ -26,7 +25,7 @@ describe('featrure', () => {
 		existingScenario = {
 			name: 'SC1',
 			featureId: nfeature._id,
-			givenSteps: [{name: 'step1'}]
+			givenSteps: [{ name: 'step1' }],
 		};
 		nscenario = new ScenarioModel(existingScenario);
 		await nscenario.save();
@@ -39,14 +38,13 @@ describe('featrure', () => {
 
 	beforeEach(() => {
 		reqOptions = {
-			json: true
-    };
+			json: true,
+		};
 		reqOptions.uri = `${BASE_URI}/feature`;
-    reqOptions.method = 'GET';
+		reqOptions.method = 'GET';
 	});
 
 	describe('/feature/:featureId', () => {
-
 		it('should return the existing feature', async () => {
 			reqOptions.uri = reqOptions.uri + '/' + nfeature._id;
 			const res = await request(reqOptions);
@@ -56,23 +54,22 @@ describe('featrure', () => {
 		it('should return a 404 status code when the resquested feature does not exist', async () => {
 			reqOptions.uri = reqOptions.uri + '/5e99b8a2311117186315365f';
 			await expect(request(reqOptions)).rejects.toMatchObject({
-				statusCode: 404
+				statusCode: 404,
 			});
 		});
-  });
-  
-  describe('/feature/:featureId/scenario', () => {
+	});
 
-    it('should return scenario of the requested feature', async () => {
-			reqOptions.uri = reqOptions.uri + '/' + nfeature._id + '/scenario';
+	describe('/feature/:featureId/codeblock', () => {
+		it('should return scenario of the requested feature', async () => {
+			reqOptions.uri = reqOptions.uri + '/' + nfeature._id + '/codeblock';
 			const res = await request(reqOptions);
 			expect(validator.validate(res, featureScenarioGetResponseSchema).errors).toHaveLength(0);
 		});
-    
-		it('should return a 404 status code when the resquested feature does not exist', async () => {
-			reqOptions.uri = reqOptions.uri + '/InvalidFeatureID/sceanrio';
+
+		it('should return a 400 status code when the resquested feature id is not valid', async () => {
+			reqOptions.uri = reqOptions.uri + '/InvalidFeatureID/codeblock';
 			await expect(request(reqOptions)).rejects.toMatchObject({
-				statusCode: 404
+				statusCode: 400,
 			});
 		});
 	});

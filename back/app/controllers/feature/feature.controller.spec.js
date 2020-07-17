@@ -2,7 +2,6 @@ const FeatureController = require('./feature.controller');
 const FeatureService = require('../../services/feature/feature.service');
 const FeatureModel = require('../../models/feature.model');
 const BoardService = require('../../services/board/board.service');
-const ScenarioModel = require('../../models/scenario.model');
 const CodeblockModel = require('../../models/codeblock.model');
 
 jest.mock('../../services/board/board.service');
@@ -100,17 +99,3 @@ describe('feature controller', () => {
 		});
 	});
 });
-
-const ServiceCat = require('./serviceCat');
-
-module.exports = {
-	insertCat(req, res) {
-		ServiceCat.insertCatByName(req.params.name)
-			.then((savedCat) => {
-				res.json(savedCat);
-			})
-			.catch((error) => {
-				res.status(401).send();
-			});
-	},
-};
