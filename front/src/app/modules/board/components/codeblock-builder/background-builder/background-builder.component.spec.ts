@@ -17,9 +17,9 @@ describe("BackgroundBuilderComponent", () => {
       declarations: [
         BackgroundBuilderComponent,
         MockComponent(SectionStepsComponent),
-        MockComponent(EditTextComponent)
+        MockComponent(EditTextComponent),
       ],
-      imports: [MatIconModule]
+      imports: [MatIconModule],
     });
   });
 
@@ -38,6 +38,20 @@ describe("BackgroundBuilderComponent", () => {
       By.css(".codeblock-header label")
     );
     expect(labelElement.nativeElement.textContent).toEqual("Background: ");
+  });
+
+  it("should not have a name", () => {
+    const nameElement = fixture.debugElement.query(
+      By.css(".codeblock-header .codeblock-name")
+    );
+    expect(nameElement).toBeFalsy();
+  });
+
+  it("should not have a delete option", () => {
+    const delButton = fixture.debugElement.query(
+      By.css(".codeblock-header .btn-del-codeblock")
+    );
+    expect(delButton).toBeFalsy();
   });
 
   it("should have the 1 section Given", () => {
