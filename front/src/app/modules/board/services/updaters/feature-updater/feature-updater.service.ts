@@ -1,31 +1,19 @@
 import { Injectable } from "@angular/core";
-import { FeatureUpdateData } from "./feature-update-data.interface";
-import { BoardSocketSynchro } from "../../board-synchronizer/board-socket-synchro.service";
-import { Updater } from "../updater.interface";
-import { Subject, Observable } from "rxjs";
+import { SynchronizedUpdater } from "src/app/services/updater/synchronized-updater/synchronized-updater";
+import { UpdateDataObject } from "src/app/services/updater/updater.interface";
+import { FeatureSynchronizerService } from "../../board-synchronizer/feature-synchronizer.service";
+
+export interface FeatureUpdateData extends UpdateDataObject {
+  name: string;
+}
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
-export class FeatureUpdaterService implements Updater<FeatureUpdateData> {
-  private subjectUpdater: Subject<FeatureUpdateData> = new Subject<
-    FeatureUpdateData
-  >();
-  constructor(private _boardSynchroService: BoardSocketSynchro) {
-    this._boardSynchroService.getFeatureUpdateObservable().subscribe(data => {
-      this.subjectUpdater.next(data);
-    });
-  }
-
-  getObservable(): Observable<FeatureUpdateData> {
-    return this.subjectUpdater;
-  }
-
-  updateData(data: FeatureUpdateData) {
-    if (this._boardSynchroService.synchonizationEnabled()) {
-      this._boardSynchroService.dispatchFeatureUpdate(data);
-    } else {
-      this.subjectUpdater.next(data);
-    }
+export class FeatureUpdaterService extends SynchronizedUpdater<
+  FeatureUpdateData
+> {
+  constructor(private _featureSynchronizer: FeatureSynchronizerService) {
+    super(_featureSynchronizer);
   }
 }

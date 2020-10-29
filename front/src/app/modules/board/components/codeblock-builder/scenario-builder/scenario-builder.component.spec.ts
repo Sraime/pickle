@@ -4,7 +4,7 @@ import { ScenarioBuilderComponent } from "./scenario-builder.component";
 import { configureTestSuite } from "ng-bullet";
 import { By } from "@angular/platform-browser";
 import { CodeblockUpdaterService } from "../../../services/updaters/codeblock-updater/codeblock-updater.service";
-import { EventUpdateType } from "../../../services/updaters/codeblock-updater/EventUpdateType.enums";
+import { EventUpdateType } from "../../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { MockComponent } from "ng-mocks";
 import { SectionStepsComponent } from "../../section-steps/section-steps.component";
 import { EditTextComponent } from "../../edit-text/edit-text.component";
@@ -22,7 +22,7 @@ describe("ScenarioBuilderComponent", () => {
       declarations: [
         ScenarioBuilderComponent,
         MockComponent(SectionStepsComponent),
-        MockComponent(EditTextComponent)
+        MockComponent(EditTextComponent),
       ],
       imports: [MatIconModule],
       providers: [
@@ -30,10 +30,10 @@ describe("ScenarioBuilderComponent", () => {
           provide: CodeblockUpdaterService,
           useValue: {
             getObservable: jest.fn().mockReturnValue(of({})),
-            updateData: stubUpadateData
-          }
-        }
-      ]
+            updateData: stubUpadateData,
+          },
+        },
+      ],
     });
   });
 
@@ -72,9 +72,9 @@ describe("ScenarioBuilderComponent", () => {
       expect(btnDel).toBeTruthy();
     });
 
-    it("should emit an event with the codeBlockId after clicking on the button", done => {
+    it("should emit an event with the codeBlockId after clicking on the button", (done) => {
       component.codeBlockId = "codeID";
-      component.delEvent.subscribe(codeBlockId => {
+      component.delEvent.subscribe((codeBlockId) => {
         expect(codeBlockId).toEqual(new DeleteCodeblockEventData("codeID"));
         done();
       });
@@ -108,7 +108,7 @@ describe("ScenarioBuilderComponent", () => {
         codeBlockId: "S1",
         name: "hello",
         isBackground: false,
-        updateType: EventUpdateType.UPDATE
+        updateType: EventUpdateType.UPDATE,
       });
     });
   });

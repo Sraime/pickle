@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
-import { SectionUpdateData } from "../updaters/section-updater/section-update.interface";
+import { SectionUpdateData } from "../updaters/section-updater/section-updater.service";
 import { BoardSynchronizer } from "./board-synchronizer";
 import io from "socket.io-client";
 import { Observable, Subject } from "rxjs";
 import { environment } from "../../../../../environments/environment";
-import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-update-data.interface";
-import { FeatureUpdateData } from "../updaters/feature-updater/feature-update-data.interface";
+import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-updater.service";
+import { FeatureUpdateData } from "../updaters/feature-updater/feature-updater.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BoardSocketSynchro implements BoardSynchronizer {
   private _socket = null;
@@ -44,7 +44,7 @@ export class BoardSocketSynchro implements BoardSynchronizer {
 
   startSynchronization(featureId: string) {
     this._socket = io(this._socketUrl, {
-      query: { featureId }
+      query: { featureId },
     });
     this._socket.on("section-update", (data: SectionUpdateData) => {
       this._sectionUpdateSubject.next(data);

@@ -1,33 +1,37 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FeatureUpdaterService } from "../../services/updaters/feature-updater/feature-updater.service";
 import { CodeblockUpdaterService } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
-import { EventUpdateType } from "../../services/updaters/codeblock-updater/EventUpdateType.enums";
+import { EventUpdateType } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { MatDialog } from "@angular/material/dialog";
 import { GherkinGeneratorDialogComponent } from "../gherkin-generator-dialog/gherkin-generator-dialog.component";
 import { FeatureAssemblyService } from "../../services/feature-assembly/feature-assembly.service";
-import { BoardSocketSynchro } from "../../services/board-synchronizer/board-socket-synchro.service";
 import { BoardLoaderService } from "../../services/board-loader/board-loader.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FeatureUpdateData } from "../../services/updaters/feature-updater/feature-update-data.interface";
-import { CodeblockUpdateData } from "../../services/updaters/codeblock-updater/codeblock-update-data.interface";
+import { FeatureUpdateData } from "../../services/updaters/feature-updater/feature-updater.service";
+import { CodeblockUpdateData } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { DeleteCodeblockEventData } from "../codeblock-builder/delete-codeblock-event-data";
+import { SocketManagerService } from "src/app/services/synchronizer/socket-manager/socket-manager.service";
+import { SectionSynchronizerService } from "../../services/board-synchronizer/section-synchronizer.service";
+import { CodeblockSynchronizerService } from "../../services/board-synchronizer/codeblock-synchronizer.service";
+import { FeatureSynchronizerService } from "../../services/board-synchronizer/feature-synchronizer.service";
 
 @Component({
   selector: "app-board-feature-page",
   templateUrl: "./board-feature-page.component.html",
-  styleUrls: ["./board-feature-page.component.scss"]
+  styleUrls: ["./board-feature-page.component.scss"],
 })
 export class BoardFeaturePageComponent implements OnInit, OnDestroy {
   scenarios: Map<string, string> = new Map<string, string>();
   backgroundId: String;
 
   featureName = "";
+  firstEdition = false;
 
   constructor(
     private featureUpdaterService: FeatureUpdaterService,
     private scenarioUpdaterService: CodeblockUpdaterService,
     private featureAssemblyService: FeatureAssemblyService,
-    private synchronizerService: BoardSocketSynchro,
+    private synchronizerService: SocketManagerService,
     private dialog: MatDialog,
     private boardLoaderService: BoardLoaderService,
     private route: ActivatedRoute,
@@ -45,15 +49,17 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
     this.boardLoaderService
       .loadFeature(featureIdToLoad)
       .then(() => {
-        this.synchronizerService.startSynchronization(featureIdToLoad);
+        this.synchronizerService.enableSynchronization(featureIdToLoad);
       })
-      .catch(error => {
+      .catch((error) => {
         this.router.navigate(["/not-found"]);
       });
+    if (window.history.state && window.history.state.isFirstNavigation)
+      this.firstEdition = true;
   }
 
   ngOnDestroy(): void {
-    this.synchronizerService.stopSynchronization();
+    this.synchronizerService.disableSynchronization();
   }
 
   listenScenarioUpdates() {
@@ -80,7 +86,7 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
       name: "",
       codeBlockId: "",
       isBackground: false,
-      updateType: EventUpdateType.CREATE
+      updateType: EventUpdateType.CREATE,
     });
   }
 
@@ -89,7 +95,7 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
       name: "",
       codeBlockId: delEventData.codeBlockId,
       isBackground: false,
-      updateType: EventUpdateType.DELETE
+      updateType: EventUpdateType.DELETE,
     });
   }
 

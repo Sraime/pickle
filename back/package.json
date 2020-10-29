@@ -9,8 +9,8 @@
 	"main": "app.js",
 	"scripts": {
 		"start": "node app.js",
-		"start:dev": "NODE_ENV=dev nodemon app.js",
-		"start:test": "NODE_ENV=test nodemon app.js",
+		"start:dev": "NODE_ENV=dev nodemon --ignore test/* app.js",
+		"start:test": "NODE_ENV=test nodemon --ignore test/* app.js",
 		"start:prod": "NODE_ENV=prod node app.js",
 		"test": "npm run test:unit",
 		"test:unit": "jest ./app/*/*/*.spec.js --coverage --config ./jest.config.js",
@@ -40,6 +40,7 @@
 		"winston": "^3.3.3"
 	},
 	"devDependencies": {
+		"axios": "^0.20.0",
 		"eslint": "^7.4.0",
 		"eslint-config-airbnb-base": "^14.2.0",
 		"eslint-config-prettier": "^6.11.0",

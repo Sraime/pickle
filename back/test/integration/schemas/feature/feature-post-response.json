@@ -5,5 +5,5 @@
 		"name": { "type": "string" },
 		"userId": { "type": "string" }
 	},
-	"required": ["_id", "name"]
+	"required": ["_id", "name", "userId"]
 }

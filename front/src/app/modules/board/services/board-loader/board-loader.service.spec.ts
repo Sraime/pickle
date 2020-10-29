@@ -6,12 +6,12 @@ import { CodeblockService } from "../api/codeblock/codeblock.service";
 import { ApiCodeblock } from "../api/codeblock/api-codeblock.interface";
 import { of } from "rxjs";
 import { CodeblockUpdaterService } from "../updaters/codeblock-updater/codeblock-updater.service";
-import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-update-data.interface";
-import { EventUpdateType } from "../updaters/codeblock-updater/EventUpdateType.enums";
+import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-updater.service";
+import { EventUpdateType } from "../updaters/codeblock-updater/codeblock-updater.service";
 import { SectionUpdaterService } from "../updaters/section-updater/section-updater.service";
 import { ApiFeature } from "../api/feature/api-feature.interface";
 import { FeatureUpdaterService } from "../updaters/feature-updater/feature-updater.service";
-import { FeatureUpdateData } from "../updaters/feature-updater/feature-update-data.interface";
+import { FeatureUpdateData } from "../updaters/feature-updater/feature-updater.service";
 
 jest.mock("../api/feature/feature.service");
 jest.mock("../api/codeblock/codeblock.service");
@@ -42,26 +42,26 @@ describe("BoardLoaderService", () => {
       providers: [
         {
           provide: FeatureService,
-          useValue: mockFeatureService
+          useValue: mockFeatureService,
         },
         {
           provide: CodeblockService,
-          useValue: mockScenarioService
+          useValue: mockScenarioService,
         },
         {
           provide: CodeblockUpdaterService,
-          useValue: mockScenarioUpdater
+          useValue: mockScenarioUpdater,
         },
         {
           provide: SectionUpdaterService,
-          useValue: mockSectionUpdater
+          useValue: mockSectionUpdater,
         },
 
         {
           provide: FeatureUpdaterService,
-          useValue: mockFeatureUpdater
-        }
-      ]
+          useValue: mockFeatureUpdater,
+        },
+      ],
     });
     service = TestBed.inject(BoardLoaderService);
   });
@@ -78,7 +78,7 @@ describe("BoardLoaderService", () => {
         isBackground: false,
         givenSteps: [{ name: "step1" }],
         whenSteps: [{ name: "step2" }],
-        thenSteps: [{ name: "step3" }]
+        thenSteps: [{ name: "step3" }],
       },
       {
         _id: "yyy",
@@ -86,13 +86,13 @@ describe("BoardLoaderService", () => {
         isBackground: false,
         givenSteps: [],
         whenSteps: [],
-        thenSteps: []
-      }
+        thenSteps: [],
+      },
     ];
 
     const apiFeature: ApiFeature = {
       _id: "fid",
-      name: "my feature"
+      name: "my feature",
     };
 
     beforeEach(() => {
@@ -105,7 +105,7 @@ describe("BoardLoaderService", () => {
     afterEach(() => {
       mockScenarioService.getCodeblocksFeature.mockClear();
       mockScenarioUpdater.updateData.mockClear();
-      mockSectionUpdater.updateSection.mockClear();
+      mockSectionUpdater.updateData.mockClear();
     });
 
     it("should request the feature service with the given feature id", async () => {
@@ -121,7 +121,7 @@ describe("BoardLoaderService", () => {
       );
       await service.loadFeature("xxx");
       const updateFeatureData: FeatureUpdateData = {
-        name: ""
+        name: "",
       };
       expect(mockFeatureUpdater.updateData).toHaveBeenCalledWith(
         updateFeatureData
@@ -149,7 +149,7 @@ describe("BoardLoaderService", () => {
         name: apiScenarios[0].name,
         codeBlockId: apiScenarios[0]._id,
         isBackground: apiScenarios[0].isBackground,
-        updateType: EventUpdateType.CREATE
+        updateType: EventUpdateType.CREATE,
       };
       expect(mockScenarioUpdater.updateData).toHaveBeenCalledWith(
         expectedUpdate
@@ -163,26 +163,26 @@ describe("BoardLoaderService", () => {
 
     it("should update all section for each returned scenario returned by the service", async () => {
       await service.loadFeature();
-      expect(mockSectionUpdater.updateSection).toHaveBeenCalledWith({
+      expect(mockSectionUpdater.updateData).toHaveBeenCalledWith({
         name: "Given",
         codeBlockId: apiScenarios[0]._id,
-        steps: apiScenarios[0].givenSteps
+        steps: apiScenarios[0].givenSteps,
       });
-      expect(mockSectionUpdater.updateSection).toHaveBeenCalledWith({
+      expect(mockSectionUpdater.updateData).toHaveBeenCalledWith({
         name: "When",
         codeBlockId: apiScenarios[0]._id,
-        steps: apiScenarios[0].whenSteps
+        steps: apiScenarios[0].whenSteps,
       });
-      expect(mockSectionUpdater.updateSection).toHaveBeenCalledWith({
+      expect(mockSectionUpdater.updateData).toHaveBeenCalledWith({
         name: "Then",
         codeBlockId: apiScenarios[0]._id,
-        steps: apiScenarios[0].thenSteps
+        steps: apiScenarios[0].thenSteps,
       });
     });
 
     it("should not update empty section for scenarios returned by the service", async () => {
       await service.loadFeature();
-      expect(mockSectionUpdater.updateSection).toHaveBeenCalledTimes(3);
+      expect(mockSectionUpdater.updateData).toHaveBeenCalledTimes(3);
     });
   });
 });

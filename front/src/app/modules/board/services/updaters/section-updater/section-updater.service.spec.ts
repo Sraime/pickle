@@ -2,9 +2,9 @@ import { TestBed } from "@angular/core/testing";
 
 import { SectionUpdaterService } from "./section-updater.service";
 import { Observable, Subject } from "rxjs";
-import { Step } from "./step.interface";
+import { Step } from "./section-updater.service";
 import { SectionValidatorFactory } from "../../../libs/section-validators/section-validator-factory";
-import { SectionUpdateData } from "./section-update.interface";
+import { SectionUpdateData } from "./section-updater.service";
 
 jest.mock("../../board-synchronizer/board-socket-synchro.service");
 import { BoardSocketSynchro } from "../../board-synchronizer/board-socket-synchro.service";
@@ -23,7 +23,7 @@ describe("SectionUpdaterService", () => {
     stubsValidate.Given = jest.fn().mockReturnValue(true);
     stubsValidate.When = jest.fn().mockReturnValue(true);
     stubsValidate.Then = jest.fn().mockReturnValue(true);
-    stubGetValidator = jest.fn().mockImplementation(sn => {
+    stubGetValidator = jest.fn().mockImplementation((sn) => {
       if (sn === "Given") {
         return { validate: stubsValidate.Given };
       }
@@ -39,14 +39,14 @@ describe("SectionUpdaterService", () => {
         {
           provide: SectionValidatorFactory,
           useValue: {
-            getSectionValidator: stubGetValidator
-          }
+            getSectionValidator: stubGetValidator,
+          },
         },
         {
           provide: BoardSocketSynchro,
-          useValue: MockBoardSocketSynchro
-        }
-      ]
+          useValue: MockBoardSocketSynchro,
+        },
+      ],
     });
     MockBoardSocketSynchro.getSectionUpdateObservable.mockReturnValue(
       EventSubjectSocketSection
@@ -66,7 +66,7 @@ describe("SectionUpdaterService", () => {
     expect(stubGetValidator).toBeCalledWith("Then");
   });
 
-  sections.forEach(section => {
+  sections.forEach((section) => {
     describe("section " + section + " subscription", () => {
       it("should return an observable for the " + section + " section", () => {
         let obs: Observable<SectionUpdateData>;
@@ -74,15 +74,15 @@ describe("SectionUpdaterService", () => {
         expect(obs).toBeTruthy();
       });
 
-      it("should dispatch the updated section", done => {
+      it("should dispatch the updated section", (done) => {
         const updatedSteps: Step[] = [{ name: "step1" }, { name: "step2" }];
         const expectedUpdate = {
           name: section,
           steps: updatedSteps,
-          codeBlockId: "codeBlockId"
+          codeBlockId: "codeBlockId",
         };
 
-        service.getSectionObservable(section).subscribe(steps => {
+        service.getSectionObservable(section).subscribe((steps) => {
           expect(steps).toEqual(expectedUpdate);
           done();
         });
@@ -94,7 +94,7 @@ describe("SectionUpdaterService", () => {
       const simpleSectionUpdateData: SectionUpdateData = {
         name: section,
         codeBlockId: "codeBlockId",
-        steps: []
+        steps: [],
       };
       beforeEach(() => {
         MockBoardSocketSynchro.synchonizationEnabled.mockReturnValue(true);
@@ -102,13 +102,13 @@ describe("SectionUpdaterService", () => {
 
       it("should dispatch the updated only for the updated section", () => {
         let nbCall = 0;
-        service.getSectionObservable("Given").subscribe(s => {
+        service.getSectionObservable("Given").subscribe((s) => {
           nbCall++;
         });
-        service.getSectionObservable("When").subscribe(s => {
+        service.getSectionObservable("When").subscribe((s) => {
           nbCall++;
         });
-        service.getSectionObservable("Then").subscribe(s => {
+        service.getSectionObservable("Then").subscribe((s) => {
           nbCall++;
         });
         EventSubjectSocketSection.next(simpleSectionUpdateData);
@@ -126,7 +126,7 @@ describe("SectionUpdaterService", () => {
 
       it("should throw an expection when updating an innexiting section", () => {
         try {
-          service.updateSection(simpleSectionUpdateData);
+          service.updateData(simpleSectionUpdateData);
         } catch (e) {
           expect(e.name).toEqual("UnknownSectionException");
           expect(e.message).toEqual("this section does not exist");
@@ -134,28 +134,28 @@ describe("SectionUpdaterService", () => {
       });
 
       it("should dispatch the update through the synchronizer service when synchro is enabled", () => {
-        service.updateSection(simpleSectionUpdateData);
+        service.updateData(simpleSectionUpdateData);
         expect(
           MockBoardSocketSynchro.dispatchSectionUpdate
         ).toHaveBeenCalledWith({
           name: section,
           codeBlockId: "codeBlockId",
-          steps: []
+          steps: [],
         });
       });
 
-      it("should dispatch the update localy when synchro is not enabled", async done => {
+      it("should dispatch the update localy when synchro is not enabled", async (done) => {
         MockBoardSocketSynchro.synchonizationEnabled.mockReturnValue(false);
         const sectionData = {
           name: section,
           codeBlockId: "codeBlockId",
-          steps: []
+          steps: [],
         };
-        service.getSectionObservable(section).subscribe(updated => {
+        service.getSectionObservable(section).subscribe((updated) => {
           expect(updated).toEqual(sectionData);
           done();
         });
-        service.updateSection(sectionData);
+        service.updateData(sectionData);
       });
     });
   });

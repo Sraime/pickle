@@ -1,10 +1,15 @@
 #feature-table {
-	width: 100%;
-	td:hover {
-		cursor: pointer;
-		background: #eee;
-	}
-	#feature-col-opts {
-		width: 10%;
-	}
+  width: 100%;
+  td:hover {
+    cursor: pointer;
+    background: #eee;
+  }
+  #feature-col-opts {
+    width: 10%;
+  }
+}
+
+.btn-add-feature {
+  margin-bottom: 15px;
+  font-size: 12px;
 }

@@ -24,6 +24,17 @@ const FeatureController = {
 				res.status(400).send(error.message);
 			});
 	},
+
+	addNewFeature: (req, res) => {
+		const userId = req.user.id;
+		return FeatureService.createFeature(req.body.name, userId)
+			.then((createdFeature) => {
+				res.json(createdFeature);
+			})
+			.catch((error) => {
+				res.status(400).send();
+			});
+	},
 };
 
 module.exports = FeatureController;

@@ -1,21 +1,49 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar color="primary" id="navbar">  
-    <mat-toolbar-row>
-        <span>Pickle</span>
-        <span class="nav-spacer"></span>
-        <ng-container *ngIf="isAuthFeatureEnabled">
-            <span *ngIf="!isLoggedIn" class="right-nav">
-                <button routerLink="/auth/register" routerLinkActive="active" mat-stroked-button>Inscription</button>
-                <button routerLink="/auth/login" routerLinkActive="active" mat-stroked-button>Connexion</button>
-            </span>
-            <span *ngIf="isLoggedIn" class="right-nav">
-                <a mat-button href="/feature"><span id="pseudo-user-connected">{{pseudo}}</span></a>
-                <button mat-stroked-button (click)="singout()">Déconnexion</button>
-            </span>
-        </ng-container>
-    </mat-toolbar-row>
+<mat-toolbar color="primary" id="navbar">
+  <mat-toolbar-row>
+    <span>Pickle</span>
+    <span class="nav-spacer"></span>
+    <ng-container *ngIf="isAuthFeatureEnabled">
+      <span *ngIf="!isLoggedIn" class="right-nav">
+        <button
+          routerLink="/auth/register"
+          routerLinkActive="active"
+          mat-stroked-button
+        >
+          Inscription
+        </button>
+        <button
+          routerLink="/auth/login"
+          routerLinkActive="active"
+          mat-stroked-button
+        >
+          Connexion
+        </button>
+      </span>
+      <span *ngIf="isLoggedIn" class="right-nav">
+        <a mat-button href="/feature"
+          ><span id="pseudo-user-connected">{{ pseudo }}</span></a
+        >
+        <button mat-stroked-button (click)="singout()">Déconnexion</button>
+      </span>
+    </ng-container>
+  </mat-toolbar-row>
 </mat-toolbar>
-<div id="main-content">
-    <router-outlet></router-outlet>
-</div>
 
+<mat-sidenav-container class="main-container">
+  <mat-sidenav
+    *ngIf="isLoggedIn"
+    #sidenav
+    mode="side"
+    opened
+    class="main-sidenav"
+  >
+    <project-sidenav></project-sidenav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div id="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

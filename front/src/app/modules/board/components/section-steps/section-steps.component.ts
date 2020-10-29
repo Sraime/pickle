@@ -3,12 +3,12 @@ import { moveItemInArray, CdkDragDrop } from "@angular/cdk/drag-drop";
 import { SectionUpdaterService } from "../../services/updaters/section-updater/section-updater.service";
 import { FeatureAssemblyService } from "../../services/feature-assembly/feature-assembly.service";
 import { Codeblock } from "../../services/feature-assembly/models/codeblock.interface";
-import { Step } from "../../services/updaters/section-updater/step.interface";
+import { Step } from "../../services/updaters/section-updater/section-updater.service";
 
 @Component({
   selector: "section-steps",
   templateUrl: "./section-steps.component.html",
-  styleUrls: ["./section-steps.component.scss"]
+  styleUrls: ["./section-steps.component.scss"],
 })
 export class SectionStepsComponent implements OnInit {
   constructor(
@@ -38,7 +38,7 @@ export class SectionStepsComponent implements OnInit {
     }
     this.sectionService
       .getSectionObservable(this.sectionName)
-      .subscribe(sectionUpdate => {
+      .subscribe((sectionUpdate) => {
         if (sectionUpdate.codeBlockId === this.codeBlockId) {
           this.steps = sectionUpdate.steps;
         }
@@ -48,41 +48,41 @@ export class SectionStepsComponent implements OnInit {
   addStep() {
     if (this.inputText.nativeElement.value) {
       this.steps.push({ name: this.inputText.nativeElement.value });
-      this.sectionService.updateSection({
+      this.sectionService.updateData({
         name: this.sectionName,
         codeBlockId: this.codeBlockId,
-        steps: this.steps
+        steps: this.steps,
       });
       this.inputText.nativeElement.value = "";
     }
   }
 
   delStep(step: Step) {
-    const index = this.steps.findIndex(s => s.name === step.name);
+    const index = this.steps.findIndex((s) => s.name === step.name);
     this.steps.splice(index, 1);
-    this.sectionService.updateSection({
+    this.sectionService.updateData({
       name: this.sectionName,
       codeBlockId: this.codeBlockId,
-      steps: this.steps
+      steps: this.steps,
     });
   }
 
   dropStep(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.steps, event.previousIndex, event.currentIndex);
-    this.sectionService.updateSection({
+    this.sectionService.updateData({
       name: this.sectionName,
       codeBlockId: this.codeBlockId,
-      steps: this.steps
+      steps: this.steps,
     });
   }
 
   updateStep(updatedStep: Step[]) {
-    const index = this.steps.findIndex(s => s.name === updatedStep[0].name);
+    const index = this.steps.findIndex((s) => s.name === updatedStep[0].name);
     this.steps[index] = updatedStep[1];
-    this.sectionService.updateSection({
+    this.sectionService.updateData({
       name: this.sectionName,
       codeBlockId: this.codeBlockId,
-      steps: this.steps
+      steps: this.steps,
     });
   }
 

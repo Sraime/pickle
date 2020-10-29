@@ -1,14 +1,14 @@
 import { TestBed } from "@angular/core/testing";
 
 import { BoardSocketSynchro } from "./board-socket-synchro.service";
-import { SectionUpdateData } from "../updaters/section-updater/section-update.interface";
+import { SectionUpdateData } from "../updaters/section-updater/section-updater.service";
 
 jest.mock("socket.io-client");
 
 import io from "socket.io-client";
-import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-update-data.interface";
-import { EventUpdateType } from "../updaters/codeblock-updater/EventUpdateType.enums";
-import { FeatureUpdateData } from "../updaters/feature-updater/feature-update-data.interface";
+import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-updater.service";
+import { EventUpdateType } from "../updaters/codeblock-updater/codeblock-updater.service";
+import { FeatureUpdateData } from "../updaters/feature-updater/feature-updater.service";
 
 describe("SynchroBoardService", () => {
   let service: BoardSocketSynchro;
@@ -20,23 +20,23 @@ describe("SynchroBoardService", () => {
     connected: false,
     on: (event, callback) => {
       listennedEvents.set(event, callback);
-    }
+    },
   };
   const sectionUpdate: SectionUpdateData = {
     steps: [],
     name: "Given",
-    codeBlockId: "xx"
+    codeBlockId: "xx",
   };
 
   const scenarioUpdateTypeCreate: CodeblockUpdateData = {
     name: "sc1",
     codeBlockId: "xxx",
     isBackground: false,
-    updateType: EventUpdateType.CREATE
+    updateType: EventUpdateType.CREATE,
   };
 
   const featureUpdate: FeatureUpdateData = {
-    name: "sc1"
+    name: "sc1",
   };
 
   io.mockImplementation(() => {
@@ -135,24 +135,24 @@ describe("SynchroBoardService", () => {
         );
       });
 
-      it("should receive updated data on section-update event", done => {
-        service.getSectionUpdateObservable().subscribe(data => {
+      it("should receive updated data on section-update event", (done) => {
+        service.getSectionUpdateObservable().subscribe((data) => {
           expect(data).toEqual(sectionUpdate);
           done();
         });
         listennedEvents.get("section-update")(sectionUpdate);
       });
 
-      it("should receive updated data on scenario-update event", done => {
-        service.getCodeblockUpdateObservable().subscribe(data => {
+      it("should receive updated data on scenario-update event", (done) => {
+        service.getCodeblockUpdateObservable().subscribe((data) => {
           expect(data).toEqual(scenarioUpdateTypeCreate);
           done();
         });
         listennedEvents.get("scenario-update")(scenarioUpdateTypeCreate);
       });
 
-      it("should receive updated data on feature-update event", done => {
-        service.getFeatureUpdateObservable().subscribe(data => {
+      it("should receive updated data on feature-update event", (done) => {
+        service.getFeatureUpdateObservable().subscribe((data) => {
           expect(data).toEqual(featureUpdate);
           done();
         });

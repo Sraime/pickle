@@ -1,6 +1,6 @@
-import { SectionUpdateData } from "../updaters/section-updater/section-update.interface";
+import { SectionUpdateData } from "../updaters/section-updater/section-updater.service";
 import { Observable } from "rxjs";
-import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-update-data.interface";
+import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-updater.service";
 
 export interface BoardSynchronizer {
   startSynchronization(featureId: string);

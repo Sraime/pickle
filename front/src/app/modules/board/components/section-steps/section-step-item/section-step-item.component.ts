@@ -1,12 +1,12 @@
 import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { EditStepDialogComponent } from "../../edit-step-dialog/edit-step-dialog.component";
-import { Step } from "../../../services/updaters/section-updater/step.interface";
+import { Step } from "../../../services/updaters/section-updater/section-updater.service";
 
 @Component({
   selector: "section-step-item",
   templateUrl: "./section-step-item.component.html",
-  styleUrls: ["./section-step-item.component.css"]
+  styleUrls: ["./section-step-item.component.css"],
 })
 export class SectionStepItemComponent implements OnInit {
   constructor(private editDialog: MatDialog) {}
@@ -29,9 +29,9 @@ export class SectionStepItemComponent implements OnInit {
   editAction() {
     const dialog = this.editDialog.open(EditStepDialogComponent, {
       width: "400px",
-      data: { name: this.name }
+      data: { name: this.name },
     });
-    dialog.afterClosed().subscribe(updatedValue => {
+    dialog.afterClosed().subscribe((updatedValue) => {
       this.updateEvent.emit([{ name: this.name }, { name: updatedValue.name }]);
     });
   }

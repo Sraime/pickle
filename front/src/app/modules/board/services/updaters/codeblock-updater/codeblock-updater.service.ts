@@ -1,31 +1,30 @@
 import { Injectable } from "@angular/core";
-import { CodeblockUpdateData } from "./codeblock-update-data.interface";
-import { BoardSocketSynchro } from "../../board-synchronizer/board-socket-synchro.service";
-import { Observable, Subject } from "rxjs";
-import { Updater } from "../updater.interface";
+import { SynchronizedUpdater } from "src/app/services/updater/synchronized-updater/synchronized-updater";
+import { UpdateDataObject } from "src/app/services/updater/updater.interface";
+import { CodeblockSynchronizerService } from "../../board-synchronizer/codeblock-synchronizer.service";
+
+export enum EventUpdateType {
+  CREATE = "CREATE",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE",
+}
+
+export interface CodeblockUpdateData extends UpdateDataObject {
+  name: string;
+  codeBlockId: string;
+  isBackground: boolean;
+  updateType: EventUpdateType;
+}
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
-export class CodeblockUpdaterService implements Updater<CodeblockUpdateData> {
-  private subjectUpdater: Subject<CodeblockUpdateData> = new Subject<
-    CodeblockUpdateData
-  >();
-  constructor(private _boardSynchroService: BoardSocketSynchro) {
-    this._boardSynchroService.getCodeblockUpdateObservable().subscribe(data => {
-      this.subjectUpdater.next(data);
-    });
-  }
-
-  getObservable(): Observable<CodeblockUpdateData> {
-    return this.subjectUpdater;
-  }
-
-  updateData(data: CodeblockUpdateData) {
-    if (this._boardSynchroService.synchonizationEnabled()) {
-      this._boardSynchroService.dispatchCodeblockUpdate(data);
-    } else {
-      this.subjectUpdater.next(data);
-    }
+export class CodeblockUpdaterService extends SynchronizedUpdater<
+  CodeblockUpdateData
+> {
+  constructor(
+    private _codeblockSynchronizerService: CodeblockSynchronizerService
+  ) {
+    super(_codeblockSynchronizerService);
   }
 }

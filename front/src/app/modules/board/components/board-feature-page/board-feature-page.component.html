@@ -5,6 +5,7 @@
       class="feature-name"
       (update)="updateName($event)"
       text="{{ featureName }}"
+      [editModeEnabled]="firstEdition"
     ></edit-text>
   </div>
   <div class="opts-feature-header">

@@ -1,17 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .btn-text-icon mat-icon {
-	padding-bottom: 5px;
-	margin-right: 10px;
+  padding-bottom: 5px;
+  margin-right: 10px;
 }
 
 mat-dialog-container .centered-dialog-options {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .mat-valide {
-	background-color: #5aac44;
-	color: #fff;
+  background-color: #5aac44;
+  color: #fff;
+}
+
+body {
+  margin: 0;
 }

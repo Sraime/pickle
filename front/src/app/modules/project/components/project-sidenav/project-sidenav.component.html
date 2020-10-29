@@ -1,0 +1,21 @@
+<mat-form-field appearance="fill" class="side-project-selector">
+  <mat-label>Project</mat-label>
+  <mat-select [(value)]="selectedProject" disabled>
+    <mat-option *ngFor="let project of projects" value="{{ project._id }}">{{
+      project.name
+    }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Features
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let feature of features">{{
+        feature.name
+      }}</mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

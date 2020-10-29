@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
 import { FeatureUpdaterService } from "../updaters/feature-updater/feature-updater.service";
 import { Feature } from "./models/feature.interface";
-import { FeatureUpdateData } from "../updaters/feature-updater/feature-update-data.interface";
+import { FeatureUpdateData } from "../updaters/feature-updater/feature-updater.service";
 import { CodeblockUpdaterService } from "../updaters/codeblock-updater/codeblock-updater.service";
 import { Scenario } from "./models/scenario/scenario.class";
-import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-update-data.interface";
+import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-updater.service";
 import { Subscription } from "rxjs";
-import { EventUpdateType } from "../updaters/codeblock-updater/EventUpdateType.enums";
+import { EventUpdateType } from "../updaters/codeblock-updater/codeblock-updater.service";
 import { SectionUpdaterService } from "../updaters/section-updater/section-updater.service";
 import { Background } from "./models/background/background.class";
-import { SectionUpdateData } from "../updaters/section-updater/section-update.interface";
+import { SectionUpdateData } from "../updaters/section-updater/section-updater.service";
 import { KeyValue } from "@angular/common";
 import { Codeblock } from "./models/codeblock.interface";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class FeatureAssemblyService {
   private featureName = "";
@@ -40,7 +40,7 @@ export class FeatureAssemblyService {
     return {
       name: this.featureName,
       background: backgroundValue,
-      scenarios: Array.from(this.scenarios.values())
+      scenarios: Array.from(this.scenarios.values()),
     };
   }
 
@@ -60,12 +60,12 @@ export class FeatureAssemblyService {
   }
 
   stopListenning(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   private listenSectionsEvents(sectionService) {
     const listenedSectionNames = ["Given", "When", "Then"];
-    listenedSectionNames.forEach(sectionName => {
+    listenedSectionNames.forEach((sectionName) => {
       this.subscriptions.push(
         sectionService
           .getSectionObservable(sectionName)
@@ -114,7 +114,7 @@ export class FeatureAssemblyService {
               if (update.isBackground) {
                 this.background = {
                   key: update.codeBlockId,
-                  value: new Background()
+                  value: new Background(),
                 };
               } else {
                 this.scenarios.set(

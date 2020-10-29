@@ -1,4 +1,4 @@
-import { Step } from "../../updaters/section-updater/step.interface";
+import { Step } from "../../updaters/section-updater/section-updater.service";
 
 export interface ApiCodeblock {
   _id: string;

@@ -4,12 +4,12 @@ import { FeatureAssemblyService } from "./feature-assembly.service";
 import { Feature } from "./models/feature.interface";
 import { FeatureUpdaterService } from "../updaters/feature-updater/feature-updater.service";
 import { Subject } from "rxjs";
-import { FeatureUpdateData } from "../updaters/feature-updater/feature-update-data.interface";
-import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-update-data.interface";
+import { FeatureUpdateData } from "../updaters/feature-updater/feature-updater.service";
+import { CodeblockUpdateData } from "../updaters/codeblock-updater/codeblock-updater.service";
 import { CodeblockUpdaterService } from "../updaters/codeblock-updater/codeblock-updater.service";
-import { EventUpdateType } from "../updaters/codeblock-updater/EventUpdateType.enums";
+import { EventUpdateType } from "../updaters/codeblock-updater/codeblock-updater.service";
 import { SectionUpdaterService } from "../updaters/section-updater/section-updater.service";
-import { SectionUpdateData } from "../updaters/section-updater/section-update.interface";
+import { SectionUpdateData } from "../updaters/section-updater/section-updater.service";
 
 describe("FeatureAssemblyService", () => {
   let service: FeatureAssemblyService;
@@ -25,26 +25,26 @@ describe("FeatureAssemblyService", () => {
           useValue: {
             getObservable: jest
               .fn()
-              .mockReturnValue(subjectFeatureObservable.asObservable())
-          }
+              .mockReturnValue(subjectFeatureObservable.asObservable()),
+          },
         },
         {
           provide: CodeblockUpdaterService,
           useValue: {
             getObservable: jest
               .fn()
-              .mockReturnValue(subjectScenarioObservable.asObservable())
-          }
+              .mockReturnValue(subjectScenarioObservable.asObservable()),
+          },
         },
         {
           provide: SectionUpdaterService,
           useValue: {
             getSectionObservable: jest
               .fn()
-              .mockReturnValue(subjectSectionObservable.asObservable())
-          }
-        }
-      ]
+              .mockReturnValue(subjectSectionObservable.asObservable()),
+          },
+        },
+      ],
     });
   });
 
@@ -52,21 +52,21 @@ describe("FeatureAssemblyService", () => {
     name: "First Scenario",
     codeBlockId: "S1",
     isBackground: false,
-    updateType: EventUpdateType.CREATE
+    updateType: EventUpdateType.CREATE,
   };
 
   const simpleScenarioUpdated: CodeblockUpdateData = {
     name: "First Scenario Update",
     codeBlockId: "S1",
     isBackground: false,
-    updateType: EventUpdateType.UPDATE
+    updateType: EventUpdateType.UPDATE,
   };
 
   const simpleBackgroundCreated: CodeblockUpdateData = {
     name: "",
     codeBlockId: "BG",
     isBackground: true,
-    updateType: EventUpdateType.CREATE
+    updateType: EventUpdateType.CREATE,
   };
 
   beforeEach(() => {
@@ -89,7 +89,7 @@ describe("FeatureAssemblyService", () => {
       expect(assembledFeature).toEqual({
         name: "",
         background: null,
-        scenarios: []
+        scenarios: [],
       });
     });
 
@@ -99,7 +99,7 @@ describe("FeatureAssemblyService", () => {
       expect(assembledFeature).toEqual({
         name: "amazing feature",
         background: null,
-        scenarios: []
+        scenarios: [],
       });
     });
 
@@ -130,14 +130,14 @@ describe("FeatureAssemblyService", () => {
         name: "",
         codeBlockId: "S1",
         isBackground: false,
-        updateType: EventUpdateType.DELETE
+        updateType: EventUpdateType.DELETE,
       });
       assembledFeature = service.getAssembledFeature();
       expect(assembledFeature.scenarios).toEqual([]);
     });
 
     const sections = ["Given", "When", "Then"];
-    sections.forEach(sectionName => {
+    sections.forEach((sectionName) => {
       it(
         "should update the section steps " +
           sectionName +
@@ -147,7 +147,7 @@ describe("FeatureAssemblyService", () => {
           subjectSectionObservable.next({
             name: sectionName,
             steps: [{ name: "step1" }],
-            codeBlockId: "S1"
+            codeBlockId: "S1",
           });
           assembledFeature = service.getAssembledFeature();
 
@@ -163,11 +163,11 @@ describe("FeatureAssemblyService", () => {
       subjectSectionObservable.next({
         name: "Given",
         steps: [{ name: "step1" }],
-        codeBlockId: "BG"
+        codeBlockId: "BG",
       });
       assembledFeature = service.getAssembledFeature();
       expect(assembledFeature.background.getSectionSteps("Given")).toEqual([
-        { name: "step1" }
+        { name: "step1" },
       ]);
     });
 
@@ -176,12 +176,12 @@ describe("FeatureAssemblyService", () => {
       subjectSectionObservable.next({
         name: "Given",
         steps: [{ name: "step1" }],
-        codeBlockId: "S1"
+        codeBlockId: "S1",
       });
       assembledFeature = service.getAssembledFeature();
 
       expect(assembledFeature.scenarios[0].getSectionSteps("Given")).toEqual([
-        { name: "step1" }
+        { name: "step1" },
       ]);
     });
 

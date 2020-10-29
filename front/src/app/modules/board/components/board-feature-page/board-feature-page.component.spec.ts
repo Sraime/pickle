@@ -3,7 +3,7 @@ import { BoardFeaturePageComponent } from "./board-feature-page.component";
 import { configureTestSuite } from "ng-bullet";
 import { By } from "@angular/platform-browser";
 import { FeatureUpdaterService } from "../../services/updaters/feature-updater/feature-updater.service";
-import { EventUpdateType } from "../../services/updaters/codeblock-updater/EventUpdateType.enums";
+import { EventUpdateType } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { CodeblockUpdaterService } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialog } from "@angular/material/dialog";
@@ -13,14 +13,14 @@ import { FeatureAssemblyService } from "../../services/feature-assembly/feature-
 import { EditTextComponent } from "../edit-text/edit-text.component";
 import { MockComponent } from "ng-mocks";
 import { ScenarioBuilderComponent } from "../codeblock-builder/scenario-builder/scenario-builder.component";
-import { BoardSocketSynchro } from "../../services/board-synchronizer/board-socket-synchro.service";
 import { Subject } from "rxjs";
-import { CodeblockUpdateData } from "../../services/updaters/codeblock-updater/codeblock-update-data.interface";
+import { CodeblockUpdateData } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { BoardLoaderService } from "../../services/board-loader/board-loader.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FeatureUpdateData } from "../../services/updaters/feature-updater/feature-update-data.interface";
+import { FeatureUpdateData } from "../../services/updaters/feature-updater/feature-updater.service";
 import { BackgroundBuilderComponent } from "../codeblock-builder/background-builder/background-builder.component";
 import { DeleteCodeblockEventData } from "../codeblock-builder/delete-codeblock-event-data";
+import { SocketManagerService } from "src/app/services/synchronizer/socket-manager/socket-manager.service";
 jest.mock("../../services/board-loader/board-loader.service");
 jest.mock("@angular/router");
 
@@ -65,7 +65,7 @@ describe("BoardFeaturePageComponent", () => {
         BoardFeaturePageComponent,
         MockComponent(ScenarioBuilderComponent),
         MockComponent(BackgroundBuilderComponent),
-        MockComponent(EditTextComponent)
+        MockComponent(EditTextComponent),
       ],
       imports: [MatCardModule, MatIconModule],
 
@@ -74,46 +74,46 @@ describe("BoardFeaturePageComponent", () => {
           provide: FeatureUpdaterService,
           useValue: {
             getObservable: jest.fn().mockReturnValue(subjectFeatureUpdater),
-            updateData: stubFeatureUpadateData
-          }
+            updateData: stubFeatureUpadateData,
+          },
         },
         {
           provide: FeatureAssemblyService,
-          useValue: {}
+          useValue: {},
         },
         {
           provide: CodeblockUpdaterService,
           useValue: {
             getObservable: jest.fn().mockReturnValue(subjectScenarioUpdater),
-            updateData: stubScenarioUpadateData
-          }
+            updateData: stubScenarioUpadateData,
+          },
         },
         {
-          provide: BoardSocketSynchro,
+          provide: SocketManagerService,
           useValue: {
             startSynchronization: stubStartSocketSynchro,
-            stopSynchronization: stubStopSocketSynchro
-          }
+            stopSynchronization: stubStopSocketSynchro,
+          },
         },
         {
           provide: MatDialog,
           useValue: {
-            open: stubOpenDialog
-          }
+            open: stubOpenDialog,
+          },
         },
         {
           provide: BoardLoaderService,
-          useValue: mockBoardLoader
+          useValue: mockBoardLoader,
         },
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { paramMap: { get: () => featureIdLoaded } } }
+          useValue: { snapshot: { paramMap: { get: () => featureIdLoaded } } },
         },
         {
           provide: Router,
-          useValue: mockRouter
-        }
-      ]
+          useValue: mockRouter,
+        },
+      ],
     });
   });
 
@@ -179,7 +179,7 @@ describe("BoardFeaturePageComponent", () => {
         name: "hello",
         codeBlockId: "S1",
         isBackground: false,
-        updateType: EventUpdateType.CREATE
+        updateType: EventUpdateType.CREATE,
       });
       fixture.whenStable().then(() => {
         fixture.detectChanges();
@@ -195,7 +195,7 @@ describe("BoardFeaturePageComponent", () => {
         name: "",
         codeBlockId: "BG",
         isBackground: true,
-        updateType: EventUpdateType.CREATE
+        updateType: EventUpdateType.CREATE,
       });
       fixture.whenStable().then(() => {
         fixture.detectChanges();
@@ -212,7 +212,7 @@ describe("BoardFeaturePageComponent", () => {
         name: "",
         codeBlockId: "",
         isBackground: false,
-        updateType: EventUpdateType.CREATE
+        updateType: EventUpdateType.CREATE,
       });
     });
   });
@@ -227,7 +227,7 @@ describe("BoardFeaturePageComponent", () => {
         name: "",
         codeBlockId: "S2",
         isBackground: false,
-        updateType: EventUpdateType.DELETE
+        updateType: EventUpdateType.DELETE,
       });
       expect(Array.from(component.scenarios.keys())).toEqual(["S1"]);
     });
@@ -241,7 +241,7 @@ describe("BoardFeaturePageComponent", () => {
         name: "",
         codeBlockId: "S1",
         isBackground: false,
-        updateType: EventUpdateType.DELETE
+        updateType: EventUpdateType.DELETE,
       });
     });
   });
@@ -270,7 +270,7 @@ describe("BoardFeaturePageComponent", () => {
       expect(stubOpenDialog).toHaveBeenCalledWith(
         GherkinGeneratorDialogComponent,
         {
-          width: "50%"
+          width: "50%",
         }
       );
     });
