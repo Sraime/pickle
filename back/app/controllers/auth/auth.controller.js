@@ -18,7 +18,12 @@ const AuthController = {
 			expiresIn: config.auth.expiresIn,
 			subject: user.id.toString(),
 		});
-		return res.json({ pseudo: user.pseudo, token, tokenExpiration: Date.now() + config.auth.expiresIn * 1000 });
+		return res.json({
+			_id: user._id,
+			pseudo: user.pseudo,
+			token,
+			tokenExpiration: Date.now() + config.auth.expiresIn * 1000,
+		});
 	},
 
 	signup: async (req, res) => {

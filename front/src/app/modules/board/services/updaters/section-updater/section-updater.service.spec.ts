@@ -7,15 +7,15 @@ import { SectionValidatorFactory } from "../../../libs/section-validators/sectio
 import { SectionUpdateData } from "./section-updater.service";
 
 jest.mock("../../board-synchronizer/board-socket-synchro.service");
-import { BoardSocketSynchro } from "../../board-synchronizer/board-socket-synchro.service";
+import { SectionSynchronizerService } from "../../board-synchronizer/section-synchronizer.service";
 
 describe("SectionUpdaterService", () => {
-  let MockBoardSocketSynchro: jest.Mocked<BoardSocketSynchro>;
+  let MockBoardSocketSynchro: jest.Mocked<SectionSynchronizerService>;
   let service: SectionUpdaterService;
   let stubGetValidator;
   let stubsValidate;
   let EventSubjectSocketSection;
-  MockBoardSocketSynchro = new (BoardSocketSynchro as any)();
+  MockBoardSocketSynchro = new (SectionSynchronizerService as any)();
 
   beforeEach(() => {
     EventSubjectSocketSection = new Subject<SectionUpdateData>();
@@ -43,7 +43,7 @@ describe("SectionUpdaterService", () => {
           },
         },
         {
-          provide: BoardSocketSynchro,
+          provide: SectionSynchronizerService,
           useValue: MockBoardSocketSynchro,
         },
       ],

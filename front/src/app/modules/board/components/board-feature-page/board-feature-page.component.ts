@@ -10,10 +10,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FeatureUpdateData } from "../../services/updaters/feature-updater/feature-updater.service";
 import { CodeblockUpdateData } from "../../services/updaters/codeblock-updater/codeblock-updater.service";
 import { DeleteCodeblockEventData } from "../codeblock-builder/delete-codeblock-event-data";
-import { SocketManagerService } from "src/app/services/synchronizer/socket-manager/socket-manager.service";
 import { SectionSynchronizerService } from "../../services/board-synchronizer/section-synchronizer.service";
 import { CodeblockSynchronizerService } from "../../services/board-synchronizer/codeblock-synchronizer.service";
 import { FeatureSynchronizerService } from "../../services/board-synchronizer/feature-synchronizer.service";
+import { BoardSynchronizationManager } from "../../services/board-synchronizer/board-synchrozation-manager";
 
 @Component({
   selector: "app-board-feature-page",
@@ -31,7 +31,7 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
     private featureUpdaterService: FeatureUpdaterService,
     private scenarioUpdaterService: CodeblockUpdaterService,
     private featureAssemblyService: FeatureAssemblyService,
-    private synchronizerService: SocketManagerService,
+    private synchronizerService: BoardSynchronizationManager,
     private dialog: MatDialog,
     private boardLoaderService: BoardLoaderService,
     private route: ActivatedRoute,
@@ -49,7 +49,7 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
     this.boardLoaderService
       .loadFeature(featureIdToLoad)
       .then(() => {
-        this.synchronizerService.enableSynchronization(featureIdToLoad);
+        this.synchronizerService.enableRoomSynchronization(featureIdToLoad);
       })
       .catch((error) => {
         this.router.navigate(["/not-found"]);
@@ -59,7 +59,7 @@ export class BoardFeaturePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.synchronizerService.disableSynchronization();
+    this.synchronizerService.disableRoomSynchronization();
   }
 
   listenScenarioUpdates() {

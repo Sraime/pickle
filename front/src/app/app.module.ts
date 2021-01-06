@@ -10,11 +10,9 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { BoardModule } from "./modules/board/board.module";
 import { AppInitService } from "./services/app-init/app-init.service";
-import { FeatureManagementModule } from "./modules/feature-management/feature-management.module";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { ProjectModule } from "./modules/project/project.module";
-import { SocketManagerService } from "./services/synchronizer/socket-manager/socket-manager.service";
-import { SynchronizedUpdater } from "./services/updater/synchronized-updater/synchronized-updater";
+import { SocketioConnectorService } from "./services/synchronizer/socketio-connector/socketio-connector.service";
 
 export function init_app(appLoadService: AppInitService) {
   return () => appLoadService.init();
@@ -26,7 +24,6 @@ export function init_app(appLoadService: AppInitService) {
     BrowserModule,
     LoginModule,
     BoardModule,
-    FeatureManagementModule,
     ProjectModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -34,7 +31,7 @@ export function init_app(appLoadService: AppInitService) {
     MatButtonModule,
     MatSidenavModule,
   ],
-  exports: [SocketManagerService],
+  exports: [SocketioConnectorService],
   providers: [
     AppInitService,
     {

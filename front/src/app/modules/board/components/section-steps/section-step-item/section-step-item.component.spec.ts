@@ -7,13 +7,13 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { EditStepDialogComponent } from "../../edit-step-dialog/edit-step-dialog.component";
 import { of } from "rxjs";
-import { Step } from "../../../services/updaters/section-updater/step.interface";
+import { Step } from "../../../services/updaters/section-updater/section-updater.service";
 
 describe("SectionStepItemComponent", () => {
   let component: SectionStepItemComponent;
   let fixture: ComponentFixture<SectionStepItemComponent>;
   const stubEditDialog = {
-    open: jest.fn()
+    open: jest.fn(),
   };
 
   configureTestSuite(() => {
@@ -23,9 +23,9 @@ describe("SectionStepItemComponent", () => {
       providers: [
         {
           provide: MatDialog,
-          useValue: stubEditDialog
-        }
-      ]
+          useValue: stubEditDialog,
+        },
+      ],
     });
   });
 
@@ -34,7 +34,7 @@ describe("SectionStepItemComponent", () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     stubEditDialog.open.mockReturnValue({
-      afterClosed: () => of()
+      afterClosed: () => of(),
     });
     stubEditDialog.open.mockClear();
   });
@@ -60,10 +60,10 @@ describe("SectionStepItemComponent", () => {
     expect(del).toBeTruthy();
   });
 
-  it("should emit an event when the del button is pressed", done => {
+  it("should emit an event when the del button is pressed", (done) => {
     component.name = "step1";
     const del = fixture.debugElement.query(By.css(".btn-step-del"));
-    component.delEvent.subscribe(step => {
+    component.delEvent.subscribe((step) => {
       expect(step.name).toEqual("step1");
       done();
     });
@@ -79,15 +79,15 @@ describe("SectionStepItemComponent", () => {
         EditStepDialogComponent,
         {
           width: "400px",
-          data: { name: "step1" }
+          data: { name: "step1" },
         }
       );
     });
 
-    it("should emit an event with the updated name returned by the edit dialog", done => {
+    it("should emit an event with the updated name returned by the edit dialog", (done) => {
       component.name = "step1";
       stubEditDialog.open.mockReturnValue({
-        afterClosed: () => of({ name: "edited" })
+        afterClosed: () => of({ name: "edited" }),
       });
       component.updateEvent.subscribe((step: Step[]) => {
         expect(step).toEqual([{ name: "step1" }, { name: "edited" }]);

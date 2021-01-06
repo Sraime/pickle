@@ -20,7 +20,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FeatureUpdateData } from "../../services/updaters/feature-updater/feature-updater.service";
 import { BackgroundBuilderComponent } from "../codeblock-builder/background-builder/background-builder.component";
 import { DeleteCodeblockEventData } from "../codeblock-builder/delete-codeblock-event-data";
-import { SocketManagerService } from "src/app/services/synchronizer/socket-manager/socket-manager.service";
+import { BoardSynchronizationManager } from "../../services/board-synchronizer/board-synchrozation-manager";
 jest.mock("../../services/board-loader/board-loader.service");
 jest.mock("@angular/router");
 
@@ -89,7 +89,7 @@ describe("BoardFeaturePageComponent", () => {
           },
         },
         {
-          provide: SocketManagerService,
+          provide: BoardSynchronizationManager,
           useValue: {
             startSynchronization: stubStartSocketSynchro,
             stopSynchronization: stubStopSocketSynchro,

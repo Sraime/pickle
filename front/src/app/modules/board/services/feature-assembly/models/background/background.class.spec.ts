@@ -1,5 +1,5 @@
 import { Background } from "./background.class";
-import { Step } from "../../../updaters/section-updater/step.interface";
+import { Step } from "../../../updaters/section-updater/section-updater.service";
 
 describe("Background", () => {
   let instance: Background;

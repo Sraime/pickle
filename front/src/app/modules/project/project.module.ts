@@ -13,11 +13,17 @@ import { MatInputModule } from "@angular/material/input";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatListModule } from "@angular/material/list";
+import { MatTableModule } from "@angular/material/table";
+import { FeaturesPageComponent } from "./components/features-page/features-page.component";
+import { ProjectRoutingModule } from "./project-routing.module";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
-  declarations: [ProjectSidenavComponent],
+  declarations: [ProjectSidenavComponent, FeaturesPageComponent],
   imports: [
     CommonModule,
+    ProjectRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -28,6 +34,9 @@ import { MatListModule } from "@angular/material/list";
     MatInputModule,
     MatExpansionModule,
     MatListModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   exports: [ProjectSidenavComponent],
   providers: [

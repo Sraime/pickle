@@ -1,8 +1,9 @@
 import io from "socket.io-client";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
-import { SynchronizedData } from "../socket-event-synchronizer";
 import { Injectable } from "@angular/core";
+import { SynchronizedData } from "../socket-manager.interface";
+import { SocketConnector } from "../socket-room-manager";
 
 interface EventConfig {
   subject: Subject<SynchronizedData>;
@@ -12,7 +13,7 @@ interface EventConfig {
 @Injectable({
   providedIn: "root",
 })
-export class SocketManagerService {
+export class SocketioConnectorService implements SocketConnector {
   private _socket = null;
 
   private _socketUrl: string = environment.socket.board.url;
@@ -28,10 +29,9 @@ export class SocketManagerService {
     return this._socket && this._socket.connected;
   }
 
-  enableSynchronization(featureId: string) {
-    this._socket = io(this._socketUrl, {
-      query: { featureId },
-    });
+  enableSynchronization() {
+    this._socket = io(this._socketUrl, {});
+    console.log("socket initialized");
     this._eventHandlers.forEach((eventConfig, eventName) => {
       this.startListeningEvent(eventName);
     });
@@ -43,7 +43,27 @@ export class SocketManagerService {
     }
   }
 
-  addListenedEvent<SynchronizedData>(eventName: string) {
+  pushEventData(eventName: string, data: SynchronizedData) {
+    console.log("socket push", eventName, data);
+    this._socket.emit(eventName, data);
+  }
+
+  addEventCallback(
+    eventName: string,
+    callback: (data: SynchronizedData) => void
+  ) {
+    if (!this._eventHandlers.has(eventName)) {
+      this.addListenedEvent(eventName);
+    }
+    const eventConfig: EventConfig = this._eventHandlers.get(eventName);
+    eventConfig.callbacks.push(callback);
+  }
+
+  removeEventCallbacks(eventName: string) {
+    this._eventHandlers.delete(eventName);
+  }
+
+  private addListenedEvent<SynchronizedData>(eventName: string) {
     if (this._eventHandlers.has(eventName))
       throw new Error("event type already listened");
     const eventHandler = new Subject<SynchronizedData>();
@@ -54,27 +74,14 @@ export class SocketManagerService {
     }
   }
 
-  startListeningEvent<SynchronizedData>(eventName: string) {
+  private startListeningEvent<SynchronizedData>(eventName: string) {
     const eventConfig = this._eventHandlers.get(eventName);
+    console.log("start litening", eventName);
     this._socket.on(eventName, (data: SynchronizedData) => {
+      console.log("receive event data", eventName, data);
       eventConfig.callbacks.forEach((callback) => {
         callback(data);
       });
     });
-  }
-
-  pushEventData(eventName: string, data: SynchronizedData) {
-    if (!this._eventHandlers.has(eventName))
-      throw new Error("event type is not handled");
-    this._socket.emit(eventName, data);
-  }
-
-  addEventCallback(
-    eventName: string,
-    callback: (data: SynchronizedData) => void
-  ) {
-    const eventConfig: EventConfig = this._eventHandlers.get(eventName);
-    if (!eventConfig) throw new Error("event type is not handled");
-    eventConfig.callbacks.push(callback);
   }
 }

@@ -9,9 +9,13 @@ const FeatureService = {
 		return FeatureModel.findByIdAndUpdate(featureId, featureData);
 	},
 
-	createFeature(name = '', userId) {
-		const newFeature = new FeatureModel({ name, userId });
+	createFeature(name = '', userId, projectId) {
+		const newFeature = new FeatureModel({ name, projectId });
 		return newFeature.save();
+	},
+
+	getProjectFeatures(projectId) {
+		return FeatureModel.find({ projectId: projectId }, null, { sort: { name: 1 } });
 	},
 };
 

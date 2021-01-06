@@ -8,34 +8,36 @@ import { ApiFeature } from "src/app/modules/board/services/api/feature/api-featu
 @Injectable({
   providedIn: "root",
 })
-export class UserFeatureService {
+export class ProjectService {
   constructor(
     private http: HttpClient,
     private httpOptionsBuilder: HttpOptionsBuilder
   ) {}
 
-  userUrl = environment.api.user.url;
+  projectUrl = environment.api.project.url;
   featureUrl = environment.api.feature.url;
 
-  getUserFeatures(): Observable<ApiFeature[]> {
+  getProjectFeatures(projectId: string): Observable<ApiFeature[]> {
     const h = this.httpOptionsBuilder.getHeader();
     return this.http.get<ApiFeature[]>(
-      this.userUrl + "/" + localStorage.getItem("pseudo") + "/feature",
+      this.projectUrl + "/" + projectId + "/feature",
       {
         headers: h,
       }
     );
   }
 
-  createFeature(name: string): Observable<ApiFeature> {
+  createProjectFeature(
+    name: string,
+    projectId: string
+  ): Observable<ApiFeature> {
     const h = this.httpOptionsBuilder.getHeader();
     return this.http.post<ApiFeature>(
-      this.featureUrl,
+      this.projectUrl + "/" + projectId + "/feature",
       { name },
       {
         headers: h,
       }
     );
-    return null;
   }
 }

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { FeaturesPageComponent } from "./features-page.component";
 import { By } from "@angular/platform-browser";
-import { UserFeatureService } from "../../services/user-feature/user-feature.service";
+import { ProjectService } from "../../services/project/project.service";
 import { Observable, Subject } from "rxjs";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTableModule } from "@angular/material/table";
@@ -11,14 +11,14 @@ import { Router } from "@angular/router";
 
 jest.mock("@angular/router");
 jest.mock("../../services/user-feature/user-feature.service");
-const mockUserFeatureService: jest.Mocked<UserFeatureService> = new UserFeatureService(
+const mockUserFeatureService: jest.Mocked<ProjectService> = new ProjectService(
   null,
   null
-) as jest.Mocked<UserFeatureService>;
+) as jest.Mocked<ProjectService>;
 
 const mockRouter: jest.Mocked<Router> = {} as jest.Mocked<Router>;
 const subjectGetFeatures: Subject<ApiFeature[]> = new Subject<ApiFeature[]>();
-mockUserFeatureService.getUserFeatures.mockReturnValue(subjectGetFeatures);
+mockUserFeatureService.getProjectFeatures.mockReturnValue(subjectGetFeatures);
 
 describe("FeaturesPageComponent", () => {
   let component: FeaturesPageComponent;
@@ -30,7 +30,7 @@ describe("FeaturesPageComponent", () => {
       imports: [MatTableModule, MatIconModule],
       providers: [
         {
-          provide: UserFeatureService,
+          provide: ProjectService,
           useValue: mockUserFeatureService,
         },
         {
@@ -101,14 +101,14 @@ describe("FeaturesPageComponent", () => {
       btnAddFeature.nativeElement.click();
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        expect(mockUserFeatureService.createFeature).toHaveBeenCalledWith(
-          "New Feature"
-        );
+        expect(
+          mockUserFeatureService.createProjectFeature
+        ).toHaveBeenCalledWith("New Feature");
       });
     }));
 
     it("should redirect to the feature board of created feature", () => {
-      mockUserFeatureService.createFeature.mockReturnValue(
+      mockUserFeatureService.createProjectFeature.mockReturnValue(
         new Observable<ApiFeature>((s) => {
           s.next({ _id: "xxx", name: "" });
         })

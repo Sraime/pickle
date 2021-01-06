@@ -3,27 +3,30 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-	production: false,
+  production: false,
 
-	api: {
-		auth: {
-			url: 'http://localhost:3000/auth'
-		},
-		scenario: {
-			url: 'http://localhost:3000/scenario'
-		},
-		feature: {
-			url: 'http://localhost:3000/feature'
-		},
-		user: {
-			url: 'http://localhost:3000/user'
-		}
-	},
-	socket: {
-		board: {
-			url: 'http://localhost:3000'
-		}
-	}
+  api: {
+    auth: {
+      url: "http://localhost:3000/auth",
+    },
+    scenario: {
+      url: "http://localhost:3000/scenario",
+    },
+    feature: {
+      url: "http://localhost:3000/feature",
+    },
+    project: {
+      url: "http://localhost:3000/project",
+    },
+    user: {
+      url: "http://localhost:3000/user",
+    },
+  },
+  socket: {
+    board: {
+      url: "http://localhost:3000",
+    },
+  },
 };
 
 /*

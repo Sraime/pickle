@@ -1,5 +1,6 @@
 const FeatureService = require('../../services/feature/feature.service');
 const BoardService = require('../../services/board/board.service');
+const SocketioServer = require('../../sockets/socketio-server');
 
 const FeatureController = {
 	getFeature: (req, res) => {
@@ -22,17 +23,6 @@ const FeatureController = {
 			})
 			.catch((error) => {
 				res.status(400).send(error.message);
-			});
-	},
-
-	addNewFeature: (req, res) => {
-		const userId = req.user.id;
-		return FeatureService.createFeature(req.body.name, userId)
-			.then((createdFeature) => {
-				res.json(createdFeature);
-			})
-			.catch((error) => {
-				res.status(400).send();
 			});
 	},
 };

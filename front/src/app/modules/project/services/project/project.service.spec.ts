@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 
-import { UserFeatureService } from "./user-feature.service";
+import { ProjectService } from "./project.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { HttpOptionsBuilder } from "src/app/modules/auth/libs/HttpOptionsBuilder/HttpOptionsBuilder";
 import { ApiFeature } from "src/app/modules/board/services/api/feature/api-feature.interface";
@@ -16,8 +16,8 @@ const mockHttpOptionsBuilder: jest.Mocked<HttpOptionsBuilder> = new HttpOptionsB
   HttpOptionsBuilder
 >;
 
-describe("UserFeatureService", () => {
-  let service: UserFeatureService;
+describe("ProjectService", () => {
+  let service: ProjectService;
   const httpOptions: HttpHeaders = {} as HttpHeaders;
 
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("UserFeatureService", () => {
         },
       ],
     });
-    service = TestBed.inject(UserFeatureService);
+    service = TestBed.inject(ProjectService);
   });
 
   beforeEach(() => {
@@ -48,14 +48,14 @@ describe("UserFeatureService", () => {
     expect(service).toBeTruthy();
   });
 
-  describe("getUserFeatures", () => {
+  describe("getProjectFeatures", () => {
     localStorage.setItem("pseudo", "bob");
     it("should request the API with the builded in header", (done) => {
       const resultHttpService = new Observable((subscriber) => {
         subscriber.next([]);
       });
       mockHttpClient.get.mockReturnValue(resultHttpService);
-      service.getUserFeatures().subscribe((data) => {
+      service.getProjectFeatures().subscribe((data) => {
         expect(mockHttpClient.get).toHaveBeenCalledWith(
           "http://localhost:3000/user/bob/feature",
           {
@@ -71,7 +71,7 @@ describe("UserFeatureService", () => {
         subscriber.next(featureApiResults);
       });
       mockHttpClient.get.mockReturnValue(resultHttpService);
-      service.getUserFeatures().subscribe((data) => {
+      service.getProjectFeatures().subscribe((data) => {
         expect(data).toEqual(featureApiResults);
         done();
       });
@@ -85,7 +85,7 @@ describe("UserFeatureService", () => {
         subscriber.next(featureApiResult);
       });
       mockHttpClient.post.mockReturnValue(resultHttpService);
-      service.createFeature("New Feature name").subscribe((data) => {
+      service.createProjectFeature("New Feature name").subscribe((data) => {
         expect(mockHttpClient.post).toHaveBeenCalledWith(
           "http://localhost:3000/feature",
           {

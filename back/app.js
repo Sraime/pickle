@@ -1,4 +1,3 @@
-
 const express = require('express');
 
 const bodyParser = require('body-parser');
@@ -13,8 +12,7 @@ const io = require('socket.io')(server);
 const { combine, timestamp, printf } = format;
 const routes = require('./app/routes');
 const config = require('./config');
-const BoardEventHandler = require('./app/sockets/board/board-events-handler');
-
+const SocketioServer = require('./app/sockets/socketio-server');
 
 // eslint-disable-next-line no-shadow
 const loggerFormat = printf(({ level, message, timestamp }) => {
@@ -23,7 +21,7 @@ const loggerFormat = printf(({ level, message, timestamp }) => {
 
 const logger = createLogger({
 	format: combine(timestamp(), loggerFormat),
-	transports: [ new transports.Console() ]
+	transports: [new transports.Console()],
 });
 
 loggers.add('default', logger);
@@ -35,61 +33,38 @@ mongoose
 	.then(() => {
 		logger.log({
 			level: 'info',
-			message: 'Connection to database has been established successfully.'
+			message: 'Connection to database has been established successfully.',
 		});
 	})
 	.catch((err) => {
 		logger.log({
 			level: 'info',
-			message: `Unable to connect to the database ${err}`
+			message: `Unable to connect to the database ${err}`,
 		});
 	});
 
 app.use(cors({ origin: true, credentials: true }));
 
-
 app.use(
 	bodyParser.urlencoded({
-		extended: true
+		extended: true,
 	})
 );
 app.use(bodyParser.json());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
 	logger.log({
 		level: 'info',
-		message: `received : ${req.method} ${req.originalUrl} (Authorization: ${req.get('Authorization')})`
+		message: `received : ${req.method} ${req.originalUrl} (Authorization: ${req.get('Authorization')})`,
 	});
 	next();
 });
 app.use('/', routes);
 
-server.listen(config.app.port, function() {
+server.listen(config.app.port, function () {
 	logger.log({
 		level: 'info',
-		message: `[ENV=${config.app.env}] Application running on port ${config.app.port}`
+		message: `[ENV=${config.app.env}] Application running on port ${config.app.port}`,
 	});
 });
 
-const userBoardSynchronization = new Map();
-
-io.on("connection", (socket) => {
-	const idToConnect = socket.handshake.query.featureId;
-	if (!idToConnect){
-		throw new Error('inpossible to synchronize this board');
-	}
-	if(userBoardSynchronization.get(socket.id)) {
-		socket.leave(userBoardSynchronization.get(socket.id))
-	}
-	socket.join(idToConnect);
-	userBoardSynchronization.set(socket.id, idToConnect);
-	const server = {
-		socket,
-		io,
-		featureId: idToConnect
-	};
-	BoardEventHandler(server);
-	socket.on('disconnect', () => {
-    socket.leave(userBoardSynchronization.get(socket.id))
-		userBoardSynchronization.delete(socket.id);
-  });
-});
+SocketioServer.init(io);

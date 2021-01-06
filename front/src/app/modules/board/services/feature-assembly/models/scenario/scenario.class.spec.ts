@@ -1,4 +1,4 @@
-import { Step } from "../../../updaters/section-updater/step.interface";
+import { Step } from "../../../updaters/section-updater/section-updater.service";
 import { Scenario } from "./scenario.class";
 
 describe("Scenario", () => {
@@ -16,7 +16,7 @@ describe("Scenario", () => {
       expect(instance.getAutorizedSectionNames()).toEqual([
         "Given",
         "When",
-        "Then"
+        "Then",
       ]);
     });
   });

@@ -7,9 +7,9 @@ const featureSchema = new mongoose.Schema({
 		trim: true,
 		maxlength: 100,
 	},
-	userId: {
+	projectId: {
 		type: Schema.Types.ObjectId,
-		ref: 'users',
+		ref: 'projects',
 		required: true,
 	},
 });
