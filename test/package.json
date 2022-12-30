@@ -23,7 +23,7 @@
     "mongoose": "^5.9.24"
   },
   "devDependencies": {
-    "codeceptjs": "^2.6.6",
+    "codeceptjs": "^3.0.0",
     "puppeteer": "^5.1.0"
   }
 }
